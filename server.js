@@ -57,9 +57,9 @@ app.post("/locations", function(req, res) {
     handleError(res, "Invalid user input", "Must provide a first or last name.", 400);
   }
 
-  db.collection(LOCATIONS_COLLECTION).insertOne(newPokestop, function(err, doc) {
+  db.collection(LOCATIONS_COLLECTION).insertOne(newLocation, function(err, doc) {
     if (err) {
-	handleError(res, err.message, "Failed to create new Pokestop.");
+	handleError(res, err.message, "Failed to create new location.");
     } else {
       res.status(201).json(doc.ops[0]);
     }
