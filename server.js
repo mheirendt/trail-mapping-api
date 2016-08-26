@@ -3,6 +3,7 @@ var path = require("path");
 var bodyParser = require("body-parser");
 var mongodb = require("mongodb");
 var ObjectID = mongodb.ObjectID;
+var BSON = require('bson')
 
 var LOCATIONS_COLLECTION = "locations";
 
@@ -94,7 +95,8 @@ app.get("/locations", function(req, res) {
 	}
     });
    */
-    db.collection(LOCATIONS_COLLECTION).find('', function(err, doc){
+    var o_id = new BSON.ObjectID(id);
+    db.collection(LOCATIONS_COLLECTION).find({'_id':o_id}, function(err, doc){
 	if (err) {
 	    console.log("klmnopqrs");
 	    handleError(res, err.message, "Failed to send locations to array");
