@@ -68,6 +68,16 @@ app.get("/locations/:id", function(req, res) {
   });
 });
 
+app.get("/locations", function(req, res) {
+    db.collection(LOCATIONS_COLLECTION).find().toArray(function(err, docs) {
+	if (err) {
+	    handleError(res, err.message, "Failed to send locations to array");
+	} else {
+	    res.status(200).json(doc);
+	}
+    });
+});
+
 app.put("/locations/:id", function(req, res) {
   var updateDoc = req.body;
   delete updateDoc._id;
