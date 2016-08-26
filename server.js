@@ -72,9 +72,12 @@ app.post("/locations", function(req, res) {
   }
 
   db.collection(LOCATIONS_COLLECTION).insertOne(newLocation, function(err, doc) {
+      console.log("updating collection");
     if (err) {
-      handleError(res, err.message, "Failed to create new location.");
+	handleError(res, err.message, "Failed to create new location.");
+	console.log("error");
     } else {
+	console.log("succeed");
       res.status(201).json(doc.ops[0]);
     }
   });
