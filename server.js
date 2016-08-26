@@ -37,32 +37,6 @@ function handleError(res, reason, message, code) {
   res.status(code || 500).json({"error": message});
 }
 
-/*  "/locations"
- *    GET: finds all locations
- *    POST: creates a new location
- */
-
-app.get("/locations", function(req, res) {
-});
-
-app.post("/locations", function(req, res) {
-});
-
-/*  "/locations/:id"
- *    GET: find locations by id
- *    PUT: update location by id
- *    DELETE: deletes location by id
- */
-
-app.get("/locations/:id", function(req, res) {
-});
-
-app.put("/locations/:id", function(req, res) {
-});
-
-app.delete("/locations/:id", function(req, res) {
-});
-
 app.post("/locations", function(req, res) {
   var newLocation = req.body;
   newLocation.createDate = new Date();
