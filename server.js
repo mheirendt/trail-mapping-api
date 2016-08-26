@@ -84,6 +84,15 @@ app.get("/locations/:id", function(req, res) {
 
 app.get("/locations", function(req, res) {
     console.log("abcdefghij");
+
+    db.open(function(err,db){ // <------everything wrapped inside this function
+         db.collection(LOCATIONS_COLLECTION, function(err, collection) {
+             collection.find().toArray(function(err, items) {
+                 console.log(items);
+                 res.send(items);
+             });
+         });
+     });
    /*
     db.collection(LOCATIONS_COLLECTION).find().toArray, (function(err, doc) {
 	if (err) {
@@ -95,6 +104,7 @@ app.get("/locations", function(req, res) {
 	}
     });
    */
+    /*
     var o_id = new BSON.ObjectID(id);
     db.collection(LOCATIONS_COLLECTION).find({'_id':o_id}, function(err, doc){
 	if (err) {
@@ -106,6 +116,21 @@ app.get("/locations", function(req, res) {
 	    res.status(200).json(doc);
 	}
     });
+*/
+
+/*
+app.get('/answers', function (req, res){
+     db.open(function(err,db){ // <------everything wrapped inside this function
+         db.collection('answer', function(err, collection) {
+             collection.find().toArray(function(err, items) {
+                 console.log(items);
+                 res.send(items);
+             });
+         });
+     });
+});
+*/
+    
 //});
 });
 
