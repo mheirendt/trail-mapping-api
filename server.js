@@ -104,7 +104,7 @@ app.get("/locations", function(req, res) {
 	    res.status(200).json(doc);
 	}
     });
-});
+//});
 });
 
 app.put("/locations/:id", function(req, res) {
