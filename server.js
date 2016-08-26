@@ -58,20 +58,12 @@ app.post("/locations", function(req, res) {
 });
 
 app.get("/locations", function(req, res) {
-  db.collection(LOCATIONS_COLLECTION).findOne({ _id: new ObjectID(req.params.id) }, function(err, doc) {
-    if (err) {
-      handleError(res, err.message, "Failed to get location");
-    } else {
 
         LOCATIONS_COLLECTION.find().toArray(function(error, results) { //B
           if( error ) callback(error)
             else callback(null, results)
 	}
-
-	
       res.status(200).json(doc);
-    }
-  });
 });
 
 app.get("/locations/:id", function(req, res) {
