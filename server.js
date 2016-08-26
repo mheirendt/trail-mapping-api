@@ -60,10 +60,12 @@ app.post("/locations", function(req, res) {
 app.get("/locations", function(req, res) {
 
         LOCATIONS_COLLECTION.find().toArray(function(error, results) { //B
-          if( error ) callback(error)
-            else callback(null, results)
+            if( error ) {
+		handleError(res, err.message, "Failed to get locations");
+	    } else {
+		//callback(null, results){
+		res.status(200).json(results);
 	}
-      res.status(200).json(doc);
 });
 
 app.get("/locations/:id", function(req, res) {
