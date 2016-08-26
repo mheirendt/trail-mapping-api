@@ -67,7 +67,7 @@ app.post("/locations", function(req, res) {
   var newLocation = req.body;
   newLocation.createDate = new Date();
 
-  if (!(req.body.firstName || req.body.lastName)) {
+  if (!(req.body.Name || req.body.Location)) {
     handleError(res, "Invalid user input", "Must provide a first or last name.", 400);
   }
 
@@ -79,6 +79,40 @@ app.post("/locations", function(req, res) {
     } else {
 	console.log("succeed");
       res.status(201).json(doc.ops[0]);
+    }
+  });
+});
+
+
+app.get("/locations/:id", function(req, res) {
+  db.collection(LOCATIONS_COLLECTION).findOne({ _id: new ObjectID(req.params.id) }, function(err, doc) {
+    if (err) {
+      handleError(res, err.message, "Failed to get location");
+    } else {
+      res.status(200).json(doc);
+    }
+  });
+});
+
+app.put("/locations/:id", function(req, res) {
+  var updateDoc = req.body;
+  delete updateDoc._id;
+
+  db.collection(LOCATIONS_COLLECTION).updateOne({_id: new ObjectID(req.params.id)}, updateDoc, function(err, doc) {
+    if (err) {
+      handleError(res, err.message, "Failed to update location");
+    } else {
+      res.status(204).end();
+    }
+  });
+});
+
+app.delete("/locations/:id", function(req, res) {
+  db.collection(LOCATIONS_COLLECTION).deleteOne({_id: new ObjectID(req.params.id)}, function(err, result) {
+    if (err) {
+      handleError(res, err.message, "Failed to delete location");
+    } else {
+      res.status(204).end();
     }
   });
 });
