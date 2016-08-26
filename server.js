@@ -37,6 +37,18 @@ function handleError(res, reason, message, code) {
   res.status(code || 500).json({"error": message});
 }
 
+var findAllLocations = function(db, callback) {
+   var cursor = db.collection(LOCATIONS_COLLECTION).find( );
+   cursor.each(function(err, doc) {
+      assert.equal(err, null);
+      if (doc != null) {
+         console.dir(doc);
+      } else {
+         callback();
+      }
+   });
+};
+
 app.post("/locations", function(req, res) {
   var newLocation = req.body;
   newLocation.createDate = new Date();
@@ -71,15 +83,28 @@ app.get("/locations/:id", function(req, res) {
 
 app.get("/locations", function(req, res) {
     console.log("abcdefghij");
+   /*
     db.collection(LOCATIONS_COLLECTION).find().toArray, (function(err, doc) {
 	if (err) {
-	    console.log("it is not resolved");
+	    console.log("klmnopqrs");
 	    handleError(res, err.message, "Failed to send locations to array");
 	} else {
-	    console.log("it is resolved");
+	    console.log("tuvwxyz");
 	    res.status(200).json(doc);
 	}
     });
+   */
+    db.collection(LOCATIONS_COLLECTION).find(, function(err, doc){
+	if (err) {
+	    console.log("klmnopqrs");
+	    handleError(res, err.message, "Failed to send locations to array");
+	} else {
+	    console.log("tuvwxyz");
+	    doc.toArray(callback);
+	    res.status(200).json(doc);
+	}
+    });
+});
 });
 
 app.put("/locations/:id", function(req, res) {
