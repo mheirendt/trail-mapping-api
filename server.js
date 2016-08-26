@@ -94,7 +94,7 @@ app.get("/locations", function(req, res) {
 	}
     });
    */
-    db.collection(LOCATIONS_COLLECTION).find(, function(err, doc){
+    db.collection(LOCATIONS_COLLECTION).find('', function(err, doc){
 	if (err) {
 	    console.log("klmnopqrs");
 	    handleError(res, err.message, "Failed to send locations to array");
