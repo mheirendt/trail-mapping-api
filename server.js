@@ -70,6 +70,7 @@ app.get("/locations/:id", function(req, res) {
 
 
 app.get("/locations", function(req, res) {
+    console.log("abcdefghij");
     db.collection(LOCATIONS_COLLECTION).find().toArray, (function(err, doc) {
 	if (err) {
 	    console.log("it is not resolved");
