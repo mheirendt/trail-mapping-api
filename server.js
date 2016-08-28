@@ -50,9 +50,15 @@ var findAllLocations = function(db, callback) {
 };
 
 app.post("/locations", function(req, res) {
+
+    db.collection(LOCATIONS_COLLECTION).count(function(err, count) {
+	console.log(count);
+	if (count >= 20){
+	    console.log("Time to delete");
+	}
+    }
   var newLocation = req.body;
   newLocation.createDate = new Date();
-
   if (!(req.body.Name || req.body.Location)) {
     handleError(res, "Invalid user input", "Must provide a first or last name.", 400);
   }
