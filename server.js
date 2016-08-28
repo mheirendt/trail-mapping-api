@@ -56,7 +56,7 @@ app.post("/locations", function(req, res) {
 	if (count >= 20){
 	    console.log("Time to delete");
 	}
-    }
+    });
   var newLocation = req.body;
   newLocation.createDate = new Date();
   if (!(req.body.Name || req.body.Location)) {
