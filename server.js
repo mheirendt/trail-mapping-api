@@ -4,7 +4,7 @@ var bodyParser = require("body-parser");
 var mongodb = require("mongodb");
 var ObjectID = mongodb.ObjectID;
 
-var TRAILS_COLLECTION = "trails";
+var TRAILS_COLLECTION = "locations";
 
 var app = express();
 app.use(express.static(__dirname + "/public"));
@@ -49,17 +49,7 @@ var findAllTrails = function(db, callback) {
    });
 };
 
-app.post("/trails", function(req, res) {
-
-    db.collection(TRAILS_COLLECTION).count(function(err, count) {
-	console.log(count);
-	if (count >= 20){
-	    function(){
-		
-		
-	    };
-	}
-    });
+app.post("/locations", function(req, res) {
   var newTrail = req.body;
     newTrail.createDate = new Date();
     /*
@@ -77,7 +67,7 @@ app.post("/trails", function(req, res) {
 });
 
 
-app.get("/trails/:id", function(req, res) {
+app.get("/locations/:id", function(req, res) {
   db.collection(TRAILS_COLLECTION).findOne({ _id: new ObjectID(req.params.id) }, function(err, doc) {
     if (err) {
       handleError(res, err.message, "Failed to get trail");
@@ -88,7 +78,7 @@ app.get("/trails/:id", function(req, res) {
 });
 
 
-app.get("/trails", function(req, res) {
+app.get("/locations", function(req, res) {
     db.open(function(err,db){ // <------everything wrapped inside this function
          db.collection(TRAILS_COLLECTION, function(err, collection) {
              collection.find().toArray(function(err, items) {
@@ -99,7 +89,7 @@ app.get("/trails", function(req, res) {
      });
 });
 
-app.put("/trails/:id", function(req, res) {
+app.put("/locations/:id", function(req, res) {
   var updateDoc = req.body;
   delete updateDoc._id;
 
@@ -112,7 +102,7 @@ app.put("/trails/:id", function(req, res) {
   });
 });
 
-app.delete("/trails/:id", function(req, res) {
+app.delete("/locations/:id", function(req, res) {
   db.collection(TRAILS_COLLECTION).deleteOne({_id: new ObjectID(req.params.id)}, function(err, result) {
     if (err) {
       handleError(res, err.message, "Failed to delete trail");
