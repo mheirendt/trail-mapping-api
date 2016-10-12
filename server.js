@@ -4,7 +4,7 @@ var bodyParser = require("body-parser");
 var mongodb = require("mongodb");
 var ObjectID = mongodb.ObjectID;
 
-var TRAILS_COLLECTION = "locations";
+var TRAILS_COLLECTION = "trails";
 
 var app = express();
 app.use(express.static(__dirname + "/public"));
