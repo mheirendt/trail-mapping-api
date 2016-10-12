@@ -4,7 +4,7 @@ var bodyParser = require("body-parser");
 var mongodb = require("mongodb");
 var ObjectID = mongodb.ObjectID;
 
-var LOCATIONS_COLLECTION = "locations";
+var TRAILS_COLLECTION = "trails";
 
 var app = express();
 app.use(express.static(__dirname + "/public"));
@@ -37,8 +37,8 @@ function handleError(res, reason, message, code) {
   res.status(code || 500).json({"error": message});
 }
 
-var findAllLocations = function(db, callback) {
-   var cursor = db.collection(LOCATIONS_COLLECTION).find( );
+var findAllTrails = function(db, callback) {
+   var cursor = db.collection(TRAILS_COLLECTION).find( );
    cursor.each(function(err, doc) {
       assert.equal(err, null);
       if (doc != null) {
@@ -49,23 +49,27 @@ var findAllLocations = function(db, callback) {
    });
 };
 
-app.post("/locations", function(req, res) {
+app.post("/trails", function(req, res) {
 
-    db.collection(LOCATIONS_COLLECTION).count(function(err, count) {
+    db.collection(TRAILS_COLLECTION).count(function(err, count) {
 	console.log(count);
 	if (count >= 20){
-	    console.log("Time to delete");
+	    function(){
+		
+		
+	    };
 	}
     });
-  var newLocation = req.body;
-  newLocation.createDate = new Date();
+  var newTrail = req.body;
+    newTrail.createDate = new Date();
+    /*
   if (!(req.body.Name || req.body.Location)) {
     handleError(res, "Invalid user input", "Must provide a first or last name.", 400);
   }
-
-  db.collection(LOCATIONS_COLLECTION).insertOne(newLocation, function(err, doc) {
+*/
+  db.collection(TRAILS_COLLECTION).insertOne(newTrail, function(err, doc) {
     if (err) {
-	handleError(res, err.message, "Failed to create new location.");
+	handleError(res, err.message, "Failed to create new trail.");
     } else {
       res.status(201).json(doc.ops[0]);
     }
@@ -73,10 +77,10 @@ app.post("/locations", function(req, res) {
 });
 
 
-app.get("/locations/:id", function(req, res) {
-  db.collection(LOCATIONS_COLLECTION).findOne({ _id: new ObjectID(req.params.id) }, function(err, doc) {
+app.get("/trails/:id", function(req, res) {
+  db.collection(TRAILS_COLLECTION).findOne({ _id: new ObjectID(req.params.id) }, function(err, doc) {
     if (err) {
-      handleError(res, err.message, "Failed to get location");
+      handleError(res, err.message, "Failed to get trail");
     } else {
       res.status(200).json(doc);
     }
@@ -84,9 +88,9 @@ app.get("/locations/:id", function(req, res) {
 });
 
 
-app.get("/locations", function(req, res) {
+app.get("/trails", function(req, res) {
     db.open(function(err,db){ // <------everything wrapped inside this function
-         db.collection(LOCATIONS_COLLECTION, function(err, collection) {
+         db.collection(TRAILS_COLLECTION, function(err, collection) {
              collection.find().toArray(function(err, items) {
                  console.log(items);
                  res.send(items);
@@ -95,23 +99,23 @@ app.get("/locations", function(req, res) {
      });
 });
 
-app.put("/locations/:id", function(req, res) {
+app.put("/trails/:id", function(req, res) {
   var updateDoc = req.body;
   delete updateDoc._id;
 
-  db.collection(LOCATIONS_COLLECTION).updateOne({_id: new ObjectID(req.params.id)}, updateDoc, function(err, doc) {
+  db.collection(TRAILS_COLLECTION).updateOne({_id: new ObjectID(req.params.id)}, updateDoc, function(err, doc) {
     if (err) {
-      handleError(res, err.message, "Failed to update location");
+      handleError(res, err.message, "Failed to update trail");
     } else {
       res.status(204).end();
     }
   });
 });
 
-app.delete("/locations/:id", function(req, res) {
-  db.collection(LOCATIONS_COLLECTION).deleteOne({_id: new ObjectID(req.params.id)}, function(err, result) {
+app.delete("/trails/:id", function(req, res) {
+  db.collection(TRAILS_COLLECTION).deleteOne({_id: new ObjectID(req.params.id)}, function(err, result) {
     if (err) {
-      handleError(res, err.message, "Failed to delete location");
+      handleError(res, err.message, "Failed to delete trail");
     } else {
       res.status(204).end();
     }
