@@ -5,6 +5,7 @@ var mongodb = require("mongodb");
 var ObjectID = mongodb.ObjectID;
 
 var TRAILS_COLLECTION = "trails";
+var USERS_COLLECTION = "users";
 
 var app = express();
 app.use(express.static(__dirname + "/public"));
@@ -108,6 +109,22 @@ app.delete("/trails/:id", function(req, res) {
       handleError(res, err.message, "Failed to delete trail");
     } else {
       res.status(204).end();
+    }
+  });
+});
+
+
+//USERS
+
+app.post("/users", function(req, res) {
+  var newUser = req.body;
+    newUser.createDate = new Date();
+
+  db.collection(USERS_COLLECTION).insertOne(newUser, function(err, doc) {
+    if (err) {
+	handleError(res, err.message, "Failed to create new trail.");
+    } else {
+      res.status(201).json(doc.ops[0]);
     }
   });
 });
