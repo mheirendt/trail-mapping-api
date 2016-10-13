@@ -130,7 +130,7 @@ app.post("/users", function(req, res) {
 });
 
 app.get("/users/:username", function(req, res) {
-    db.collection(TRAILS_COLLECTION).findOne({ _id: new ObjectID(req.params.id) }, function(err, doc) {
+    db.collection(TRAILS_COLLECTION).findOne({ username: req.body }, function(err, doc) {
     if (err) {
       handleError(res, err.message, "Failed to get trail");
     } else {
