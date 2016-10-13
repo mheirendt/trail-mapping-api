@@ -128,3 +128,13 @@ app.post("/users", function(req, res) {
     }
   });
 });
+
+app.get("/users/:username", function(req, res) {
+    db.collection(TRAILS_COLLECTION).findOne({ _id: new ObjectID(req.params.id) }, function(err, doc) {
+    if (err) {
+      handleError(res, err.message, "Failed to get trail");
+    } else {
+      res.status(200).json(doc);
+    }
+  });
+});
