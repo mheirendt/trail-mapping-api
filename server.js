@@ -5,17 +5,16 @@ var mongodb = require("mongodb");
 var ObjectID = mongodb.ObjectID;
 
 //Authentication
-var exphbs = require('express-handlebars');
-var logger = require('morgan');
-var methodOverride = require('method-override');
-var cookieParser = require('cookie-parser');
-var session = require('express-session');
-var passport = require('passport');
-var LocalStrategy = require('passport-local');
-var FacebookStrategy = require('passport-facebook');
-var GoogleStrategy = require('passport-google');
-var TwitterStrategy = require('passport-twitter');
-var config = require('./config.js'), funct = require('./function.js');
+var exphbs = require('express-handlebars'),
+    logger = require('morgan'),
+    cookieParser = require('cookie-parser'),
+    methodOverride = require('method-override'),
+    session = require('express-session'),
+    passport = require('passport'),
+    LocalStrategy = require('passport-local'),
+    TwitterStrategy = require('passport-twitter'),
+    GoogleStrategy = require('passport-google'),
+    FacebookStrategy = require('passport-facebook');
 
 
 
@@ -95,32 +94,33 @@ function ensureAuthenticated(req, res, next) {
 
 //===============EXPRESS================
 
-app.use(express.static(__dirname + "/public"));
+//app.use(express.static(__dirname + "/public"));
 //authentication
+// Configure Express
 app.use(logger('combined'));
 app.use(cookieParser());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(methodOverride('X-HTTP-Method-Override'));
-app.use(session({secret:'supernova', saveUninitialized: true, resave: true}));
+app.use(session({secret: 'supernova', saveUninitialized: true, resave: true}));
 app.use(passport.initialize());
 app.use(passport.session());
 
-//Session
-app.use(function(req,res,next){
-    var err = req.session.error,
-	msg = req.session.notice,
-	success = req.session.success;
+// Session-persisted message middleware
+app.use(function(req, res, next){
+  var err = req.session.error,
+      msg = req.session.notice,
+      success = req.session.success;
 
-    delete req.session.error;
-    delete req.session.notice
-    delete req.session.success;
+  delete req.session.error;
+  delete req.session.success;
+  delete req.session.notice;
 
-    if (err) res.locals.error = err;
-    if (msg) res.locals.notice = msg;
-    if (success) res.locals.success = success;
+  if (err) res.locals.error = err;
+  if (msg) res.locals.notice = msg;
+  if (success) res.locals.success = success;
 
-    next();
+  next();
 });
 
 // Configure express to use handlebars templates
