@@ -14,14 +14,17 @@ var exphbs = require('express-handlebars'),
     LocalStrategy = require('passport-local'),
     TwitterStrategy = require('passport-twitter'),
     GoogleStrategy = require('passport-google'),
-    FacebookStrategy = require('passport-facebook');
+    FacebookStrategy = require('passport-facebook'),
+    ensure = require('connect-ensure-login');
 ////config file contains all tokens and other private info
 //funct file contains our helper functions for our Passport and database work
 var config = require('./config.js');
-var funct = require('./functions.js'); 
+var funct = require('./functions.js');
+
 
 var TRAILS_COLLECTION = "trails";
 var USERS_COLLECTION = "users";
+var PROFILE_USERNAME = null;
 var FACEBOOK_APP_ID = "143683242760890";
 var FACEBOOK_APP_SECRET = "095c264c52e8cd9001ab259070d5e971";
 
@@ -52,12 +55,12 @@ passport.use('local-signin', new LocalStrategy(
     funct.localAuth(username, password)
     .then(function (user) {
       if (user) {
-        console.log("LOGGED IN AS: " + user.username);
+        PROFILE_USERNAME = user.username;
         req.session.success = 'You are successfully logged in ' + user.username + '!';
         done(null, user);
       }
       if (!user) {
-        console.log("COULD NOT LOG IN");
+        PROFILE_USERNAME = null
         req.session.error = 'Could not log user in. Please try again.'; //inform user could not log them in
         done(null, user);
       }
@@ -74,12 +77,12 @@ passport.use('local-signup', new LocalStrategy(
     funct.localReg(username, password)
     .then(function (user) {
       if (user) {
-        console.log("REGISTERED: " + user.username);
+        PROFILE_USERNAME = user.username;
         req.session.success = 'You are successfully registered and logged in ' + user.username + '!';
         done(null, user);
       }
-      if (!user) {
-        console.log("COULD NOT REGISTER");
+	if (!user) {
+	PROFILE_USERNAME = null;
         req.session.error = 'That username is already in use, please try a different one.'; //inform user could not log them in
         done(null, user);
       }
@@ -92,7 +95,8 @@ passport.use('local-signup', new LocalStrategy(
 
 // Simple route middleware to ensure user is authenticated.
 function ensureAuthenticated(req, res, next) {
-  if (req.isAuthenticated()) { return next(); }
+    if (req.isAuthenticated()) { return next(); }
+  PROFILE_USERNAME = null;
   req.session.error = 'Please sign in!';
   res.redirect('/signin');
 }
@@ -104,27 +108,9 @@ passport.use(new FacebookStrategy({
     callbackURL: "https://secure-garden-50529.herokuapp.com/auth/facebook/callback"
   },
   function(accessToken, refreshToken, user, cb) {
-      console.log("SIGNED IN");
+      PROFILE_USERNAME = user.displayName;
       user.username = user.displayName;
-      /*
-    .then(function (user) {
-      if (user) {
-        console.log("REGISTERED: " + user.username);
-        req.session.success = 'You are successfully registered and logged in ' + user.username + '!';
-        done(null, user);
-      }
-      if (!user) {
-        console.log("COULD NOT REGISTER");
-        req.session.error = 'That username is already in use, please try a different one.'; //inform user could not log them in
-        done(null, user);
-      }
-*/
-      //User.findOrCreate({ facebookId: profile.id }, function (err, user) {
-      //return cb(err, user);
-      //profile.displayName;
-      console.log(user.id, user);
       return cb(null, user);
-    //});
   }
 ));
 
@@ -211,20 +197,19 @@ var findAllTrails = function(db, callback) {
 };
 
 app.post("/trails", function(req, res) {
-  var newTrail = req.body;
-    newTrail.createDate = new Date();
-    /*
-  if (!(req.body.Name || req.body.Location)) {
-    handleError(res, "Invalid user input", "Must provide a first or last name.", 400);
-  }
-*/
-  db.collection(TRAILS_COLLECTION).insertOne(newTrail, function(err, doc) {
-    if (err) {
-	handleError(res, err.message, "Failed to create new trail.");
-    } else {
-      res.status(201).json(doc.ops[0]);
-    }
-  });
+    if (PROFILE_USERNAME){
+	var newTrail = req.body;
+	newTrail.createDate = new Date();
+	db.collection(TRAILS_COLLECTION).insertOne(newTrail, function(err, doc) {
+	    if (err) {
+		handleError(res, err.message, "Failed to create new trail.");
+	    } else {
+		res.status(201).json(doc.ops[0]);
+	    }
+	});
+     } else {
+	 res.redirect('/signin');
+     }
 });
 
 
@@ -240,15 +225,18 @@ app.get("/trails/:id", function(req, res) {
 
 
 app.get("/trails", function(req, res) {
-    require('connect-ensure-login').ensureLoggedIn(),
-    db.open(function(err,db){ // <------everything wrapped inside this function
-         db.collection(TRAILS_COLLECTION, function(err, collection) {
-             collection.find().toArray(function(err, items) {
-                 console.log(items);
-                 res.send(items);
+     if (PROFILE_USERNAME){
+	 db.open(function(err,db){ // <------everything wrapped inside this function
+             db.collection(TRAILS_COLLECTION, function(err, collection) {
+		 collection.find().toArray(function(err, items) {
+                     console.log(items);
+                     res.send(items);
+		 });
              });
-         });
-     });
+	 });
+     } else {
+	 res.redirect('/signin');
+     }
 });
 
 app.put("/trails/:id", function(req, res) {
@@ -348,7 +336,7 @@ app.get('/auth/facebook/callback',
     res.redirect('/');
   });
 app.get('/profile',
-  require('connect-ensure-login').ensureLoggedIn(),
+  ensure.ensureLoggedIn(),
   function(req, res){
     res.render('profile', { user: req.user });
   });
