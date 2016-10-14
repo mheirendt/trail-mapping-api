@@ -240,6 +240,7 @@ app.get("/trails/:id", function(req, res) {
 
 
 app.get("/trails", function(req, res) {
+    require('connect-ensure-login').ensureLoggedIn(),
     db.open(function(err,db){ // <------everything wrapped inside this function
          db.collection(TRAILS_COLLECTION, function(err, collection) {
              collection.find().toArray(function(err, items) {
