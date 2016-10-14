@@ -103,11 +103,30 @@ passport.use(new FacebookStrategy({
     clientSecret: FACEBOOK_APP_SECRET,
     callbackURL: "https://secure-garden-50529.herokuapp.com/auth/facebook/callback"
   },
-  function(accessToken, refreshToken, profile, cb) {
-    //User.findOrCreate({ facebookId: profile.id }, function (err, user) {
+  function(accessToken, refreshToken, user, cb) {
+      function(user){
+	  if (user){
+	      console.log("SIGNED IN");
+	      
+	  }
+      /*
+    .then(function (user) {
+      if (user) {
+        console.log("REGISTERED: " + user.username);
+        req.session.success = 'You are successfully registered and logged in ' + user.username + '!';
+        done(null, user);
+      }
+      if (!user) {
+        console.log("COULD NOT REGISTER");
+        req.session.error = 'That username is already in use, please try a different one.'; //inform user could not log them in
+        done(null, user);
+      }
+*/
+      //User.findOrCreate({ facebookId: profile.id }, function (err, user) {
       //return cb(err, user);
-      console.log(profile.id, profile);
-      return cb(null, profile);
+      //profile.displayName;
+      console.log(user.id, user);
+      return cb(null, user);
     //});
   }
 ));
