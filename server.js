@@ -23,6 +23,78 @@ var TRAILS_COLLECTION = "trails";
 var USERS_COLLECTION = "users";
 
 var app = express();
+
+
+
+//===============PASSPORT=================
+
+
+// Passport session setup.
+passport.serializeUser(function(user, done) {
+  console.log("serializing " + user.username);
+  done(null, user);
+});
+
+passport.deserializeUser(function(obj, done) {
+  console.log("deserializing " + obj);
+  done(null, obj);
+});
+
+
+// Use the LocalStrategy within Passport to login/”signin” users.
+passport.use('local-signin', new LocalStrategy(
+  {passReqToCallback : true}, //allows us to pass back the request to the callback
+  function(req, username, password, done) {
+    funct.localAuth(username, password)
+    .then(function (user) {
+      if (user) {
+        console.log("LOGGED IN AS: " + user.username);
+        req.session.success = 'You are successfully logged in ' + user.username + '!';
+        done(null, user);
+      }
+      if (!user) {
+        console.log("COULD NOT LOG IN");
+        req.session.error = 'Could not log user in. Please try again.'; //inform user could not log them in
+        done(null, user);
+      }
+    })
+    .fail(function (err){
+      console.log(err.body);
+    });
+  }
+));
+// Use the LocalStrategy within Passport to register/"signup" users.
+passport.use('local-signup', new LocalStrategy(
+  {passReqToCallback : true}, //allows us to pass back the request to the callback
+  function(req, username, password, done) {
+    funct.localReg(username, password)
+    .then(function (user) {
+      if (user) {
+        console.log("REGISTERED: " + user.username);
+        req.session.success = 'You are successfully registered and logged in ' + user.username + '!';
+        done(null, user);
+      }
+      if (!user) {
+        console.log("COULD NOT REGISTER");
+        req.session.error = 'That username is already in use, please try a different one.'; //inform user could not log them in
+        done(null, user);
+      }
+    })
+    .fail(function (err){
+      console.log(err.body);
+    });
+  }
+));
+
+// Simple route middleware to ensure user is authenticated.
+function ensureAuthenticated(req, res, next) {
+  if (req.isAuthenticated()) { return next(); }
+  req.session.error = 'Please sign in!';
+  res.redirect('/signin');
+}
+
+//===============EXPRESS================
+
 app.use(express.static(__dirname + "/public"));
 //authentication
 app.use(logger('combined'));
@@ -58,6 +130,8 @@ var hbs = exphbs.create({
 app.engine('handlebars', hbs.engine);
 app.set('view engine', 'handlebars');
 
+//===============MONGO DB===============
+
 // Create a database variable outside of the database connection callback to reuse the connection pool in your app.
 var db;
 
@@ -71,13 +145,16 @@ mongodb.MongoClient.connect(process.env.MONGODB_URI, function (err, database) {
   // Save database object from the callback for reuse.
   db = database;
   console.log("Database connection ready");
-
+    
   // Initialize the app.
   var server = app.listen(process.env.PORT || 8080, function () {
     var port = server.address().port;
     console.log("App now running on port", port);
   });
 });
+
+
+//===============ROUTES===============
 
 // Generic error handler used by all endpoints.
 function handleError(res, reason, message, code) {
@@ -190,93 +267,36 @@ app.get("/users/:username", function(req, res) {
 
 //Authentication
 
+//===============AUTH ROUTES=================
+//displays our homepage
 app.get('/', function(req, res){
-    res.render('home', {user: req.user});
+  res.render('home', {user: req.user});
 });
 
+//displays our signup page
 app.get('/signin', function(req, res){
-    res.render('siginin');
+  res.render('signin');
 });
 
+//sends the request through our local signup strategy, and if successful takes user to homepage, otherwise returns then to signin page
 app.post('/local-reg', passport.authenticate('local-signup', {
-    successRedirect: '/',
-    failureRedirect: '/signin'
-    })
-	);
+  successRedirect: '/',
+  failureRedirect: '/signin'
+  })
+);
 
+//sends the request through our local login/signin strategy, and if successful takes user to homepage, otherwise returns then to signin page
+app.post('/login', passport.authenticate('local-signin', {
+  successRedirect: '/',
+  failureRedirect: '/signin'
+  })
+);
+
+//logs user out of site, deleting them from the session, and returns to homepage
 app.get('/logout', function(req, res){
-    var name = req.user.username;
-    console.log("LOGGING OUT " + name);
-    req.logout();
-    res.redirect('/');
-    req.session.notice = "You have succesfully been logget out " + name + ".";
+  var name = req.user.username;
+  console.log("LOGGIN OUT " + req.user.username)
+  req.logout();
+  res.redirect('/');
+  req.session.notice = "You have successfully been logged out " + name + "!";
 });
-
-//===============PASSPORT=================
-/*
-
-// Passport session setup.
-passport.serializeUser(function(user, done) {
-  console.log("serializing " + user.username);
-  done(null, user);
-});
-
-passport.deserializeUser(function(obj, done) {
-  console.log("deserializing " + obj);
-  done(null, obj);
-});
-
-
-// Use the LocalStrategy within Passport to login/”signin” users.
-passport.use('local-signin', new LocalStrategy(
-  {passReqToCallback : true}, //allows us to pass back the request to the callback
-  function(req, username, password, done) {
-    funct.localAuth(username, password)
-    .then(function (user) {
-      if (user) {
-        console.log("LOGGED IN AS: " + user.username);
-        req.session.success = 'You are successfully logged in ' + user.username + '!';
-        done(null, user);
-      }
-      if (!user) {
-        console.log("COULD NOT LOG IN");
-        req.session.error = 'Could not log user in. Please try again.'; //inform user could not log them in
-        done(null, user);
-      }
-    })
-    .fail(function (err){
-      console.log(err.body);
-    });
-  }
-));
-// Use the LocalStrategy within Passport to register/"signup" users.
-passport.use('local-signup', new LocalStrategy(
-  {passReqToCallback : true}, //allows us to pass back the request to the callback
-  function(req, username, password, done) {
-    funct.localReg(username, password)
-    .then(function (user) {
-      if (user) {
-        console.log("REGISTERED: " + user.username);
-        req.session.success = 'You are successfully registered and logged in ' + user.username + '!';
-        done(null, user);
-      }
-      if (!user) {
-        console.log("COULD NOT REGISTER");
-        req.session.error = 'That username is already in use, please try a different one.'; //inform user could not log them in
-        done(null, user);
-      }
-    })
-    .fail(function (err){
-      console.log(err.body);
-    });
-  }
-));
-
-// Simple route middleware to ensure user is authenticated.
-function ensureAuthenticated(req, res, next) {
-  if (req.isAuthenticated()) { return next(); }
-  req.session.error = 'Please sign in!';
-  res.redirect('/signin');
-}
-	 
-*/
