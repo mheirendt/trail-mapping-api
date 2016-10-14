@@ -22,6 +22,9 @@ var funct = require('./functions.js');
 
 var TRAILS_COLLECTION = "trails";
 var USERS_COLLECTION = "users";
+var FACEBOOK_APP_ID = "143683242760890";
+var FACEBOOK_APP_SECRET = "095c264c52e8cd9001ab259070d5e971";
+
 
 var app = express();
 
@@ -93,6 +96,19 @@ function ensureAuthenticated(req, res, next) {
   req.session.error = 'Please sign in!';
   res.redirect('/signin');
 }
+
+//===============FACEBOOK================
+passport.use(new FacebookStrategy({
+    clientID: FACEBOOK_APP_ID,
+    clientSecret: FACEBOOK_APP_SECRET,
+    callbackURL: "https://secure-garden-50529.herokuapp.com/auth/facebook/callback"
+  },
+  function(accessToken, refreshToken, profile, cb) {
+    User.findOrCreate({ facebookId: profile.id }, function (err, user) {
+      return cb(err, user);
+    });
+  }
+));
 
 //===============EXPRESS================
 
@@ -302,3 +318,13 @@ app.get('/logout', function(req, res){
   res.redirect('/');
   req.session.notice = "You have successfully been logged out " + name + "!";
 });
+//==========Facebook Authentication Routes============
+app.get('/auth/facebook',
+  passport.authenticate('facebook'));
+
+app.get('/auth/facebook/callback',
+  passport.authenticate('facebook', { failureRedirect: '/login' }),
+  function(req, res) {
+    // Successful authentication, redirect home.
+    res.redirect('/');
+  });
