@@ -213,7 +213,7 @@ app.get('/logout', function(req, res){
 });
 
 //===============PASSPORT=================
-
+/*
 
 // Passport session setup.
 passport.serializeUser(function(user, done) {
@@ -279,3 +279,4 @@ function ensureAuthenticated(req, res, next) {
   res.redirect('/signin');
 }
 	 
+*/
