@@ -175,3 +175,26 @@ app.get("/users/:username", function(req, res) {
 
 //Authentication
 
+app.get('/', function(req, res){
+    res.render('home', {user: req.user});
+});
+
+app.get('/signin', function(req, res){
+    res.render('siginin');
+});
+
+app.post('/local-reg', passport.authenticate('local-signup', {
+    successRedirect: '/',
+    failureRedirect: '/signin'
+    })
+	);
+
+app.get('/logout', function(req, res){
+    var name = req.user.username;
+    console.log("LOGGING OUT " + name);
+    req.logout();
+    res.redirect('/');
+    req.session.notice = "You have succesfully been logget out " + name + ".";
+});
+	 
+	 
