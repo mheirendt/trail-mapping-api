@@ -5,13 +5,17 @@ var mongodb = require("mongodb");
 var ObjectID = mongodb.ObjectID;
 
 //Authentication
+var exphbs = require('express-handlebars');
+var logger = require('morgan');
+var methodOverride = require('method-override');
+var cookieParser = require('cookie-parser');
 var session = require('express-session');
 var passport = require('passport');
 var LocalStrategy = require('passport-local');
 var FacebookStrategy = require('passport-facebook');
 var GoogleStrategy = require('passport-google');
 var TwitterStrategy = require('passport-twitter');
-//var config = require('./config.js'), funct = require('./function.js');
+var config = require('./config.js'), funct = require('./function.js');
 
 
 
@@ -20,8 +24,12 @@ var USERS_COLLECTION = "users";
 
 var app = express();
 app.use(express.static(__dirname + "/public"));
-app.use(bodyParser.json());
 //authentication
+app.use(logger('combined'));
+app.use(cookieParser());
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
+app.use(methodOverride('X-HTTP-Method-Override'));
 app.use(session({secret:'supernova', saveUninitialized: true, resave: true}));
 app.use(passport.initialize());
 app.use(passport.session());
@@ -42,6 +50,13 @@ app.use(function(req,res,next){
 
     next();
 });
+
+// Configure express to use handlebars templates
+var hbs = exphbs.create({
+    defaultLayout: 'main', //we will be creating this layout shortly
+});
+app.engine('handlebars', hbs.engine);
+app.set('view engine', 'handlebars');
 
 // Create a database variable outside of the database connection callback to reuse the connection pool in your app.
 var db;
@@ -196,5 +211,71 @@ app.get('/logout', function(req, res){
     res.redirect('/');
     req.session.notice = "You have succesfully been logget out " + name + ".";
 });
-	 
+
+//===============PASSPORT=================
+
+
+// Passport session setup.
+passport.serializeUser(function(user, done) {
+  console.log("serializing " + user.username);
+  done(null, user);
+});
+
+passport.deserializeUser(function(obj, done) {
+  console.log("deserializing " + obj);
+  done(null, obj);
+});
+
+
+// Use the LocalStrategy within Passport to login/”signin” users.
+passport.use('local-signin', new LocalStrategy(
+  {passReqToCallback : true}, //allows us to pass back the request to the callback
+  function(req, username, password, done) {
+    funct.localAuth(username, password)
+    .then(function (user) {
+      if (user) {
+        console.log("LOGGED IN AS: " + user.username);
+        req.session.success = 'You are successfully logged in ' + user.username + '!';
+        done(null, user);
+      }
+      if (!user) {
+        console.log("COULD NOT LOG IN");
+        req.session.error = 'Could not log user in. Please try again.'; //inform user could not log them in
+        done(null, user);
+      }
+    })
+    .fail(function (err){
+      console.log(err.body);
+    });
+  }
+));
+// Use the LocalStrategy within Passport to register/"signup" users.
+passport.use('local-signup', new LocalStrategy(
+  {passReqToCallback : true}, //allows us to pass back the request to the callback
+  function(req, username, password, done) {
+    funct.localReg(username, password)
+    .then(function (user) {
+      if (user) {
+        console.log("REGISTERED: " + user.username);
+        req.session.success = 'You are successfully registered and logged in ' + user.username + '!';
+        done(null, user);
+      }
+      if (!user) {
+        console.log("COULD NOT REGISTER");
+        req.session.error = 'That username is already in use, please try a different one.'; //inform user could not log them in
+        done(null, user);
+      }
+    })
+    .fail(function (err){
+      console.log(err.body);
+    });
+  }
+));
+
+// Simple route middleware to ensure user is authenticated.
+function ensureAuthenticated(req, res, next) {
+  if (req.isAuthenticated()) { return next(); }
+  req.session.error = 'Please sign in!';
+  res.redirect('/signin');
+}
 	 
