@@ -319,6 +319,7 @@ app.post('/login', passport.authenticate('local-signin', {
 
 //logs user out of site, deleting them from the session, and returns to homepage
 app.get('/logout', function(req, res){
+  PROFILE_USERNAME = null;
   var name = req.user.username;
   console.log("LOGGIN OUT " + req.user.username)
   req.logout();
