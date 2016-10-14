@@ -104,11 +104,8 @@ passport.use(new FacebookStrategy({
     callbackURL: "https://secure-garden-50529.herokuapp.com/auth/facebook/callback"
   },
   function(accessToken, refreshToken, user, cb) {
-      function(user){
-	  if (user){
-	      console.log("SIGNED IN");
+      console.log("SIGNED IN");
 	      
-	  }
       /*
     .then(function (user) {
       if (user) {
