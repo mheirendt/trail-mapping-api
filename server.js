@@ -11,7 +11,7 @@ var LocalStrategy = require('passport-local');
 var FacebookStrategy = require('passport-facebook');
 var GoogleStrategy = require('passport-google');
 var TwitterStrategy = require('passport-twitter');
-var config = require('./config.js'), funct = require('./function.js');
+//var config = require('./config.js'), funct = require('./function.js');
 
 
 
