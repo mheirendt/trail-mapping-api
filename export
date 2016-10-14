@@ -1,0 +1,3 @@
+#!/bin/bash
+now="$(date)"
+mongoexport --db heroku_w8b74nd4 --collection locations --out $now.json
