@@ -16,7 +16,8 @@ var exphbs = require('express-handlebars'),
     GoogleStrategy = require('passport-google'),
     FacebookStrategy = require('passport-facebook');
 
-
+ var config = require('./config.js'), //config file contains all tokens and other private info
+    funct = require('./functions.js'); //funct file contains our helper functions for our Passport and database work
 
 var TRAILS_COLLECTION = "trails";
 var USERS_COLLECTION = "users";
