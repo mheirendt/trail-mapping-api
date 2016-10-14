@@ -95,7 +95,7 @@ function ensureAuthenticated(req, res, next) {
 
 //===============EXPRESS================
 
-//app.use(express.static(__dirname + "/public"));
+app.use(express.static(__dirname + "/views"));
 //authentication
 // Configure Express
 app.use(logger('combined'));
