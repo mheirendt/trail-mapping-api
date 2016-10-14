@@ -104,9 +104,9 @@ passport.use(new FacebookStrategy({
     callbackURL: "https://secure-garden-50529.herokuapp.com/auth/facebook/callback"
   },
   function(accessToken, refreshToken, profile, cb) {
-    User.findOrCreate({ facebookId: profile.id }, function (err, user) {
+    //User.findOrCreate({ facebookId: profile.id }, function (err, user) {
       return cb(err, user);
-    });
+    //});
   }
 ));
 
@@ -327,4 +327,9 @@ app.get('/auth/facebook/callback',
   function(req, res) {
     // Successful authentication, redirect home.
     res.redirect('/');
+  });
+app.get('/profile',
+  require('connect-ensure-login').ensureLoggedIn(),
+  function(req, res){
+    res.render('profile', { user: req.user });
   });
