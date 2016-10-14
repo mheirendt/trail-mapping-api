@@ -105,7 +105,7 @@ passport.use(new FacebookStrategy({
   },
   function(accessToken, refreshToken, user, cb) {
       console.log("SIGNED IN");
-	      
+      user.username = user.displayName;
       /*
     .then(function (user) {
       if (user) {
