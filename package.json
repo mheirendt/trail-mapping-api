@@ -23,6 +23,7 @@
       "passport-facebook":"*",
       "passport-google":"*",
       "passport-twitter":"*",
-      "passport-local":"*"
+      "passport-local":"*",
+      "connect-ensure-login":"*"
   }
 }
