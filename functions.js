@@ -94,16 +94,16 @@ exports.localAuth = function (userN, password, email) {
 		console.log(bcrypt.compareSync(password, hash));
 		if (bcrypt.compareSync(password, hash)) {
                     deferred.resolve(item);
-		    db.close();
+		    //db.close();
 		} else {
                     console.log("PASSWORDS DONT MATCH");
                     deferred.resolve(false);
-		    db.close();
+		    //db.close();
 		}
 	    } else {
 		console.log("Ain't no results here!");
 		deferred.resolve(false);
-		db.close();
+		//db.close();
 	    }
         });
     });

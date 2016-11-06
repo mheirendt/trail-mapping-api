@@ -56,17 +56,21 @@ passport.use('local-signin', new LocalStrategy(
 	    .then(function (user) {
 		console.log("server.js local auth");
 		if (user) {
+		    console.log("We have a user in local Auth in server.js! : " + user);
+		    console.log(user.username);
 		    PROFILE_USERNAME = user.username;
 		    req.session.success = 'You are successfully logged in ' + user.username + '!';
 		    done(null, user);
 		}
 		if (!user) {
-		    PROFILE_USERNAME = null
+		    console.log("no users here in local Auth from Server.js");
+		    PROFILE_USERNAME = null;
 		    req.session.error = 'Could not log user in. Please try again.'; //inform user could not log them in
 		    done(null, user);
 		}
 	    })
 	    .fail(function (err){
+		console.log("Something went wrong in local auth in server.js");
 		console.log(err.body);
 	    });
     }
@@ -83,6 +87,7 @@ passport.use('local-signup', new LocalStrategy(
 		    console.log("the username is : " + user.username);
 		    PROFILE_USERNAME = user.username;
 		    req.session.success = 'You are successfully registered and logged in ' + user.username + '!';
+		    console.log("local reg almost done");
 		    done(null, user);
 		}
 		if (!user) {
@@ -93,10 +98,7 @@ passport.use('local-signup', new LocalStrategy(
 		}
 	    })
 	    .fail(function (err){
-		if (err) {
-		    console.log("there is an issue somewhere in local reg");
-		    console.log(err.body);
-		}
+		console.log(err.body);
 	    });
     }
 ));
