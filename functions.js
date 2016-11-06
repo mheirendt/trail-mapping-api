@@ -26,16 +26,17 @@ exports.localReg = function (username, password, email) {
 	    var coll = db.collection(USERS_COLLECTION);
 	    console.log("connected");
 	    coll.findOne({username: username}, function(result){
-		  if (!result) {
-		      db.close();
-		      deferred.resolve(false); //username already exists
-		  } else {
-		      console.log("about to insert");
-		      coll.insertOne().then(function(r){
-			  console.log("posted");
-			  db.close();
-		      });
-		  }
+		console.log("And the result is: " + result);
+		  //if (!result) {
+		      //db.close();
+		      //deferred.resolve(false); //username already exists
+		  //} else {
+		      //console.log("about to insert");
+		      //coll.insertOne().then(function(r){
+			  //console.log("posted");
+			  //db.close();
+		      //});
+		  //}
 	    });
 	}
     });
