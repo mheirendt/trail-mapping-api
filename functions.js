@@ -84,17 +84,16 @@ exports.localAuth = function (userN, password, email) {
     var deferred = Q.defer();
     mongodb.MongoClient.connect(process.env.MONGODB_URI, function (err, db) {
         var coll = db.collection(USERS_COLLECTION);
-        coll.findOne({username: userN}, function(error, userObj){
-	    if (userObj) {
+        coll.findOne({username: userN}, function(err, item){
+	    if (item) {
 		console.log("found");
-		console.log("userObj : " + userObj);
-		console.log("userObj.body: " + userObj.body);
-		console.log("userObj.body.password: " + userObj.body.password);
-		var hash = userObj.body.password;
+		console.log("userObj : " + item);
+		console.log("userObj.password: " + item.password);
+		var hash = item.password;
 		console.log(hash);
 		console.log(bcrypt.compareSync(password, hash));
 		if (bcrypt.compareSync(password, hash)) {
-                    deferred.resolve(userObj.body);
+                    deferred.resolve(item);
 		    db.close();
 		} else {
                     console.log("PASSWORDS DONT MATCH");
