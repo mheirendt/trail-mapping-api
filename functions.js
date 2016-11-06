@@ -61,22 +61,22 @@ exports.localReg = function (username, password, email) {
 exports.localAuth = function (userN, password, email) {
     var deferred = Q.defer();
     MongoClient.connect(config.mongodb, function(err, db) {
-	var coll = db.collection(USERS_COLLECTION);
-	coll.findOne({username: userN}.then(function(result){
-	    console.log("found");
-	    var hash = result.body.password;
-	    console.log(hash);
-	    console.log(bcrypt.compareSync(password, hash));
-	    if (bcrypt.compareSync(password, hash)) {
-		deferred.resolve(result.body);
-	    } else {
-		console.log("PASSWORDS DONT MATCH");
-		deferred.resolve(false);
-	    }
-	});
-	db.close();
-	});
-     return deferred.promise;
+        var coll = db.collection(USERS_COLLECTION);
+        coll.findOne({username: userN}, function(result){
+            console.log("found");
+            var hash = result.body.password;
+            console.log(hash);
+            console.log(bcrypt.compareSync(password, hash));
+            if (bcrypt.compareSync(password, hash)) {
+                deferred.resolve(result.body);
+            } else {
+                console.log("PASSWORDS DONT MATCH");
+                deferred.resolve(false);
+            }
+        });
+    db.close();
+    });
+    return deferred.promise;
 }
 			
 /*
