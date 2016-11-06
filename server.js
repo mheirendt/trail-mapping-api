@@ -79,7 +79,7 @@ passport.use('local-signup', new LocalStrategy(
 	    .then(function (user) {
 		console.log("LocalReg in server.js");
 		if (user) {
-		    console.log("there is a user in local reg");
+		    console.log("there is a user in local reg: " + user);
 		    PROFILE_USERNAME = user.username;
 		    req.session.success = 'You are successfully registered and logged in ' + user.username + '!';
 		    done(null, user);
