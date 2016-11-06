@@ -49,7 +49,7 @@ passport.deserializeUser(function(obj, done) {
 
 
 // Use the LocalStrategy within Passport to login/”signin” users.
-passport.use('local-signin', new LocalStrategy(
+passport.use('users', new LocalStrategy(
     {passReqToCallback : true}, //allows us to pass back the request to the callback
     function(req, username, password, email, done) {
 	funct.localAuth(username, password, email)
@@ -76,7 +76,7 @@ passport.use('local-signin', new LocalStrategy(
     }
 ));
 // Use the LocalStrategy within Passport to register/"signup" users.
-passport.use('local-signup', new LocalStrategy(
+passport.use('users', new LocalStrategy(
   {passReqToCallback : true}, //allows us to pass back the request to the callback
     function(req, username, password, email, done) {
 	funct.localReg(username, password, email)
@@ -106,9 +106,9 @@ passport.use('local-signup', new LocalStrategy(
 // Simple route middleware to ensure user is authenticated.
 function ensureAuthenticated(req, res, next) {
     if (req.isAuthenticated()) { return next(); }
-  PROFILE_USERNAME = null;
-  req.session.error = 'Please sign in!';
-  res.redirect('/signin');
+    PROFILE_USERNAME = null;
+    req.session.error = 'Please sign in!';
+    res.redirect('/signin');
 }
 
 //===============FACEBOOK================
