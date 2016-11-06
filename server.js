@@ -61,13 +61,13 @@ passport.use('local-signin', new LocalStrategy(
 		    PROFILE_USERNAME = user.username;
 		    req.session.success = 'You are successfully logged in ' + user.username + '!';
 		    console.log("Almost done with local auth in server.js");
-		    done(null, user);
+		    //done(null, user);
 		}
 		if (!user) {
 		    console.log("no users here in local Auth from Server.js");
 		    PROFILE_USERNAME = null;
 		    req.session.error = 'Could not log user in. Please try again.'; //inform user could not log them in
-		    done(null, user);
+		    //done(null, user);
 		}
 	    })
 	    .fail(function (err){
