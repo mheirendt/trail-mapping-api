@@ -19,23 +19,28 @@ exports.localReg = function (username, password, email) {
       "email" : email
     }
   //check if username is already assigned in our database
-  db.get('local-users', username)
-  .then(function (result){ //case in which user already exists in db
-    console.log('username already exists');
-    deferred.resolve(false); //username already exists
-  })
-  .fail(function (result) {//case in which user does not already exist in db
-      console.log(result.body);
-      if (result.body.message == 'The requested items could not be found.'){
-          console.log('Username is free for use');
+  //db.get('local-users', username)
+    //.then(function (result){ //case in which user already exists in db
+    
+    //console.log('username already exists');
+    //deferred.resolve(false); //username already exists
+  //})
+  //.fail(function (result) {//case in which user does not already exist in db
+      //console.log(result.body);
+      //if (result.body.message == 'The requested items could not be found.'){
+    //console.log('Username is free for use');
 	  MongoClient.connect(config.mongodb, function(err, db) {
 	      var coll = db.collection(USERS_COLLECTION);
+	      coll.findOne({username: username}, function(result){
+		  console.log(result);
+	      });
+	//console.log("found");
 	      coll.insertOne().then(function(r){
 		  console.log("posted");
 		  db.close();
 	      });
-	  });
-      }
+	  //});
+      //}
        /* db.put('local-users', username, user)
         .then(function () {
           console.log("USER: " + user);
@@ -49,7 +54,7 @@ exports.localReg = function (username, password, email) {
         deferred.reject(new Error(result.body));
       }
        */
-  });
+  //});
 
   return deferred.promise;
 };
