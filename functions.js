@@ -39,8 +39,8 @@ exports.localReg = function (username, password, email) {
 	//console.log("found");
 	      coll.insertOne().then(function(r){
 		  console.log("posted");
+		  db.close();
 	      });
-	      db.close();
 	  });
       //}
        /* db.put('local-users', username, user)
@@ -76,12 +76,13 @@ exports.localAuth = function (userN, password, email) {
             console.log(bcrypt.compareSync(password, hash));
             if (bcrypt.compareSync(password, hash)) {
                 deferred.resolve(result.body);
+		db.close();
             } else {
                 console.log("PASSWORDS DONT MATCH");
                 deferred.resolve(false);
+		db.close();
             }
         });
-    db.close();
     });
     return deferred.promise;
 }
