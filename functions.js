@@ -42,7 +42,7 @@ exports.localReg = function (username, password, email) {
 			  //db.close();
 		      //});
 		  //}
-	    });
+	    //});
 	}
     });
     return deferred.promise;
