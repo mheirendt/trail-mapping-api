@@ -80,22 +80,29 @@ exports.localReg = function (username, password, email) {
       //if password matches take into website
   //if user doesn't exist or password doesn't match tell them it failed
 exports.localAuth = function (userN, password, email) {
+    console.log("Starting local auth!");
     var deferred = Q.defer();
     mongodb.MongoClient.connect(process.env.MONGODB_URI, function (err, db) {
         var coll = db.collection(USERS_COLLECTION);
         coll.findOne({username: userN}, function(result){
-            console.log("found");
-            var hash = result.body.password;
-            console.log(hash);
-            console.log(bcrypt.compareSync(password, hash));
-            if (bcrypt.compareSync(password, hash)) {
-                deferred.resolve(result.body);
+	    if (result) {
+		console.log("found");
+		var hash = result.body.password;
+		console.log(hash);
+		console.log(bcrypt.compareSync(password, hash));
+		if (bcrypt.compareSync(password, hash)) {
+                    deferred.resolve(result.body);
+		    db.close();
+		} else {
+                    console.log("PASSWORDS DONT MATCH");
+                    deferred.resolve(false);
+		    db.close();
+		}
+	    } else {
+		console.log("Ain't no results here!");
+		deferred.resolve(false);
 		db.close();
-            } else {
-                console.log("PASSWORDS DONT MATCH");
-                deferred.resolve(false);
-		db.close();
-            }
+	    }
         });
     });
     return deferred.promise;
