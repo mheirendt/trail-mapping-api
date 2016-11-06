@@ -51,8 +51,8 @@ passport.deserializeUser(function(obj, done) {
 // Use the LocalStrategy within Passport to login/”signin” users.
 passport.use('local-signin', new LocalStrategy(
   {passReqToCallback : true}, //allows us to pass back the request to the callback
-  function(req, username, password, done) {
-    funct.localAuth(username, password)
+    function(req, username, password, email, done) {
+      funct.localAuth(username, password, email)
     .then(function (user) {
       if (user) {
         PROFILE_USERNAME = user.username;
@@ -73,24 +73,24 @@ passport.use('local-signin', new LocalStrategy(
 // Use the LocalStrategy within Passport to register/"signup" users.
 passport.use('local-signup', new LocalStrategy(
   {passReqToCallback : true}, //allows us to pass back the request to the callback
-  function(req, username, password, done) {
-    funct.localReg(username, password)
-    .then(function (user) {
-      if (user) {
-        PROFILE_USERNAME = user.username;
-        req.session.success = 'You are successfully registered and logged in ' + user.username + '!';
-        done(null, user);
-      }
-	if (!user) {
-	PROFILE_USERNAME = null;
-        req.session.error = 'That username is already in use, please try a different one.'; //inform user could not log them in
-        done(null, user);
-      }
-    })
-    .fail(function (err){
-      console.log(err.body);
-    });
-  }
+    function(req, username, password, email, done) {
+	funct.localReg(username, password, email)
+	    .then(function (user) {
+		if (user) {
+		    PROFILE_USERNAME = user.username;
+		    req.session.success = 'You are successfully registered and logged in ' + user.username + '!';
+		    done(null, user);
+		}
+		if (!user) {
+		    PROFILE_USERNAME = null;
+		    req.session.error = 'That username is already in use, please try a different one.'; //inform user could not log them in
+		    done(null, user);
+		}
+	    })
+	    .fail(function (err){
+		console.log(err.body);
+	    });
+    }
 ));
 
 // Simple route middleware to ensure user is authenticated.
@@ -287,6 +287,17 @@ app.get("/users/:username", function(req, res) {
     }
   });
 });
+
+app.get("/users", function(req, res) {
+    	 db.open(function(err,db){ // <------everything wrapped inside this function
+             db.collection(USERS_COLLECTION, function(err, collection) {
+		 collection.find().toArray(function(err, items) {
+                     console.log(items);
+                     res.send(items);
+		 });
+             });
+	 });
+}
 
 
 

@@ -1,17 +1,23 @@
 var bcrypt = require('bcryptjs'),
     Q = require('q'),
     config = require('./config.js'), //config file contains all tokens and other private info
-    db = require('orchestrate')(config.db); //config.db holds Orchestrate token
+    //db = require('mongodb')(config.mongodb); //config.db holds Orchestrate token
+    mongoClient = require('mongodb').MongoClient,
+    USERS_COLLECTION = "users";
 
+    
 //used in local-signup strategy
-exports.localReg = function (username, password) {
-  var deferred = Q.defer();
-  var hash = bcrypt.hashSync(password, 8);
-  var user = {
-    "username": username,
-    "password": hash,
-    "avatar": "http://placepuppy.it/images/homepage/Beagle_puppy_6_weeks.JPG"
-  }
+exports.localReg = function (username, password, email) {
+    var deferred = Q.defer();
+    var hash = bcrypt.hashSync(password, 8);
+    var date = new Date();
+    var user = {
+      "username": username,
+      "password": hash,
+      "createDate" : date,
+      "score" : 0,
+      "email" : email
+    }
   //check if username is already assigned in our database
   db.get('local-users', username)
   .then(function (result){ //case in which user already exists in db
@@ -21,8 +27,16 @@ exports.localReg = function (username, password) {
   .fail(function (result) {//case in which user does not already exist in db
       console.log(result.body);
       if (result.body.message == 'The requested items could not be found.'){
-        console.log('Username is free for use');
-        db.put('local-users', username, user)
+          console.log('Username is free for use');
+	  MongoClient.connect(config.mongodb, function(err, db) {
+	      var coll = db.collection(USERS_COLLECTION);
+	      coll.insertOne().then(function(r){
+		  console.log("posted");
+		  db.close();
+	      });
+	  });
+      }
+       /* db.put('local-users', username, user)
         .then(function () {
           console.log("USER: " + user);
           deferred.resolve(user);
@@ -34,6 +48,7 @@ exports.localReg = function (username, password) {
       } else {
         deferred.reject(new Error(result.body));
       }
+       */
   });
 
   return deferred.promise;
@@ -43,9 +58,25 @@ exports.localReg = function (username, password) {
     //if user exists check if passwords match (use bcrypt.compareSync(password, hash); // true where 'hash' is password in DB)
       //if password matches take into website
   //if user doesn't exist or password doesn't match tell them it failed
-exports.localAuth = function (username, password) {
-  var deferred = Q.defer();
-
+exports.localAuth = function (userN, password, email) {
+    var deferred = Q.defer();
+    MongoClient.connect(config.mongodb, function(err, db) {
+	var coll = db.collection(USERS_COLLECTION);
+	coll.findOne(username: userN).then(function(result){
+	    console.log("found");
+	    var hash = result.body.password;
+	    console.log(hash);
+	    console.log(bcrypt.compareSync(password, hash));
+	    if (bcrypt.compareSync(password, hash)) {
+		deferred.resolve(result.body);
+	    } else {
+		console.log("PASSWORDS DONT MATCH");
+		deferred.resolve(false);
+	    }
+	    db.close();
+	});
+    });
+/*
   db.get('local-users', username)
   .then(function (result){
     console.log("FOUND USER");
@@ -65,6 +96,7 @@ exports.localAuth = function (username, password) {
     } else {
       deferred.reject(new Error(err));
     }
+*/
   });
 
   return deferred.promise;

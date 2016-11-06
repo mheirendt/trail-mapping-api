@@ -17,6 +17,7 @@
       "cookie-parser":"*",
       "method-override":"*",
       "orchestrate":"*",
+      "mongoose":"*",
       "q":"*",
       "express-session":"*",
       "passport":"*",
