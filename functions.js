@@ -32,7 +32,7 @@ exports.localReg = function (username, password, email) {
 	    //});
 	    coll.findOne({username: username}, function(result){
 		console.log("And the result is: " + result);
-		  if (!result) {
+		  if (result) {
 		      db.close();
 		      deferred.resolve(false); //username already exists
 		  } else {
