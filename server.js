@@ -271,7 +271,7 @@ app.delete("/trails/:id", function(req, res) {
 
 
 //USERS
-
+/*
 app.post("/users", function(req, res) {
   var newUser = req.body;
     newUser.createDate = new Date();
@@ -284,7 +284,8 @@ app.post("/users", function(req, res) {
     }
   });
 });
-
+*/
+/*
 app.get("/users/:username", function(req, res) {
     db.collection(USERS_COLLECTION).findOne({ username: req.params.username }, function(err, doc) {
     if (err) {
@@ -294,7 +295,8 @@ app.get("/users/:username", function(req, res) {
     }
   });
 });
-
+*/
+/*
 app.get("/users", function(req, res) {
     	 db.open(function(err,db){ // <------everything wrapped inside this function
              db.collection(USERS_COLLECTION, function(err, collection) {
@@ -305,6 +307,7 @@ app.get("/users", function(req, res) {
              });
 	 });
 });
+*/
 
 
 
