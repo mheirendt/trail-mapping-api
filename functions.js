@@ -43,7 +43,7 @@ exports.localReg = function (username, password) {
     return deferred.promise;
 };
 
-exports.localAuth = function (userN, password, email) {
+exports.localAuth = function (userN, password) {
     console.log("Starting local auth!");
     var deferred = Q.defer();
     mongodb.MongoClient.connect(process.env.MONGODB_URI, function (err, db) {

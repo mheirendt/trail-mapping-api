@@ -75,8 +75,8 @@ passport.use('local-signin', new LocalStrategy(
 // Use the LocalStrategy within Passport to register/"signup" users.
 passport.use('local-signup', new LocalStrategy(
   {passReqToCallback : true}, //allows us to pass back the request to the callback
-    function(req, username, password, email, done) {
-	funct.localReg(username, password, email)
+    function(req, username, password, done) {
+	funct.localReg(username, password)
 	    .then(function (user) {
 		console.log("LocalReg in server.js");
 		if (user) {
