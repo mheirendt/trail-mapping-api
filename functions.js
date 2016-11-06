@@ -2,7 +2,8 @@ var bcrypt = require('bcryptjs'),
     Q = require('q'),
     config = require('./config.js'), //config file contains all tokens and other private info
     //db = require('mongodb')(config.mongodb); //config.db holds Orchestrate token
-    mongoClient = require('mongodb').MongoClient,
+    //mongoClient = require('mongodb').MongoClient,
+    mongodb = require("mongodb"),
     USERS_COLLECTION = "users";
 
     
@@ -29,7 +30,8 @@ exports.localReg = function (username, password, email) {
       //console.log(result.body);
       //if (result.body.message == 'The requested items could not be found.'){
     //console.log('Username is free for use');
-	  mongoClient.connect(config.mongodb, function(err, db) {
+
+	  mongodb.MongoClient.connect(process.env.MONGODB_URI, function (err, db) {
 	      var coll = db.collection(USERS_COLLECTION);
 	      coll.findOne({username: username}, function(result){
 		  console.log("The Result is: " + result);
@@ -65,7 +67,7 @@ exports.localReg = function (username, password, email) {
   //if user doesn't exist or password doesn't match tell them it failed
 exports.localAuth = function (userN, password, email) {
     var deferred = Q.defer();
-    MongoClient.connect(config.mongodb, function(err, db) {
+    mongodb.MongoClient.connect(process.env.MONGODB_URI, function (err, db) {
         var coll = db.collection(USERS_COLLECTION);
         coll.findOne({username: userN}, function(result){
             console.log("found");
