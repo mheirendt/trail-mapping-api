@@ -54,7 +54,8 @@ passport.use('local-signin', new LocalStrategy(function(username, password, emai
 	    .then(function (user) {
 		console.log("server.js local auth");
 		if (user) {
-		    console.log("do these parameters carry over? " + username + password + email + done);
+		    console.log("do these parameters carry over? " + email);
+		    console.log("what the fuck is done? " + done);
 		    console.log("We have a user in local Auth in server.js! : " + user);
 		    console.log(user.username);
 		    PROFILE_USERNAME = user.username;
