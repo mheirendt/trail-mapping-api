@@ -49,7 +49,7 @@ passport.deserializeUser(function(obj, done) {
 
 
 // Use the LocalStrategy within Passport to login/”signin” users.
-passport.use('users', new LocalStrategy(
+passport.use('local-signin', new LocalStrategy(
     {passReqToCallback : true}, //allows us to pass back the request to the callback
     function(req, username, password, email, done) {
 	funct.localAuth(username, password, email)
@@ -60,6 +60,7 @@ passport.use('users', new LocalStrategy(
 		    console.log(user.username);
 		    PROFILE_USERNAME = user.username;
 		    req.session.success = 'You are successfully logged in ' + user.username + '!';
+		    console.log("Almost done with local auth in server.js");
 		    done(null, user);
 		}
 		if (!user) {
@@ -71,12 +72,12 @@ passport.use('users', new LocalStrategy(
 	    })
 	    .fail(function (err){
 		console.log("Something went wrong in local auth in server.js");
-		console.log(err.body);
+		console.log("Error desc: " + err);
 	    });
     }
 ));
 // Use the LocalStrategy within Passport to register/"signup" users.
-passport.use('users', new LocalStrategy(
+passport.use('local-signup', new LocalStrategy(
   {passReqToCallback : true}, //allows us to pass back the request to the callback
     function(req, username, password, email, done) {
 	funct.localReg(username, password, email)
