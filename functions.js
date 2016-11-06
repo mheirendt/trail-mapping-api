@@ -4,8 +4,7 @@ var bcrypt = require('bcryptjs'),
     //db = require('mongodb')(config.mongodb); //config.db holds Orchestrate token
     //mongoClient = require('mongodb').MongoClient,
     mongodb = require("mongodb"),
-    USERS_COLLECTION = "users",
-    db;
+    USERS_COLLECTION = "users";
 
     
 //used in local-signup strategy
@@ -20,22 +19,27 @@ exports.localReg = function (username, password, email) {
       "score" : 0,
       "email" : email
     }
-    
-    mongodb.MongoClient.connect(process.env.MONGODB_URI, function (err, database) {
-	db = database;
-	      var coll = db.collection(USERS_COLLECTION);
-	      coll.findOne({username: username}, function(result){
+    mongodb.MongoClient.connect(process.env.MONGODB_URI, function (err, db) {
+	if (err) {
+	    console.log("ERROR !!!! :" + err);
+	} else {
+	    var coll = db.collection(USERS_COLLECTION);
+	    console.log("connected");
+	    coll.findOne({username: username}, function(result){
 		  if (!result) {
+		      db.close();
 		      deferred.resolve(false); //username already exists
 		  } else {
 		      console.log("about to insert");
 		      coll.insertOne().then(function(r){
 			  console.log("posted");
+			  db.close();
 		      });
 		  }
-	      });
-	  });
-      return deferred.promise;
+	    });
+	}
+    });
+    return deferred.promise;
 };
   //check if username is already assigned in our database
   //db.get('local-users', username)
@@ -70,8 +74,7 @@ exports.localReg = function (username, password, email) {
   //if user doesn't exist or password doesn't match tell them it failed
 exports.localAuth = function (userN, password, email) {
     var deferred = Q.defer();
-    mongodb.MongoClient.connect(process.env.MONGODB_URI, function (err, database) {
-	db = database;
+    mongodb.MongoClient.connect(process.env.MONGODB_URI, function (err, db) {
         var coll = db.collection(USERS_COLLECTION);
         coll.findOne({username: userN}, function(result){
             console.log("found");
@@ -80,9 +83,11 @@ exports.localAuth = function (userN, password, email) {
             console.log(bcrypt.compareSync(password, hash));
             if (bcrypt.compareSync(password, hash)) {
                 deferred.resolve(result.body);
+		db.close();
             } else {
                 console.log("PASSWORDS DONT MATCH");
                 deferred.resolve(false);
+		db.close();
             }
         });
     });
