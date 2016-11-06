@@ -37,9 +37,9 @@ exports.localReg = function (username, password, email) {
 	//console.log("found");
 	      coll.insertOne().then(function(r){
 		  console.log("posted");
-		  db.close();
 	      });
-	  //});
+	      db.close();
+	  });
       //}
        /* db.put('local-users', username, user)
         .then(function () {
