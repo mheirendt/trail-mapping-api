@@ -327,14 +327,12 @@ app.get('/signin', function(req, res){
 
 //sends the request through our local signup strategy, and if successful takes user to homepage, otherwise returns then to signin page
 app.post('/local-reg', passport.authenticate('local-signup', {
-  console.log("Redirecting sign-up");
   successRedirect: '/',
   failureRedirect: '/signin'
   }));
 
 //sends the request through our local login/signin strategy, and if successful takes user to homepage, otherwise returns then to signin page
 app.post('/login', passport.authenticate('local-signin', {
-    console.log("Redirecting sign-in");
     successRedirect: '/',
     failureRedirect: '/signin'
 }));
