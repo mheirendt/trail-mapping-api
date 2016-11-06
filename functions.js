@@ -29,10 +29,10 @@ exports.localReg = function (username, password, email) {
       //console.log(result.body);
       //if (result.body.message == 'The requested items could not be found.'){
     //console.log('Username is free for use');
-	  mongoClient.connect(config.mongodb, function(err, db) {
+	  mongoClient.connect(config.mongodb, { uri_decode_auth: true }, function(err, db) {
 	      var coll = db.collection(USERS_COLLECTION);
 	      coll.findOne({username: username}, function(result){
-		  console.log(result);
+		  console.log("The Result is: " + result);
 	      });
 	//console.log("found");
 	      coll.insertOne().then(function(r){
@@ -65,7 +65,7 @@ exports.localReg = function (username, password, email) {
   //if user doesn't exist or password doesn't match tell them it failed
 exports.localAuth = function (userN, password, email) {
     var deferred = Q.defer();
-    MongoClient.connect(config.mongodb, function(err, db) {
+    MongoClient.connect(config.mongodb, { uri_decode_auth: true }, function(err, db) {
         var coll = db.collection(USERS_COLLECTION);
         coll.findOne({username: userN}, function(result){
             console.log("found");
