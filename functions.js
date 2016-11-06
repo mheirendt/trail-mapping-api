@@ -25,24 +25,25 @@ exports.localReg = function (username, password, email) {
 	} else {
 	    var coll = db.collection(USERS_COLLECTION);
 	    console.log("connected"); 
-	    coll.insertOne(user, function(){
-		console.log("posted");
-		console.log(user);
+	    //coll.insertOne(user, function(){
+		//console.log("posted");
+		//console.log(user);
 		//db.close()
-	    });
-	    //coll.findOne({username: username}, function(result){
-		//console.log("And the result is: " + result);
-		  //if (!result) {
-		      //db.close();
-		      //deferred.resolve(false); //username already exists
-		  //} else {
-		      //console.log("about to insert");
-		      //coll.insertOne().then(function(r){
-			  //console.log("posted");
-			  //db.close();
-		      //});
-		  //}
 	    //});
+	    coll.findOne({username: username}, function(result){
+		console.log("And the result is: " + result);
+		  if (!result) {
+		      db.close();
+		      deferred.resolve(false); //username already exists
+		  } else {
+		      coll.insertOne(user, function(){
+			  console.log("posted");
+			  console.log(user);
+			  db.close()
+			  deferred.resolve(user);
+		     });
+		  }
+	    });
 	}
     });
     return deferred.promise;
