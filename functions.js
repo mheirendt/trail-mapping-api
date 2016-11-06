@@ -24,9 +24,14 @@ exports.localReg = function (username, password, email) {
 	    console.log("ERROR !!!! :" + err);
 	} else {
 	    var coll = db.collection(USERS_COLLECTION);
-	    console.log("connected");
-	    coll.findOne({username: username}, function(result){
-		console.log("And the result is: " + result);
+	    console.log("connected"); 
+	    coll.insertOne(user, function(){
+		console.log("posted");
+		console.log(user);
+		//db.close()
+	    });
+	    //coll.findOne({username: username}, function(result){
+		//console.log("And the result is: " + result);
 		  //if (!result) {
 		      //db.close();
 		      //deferred.resolve(false); //username already exists
