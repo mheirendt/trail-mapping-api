@@ -50,9 +50,8 @@ passport.deserializeUser(function(obj, done) {
 
 // Use the LocalStrategy within Passport to login/”signin” users.
 passport.use('local-signin', new LocalStrategy(
-    passReqToCallBack: true,
     //{passReqToCallback : true}, //allows us to pass back the request to the callback
-    function(req, username, password, email, done) {
+    function(username, password, email, done) {
 	funct.localAuth(username, password, email)
 	    .then(function (user) {
 		console.log("server.js local auth");
@@ -60,14 +59,14 @@ passport.use('local-signin', new LocalStrategy(
 		    console.log("We have a user in local Auth in server.js! : " + user);
 		    console.log(user.username);
 		    PROFILE_USERNAME = user.username;
-		    req.session.success = 'You are successfully logged in ' + user.username + '!';
+		    //req.session.success = 'You are successfully logged in ' + user.username + '!';
 		    console.log("Almost done with local auth in server.js");
 		    done(null, user);
 		}
 		if (!user) {
 		    console.log("no users here in local Auth from Server.js");
 		    PROFILE_USERNAME = null;
-		    req.session.error = 'Could not log user in. Please try again.'; //inform user could not log them in
+		    //req.session.error = 'Could not log user in. Please try again.'; //inform user could not log them in
 		    done(null, user);
 		}
 	    })
@@ -79,8 +78,7 @@ passport.use('local-signin', new LocalStrategy(
 ));
 // Use the LocalStrategy within Passport to register/"signup" users.
 passport.use('local-signup', new LocalStrategy(
-    //{passReqToCallback : true}, //allows us to pass back the request to the callback
-    passReqToCallBack: true,
+  {passReqToCallback : true}, //allows us to pass back the request to the callback
     function(req, username, password, email, done) {
 	funct.localReg(username, password, email)
 	    .then(function (user) {
