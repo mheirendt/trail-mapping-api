@@ -51,29 +51,23 @@ passport.deserializeUser(function(obj, done) {
 // Use the LocalStrategy within Passport to login/”signin” users.
 passport.use('local-signin', new LocalStrategy(
     {passReqToCallback : true},
-    function(req, username, password, email, done) {
-	funct.localAuth(username, password, email)
+    function(req, username, password, done) {
+	funct.localAuth(username, password)
 	    .then(function (user) {
 		console.log("server.js local auth");
 		if (user) {
-		    console.log("do these parameters carry over? ");
-		    console.log("what the fuck is done? " + done);
-		    console.log("We have a user in local Auth in server.js! : " + user);
-		    console.log(user.username);
 		    PROFILE_USERNAME = user.username;
-		    //req.session.success = 'You are successfully logged in ' + user.username + '!';
+		    req.session.success = 'You are successfully logged in ' + user.username + '!';
 		    console.log("Almost done with local auth in server.js");
 		    done(null, user);
 		}
 		if (!user) {
-		    console.log("no users here in local Auth from Server.js");
 		    PROFILE_USERNAME = null;
-		    //req.session.error = 'Could not log user in. Please try again.'; //inform user could not log them in
+		    req.session.error = 'Could not log user in. Please try again.'; //inform user could not log them in
 		    done(null, false);
 		}
 	    })
 	    .fail(function (err){
-		console.log("Something went wrong in local auth in server.js");
 		console.log("Error desc: " + err);
 	    });
     }
