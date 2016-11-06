@@ -79,17 +79,20 @@ passport.use('local-signup', new LocalStrategy(
 	    .then(function (user) {
 		console.log("LocalReg in server.js");
 		if (user) {
+		    console.log("there is a user in local reg");
 		    PROFILE_USERNAME = user.username;
 		    req.session.success = 'You are successfully registered and logged in ' + user.username + '!';
 		    done(null, user);
 		}
 		if (!user) {
+		    console.log("there is a not user in local reg");
 		    PROFILE_USERNAME = null;
 		    req.session.error = 'That username is already in use, please try a different one.'; //inform user could not log them in
 		    done(null, user);
 		}
 	    })
 	    .fail(function (err){
+		console.log("there is an issue somewhere in local reg");
 		console.log(err.body);
 	    });
     }
