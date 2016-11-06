@@ -51,8 +51,8 @@ passport.deserializeUser(function(obj, done) {
 // Use the LocalStrategy within Passport to login/”signin” users.
 passport.use('local-signin', new LocalStrategy(
     {passReqToCallback : true},
-    function(req, username, password, done) {
-	funct.localAuth(username, password)
+    function(req, username, password, email, done) {
+	funct.localAuth(username, password, email)
 	    .then(function (user) {
 		console.log("server.js local auth");
 		if (user) {
