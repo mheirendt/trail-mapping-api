@@ -87,6 +87,9 @@ exports.localAuth = function (userN, password, email) {
         coll.findOne({username: userN}, function(error, userObj){
 	    if (userObj) {
 		console.log("found");
+		console.log("userObj : " + userObj);
+		console.log("userObj.body: " + userObj.body);
+		console.log("userObj.body.password: " + userObj.body.password);
 		var hash = userObj.body.password;
 		console.log(hash);
 		console.log(bcrypt.compareSync(password, hash));
