@@ -31,17 +31,21 @@ exports.localReg = function (username, password, email) {
       //if (result.body.message == 'The requested items could not be found.'){
     //console.log('Username is free for use');
 
-	  mongodb.MongoClient.connect(process.env.MONGODB_URI, function (err, db) {
+    mongodb.MongoClient.connect(process.env.MONGODB_URI, function (err, db) {
 	      var coll = db.collection(USERS_COLLECTION);
 	      coll.findOne({username: username}, function(result){
-		  console.log("The Result is: " + result);
-	      });
-	//console.log("found");
-	      coll.insertOne().then(function(r){
-		  console.log("posted");
-		  db.close();
+		  if (!result) {
+		      deferred.resolve(false); //username already exists
+		  } else {
+		      coll.insertOne().then(function(r){
+			  console.log("posted");
+			  db.close();
+		      });
+		  }
 	      });
 	  });
+      return deferred.promise;
+};
       //}
        /* db.put('local-users', username, user)
         .then(function () {
@@ -57,9 +61,6 @@ exports.localReg = function (username, password, email) {
       }
        */
   //});
-
-  return deferred.promise;
-};
 
 //check if user exists
     //if user exists check if passwords match (use bcrypt.compareSync(password, hash); // true where 'hash' is password in DB)
