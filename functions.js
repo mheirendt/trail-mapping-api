@@ -13,11 +13,11 @@ exports.localReg = function (username, password, email) {
     var hash = bcrypt.hashSync(password, 8);
     var date = new Date();
     var user = {
-      "username": username,
-      "password": hash,
-      "createDate" : date,
-      "score" : 0,
-      "email" : email
+	"username": username,
+	"password": hash,
+	"createDate" : date,
+	"score" : 0,
+	"email" : "test@testing"
     }
     mongodb.MongoClient.connect(process.env.MONGODB_URI, function (err, db) {
 	if (err) {
