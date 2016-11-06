@@ -62,7 +62,7 @@ exports.localAuth = function (userN, password, email) {
     var deferred = Q.defer();
     MongoClient.connect(config.mongodb, function(err, db) {
 	var coll = db.collection(USERS_COLLECTION);
-	coll.findOne(username: userN).then(function(result){
+	coll.findOne({username: userN}.then(function(result){
 	    console.log("found");
 	    var hash = result.body.password;
 	    console.log(hash);
@@ -73,9 +73,12 @@ exports.localAuth = function (userN, password, email) {
 		console.log("PASSWORDS DONT MATCH");
 		deferred.resolve(false);
 	    }
-	    db.close();
 	});
-    });
+	db.close();
+	});
+     return deferred.promise;
+}
+			
 /*
   db.get('local-users', username)
   .then(function (result){
@@ -96,8 +99,7 @@ exports.localAuth = function (userN, password, email) {
     } else {
       deferred.reject(new Error(err));
     }
-*/
-  });
 
-  return deferred.promise;
-}
+  })
+*/
+
