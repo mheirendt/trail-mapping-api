@@ -38,8 +38,8 @@ exports.localReg = function (username, password, email) {
 		  } else {
 		      coll.insertOne(user, function(){
 			  console.log("posted");
-			  console.log(user);
-			  db.close()
+			  console.log("function.js user is: " + user);
+			  //db.close()
 			  deferred.resolve(user);
 		     });
 		  }
@@ -84,14 +84,14 @@ exports.localAuth = function (userN, password, email) {
     var deferred = Q.defer();
     mongodb.MongoClient.connect(process.env.MONGODB_URI, function (err, db) {
         var coll = db.collection(USERS_COLLECTION);
-        coll.findOne({username: userN}, function(result){
-	    if (result) {
+        coll.findOne({username: userN}, function(error, userObj){
+	    if (userObj) {
 		console.log("found");
-		var hash = result.body.password;
+		var hash = userObj.body.password;
 		console.log(hash);
 		console.log(bcrypt.compareSync(password, hash));
 		if (bcrypt.compareSync(password, hash)) {
-                    deferred.resolve(result.body);
+                    deferred.resolve(userObj.body);
 		    db.close();
 		} else {
                     console.log("PASSWORDS DONT MATCH");

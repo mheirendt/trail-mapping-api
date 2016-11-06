@@ -93,8 +93,10 @@ passport.use('local-signup', new LocalStrategy(
 		}
 	    })
 	    .fail(function (err){
-		console.log("there is an issue somewhere in local reg");
-		console.log(err.body);
+		if (err) {
+		    console.log("there is an issue somewhere in local reg");
+		    console.log(err.body);
+		}
 	    });
     }
 ));
