@@ -29,7 +29,7 @@ exports.localReg = function (username, password, email) {
       //console.log(result.body);
       //if (result.body.message == 'The requested items could not be found.'){
     //console.log('Username is free for use');
-	  MongoClient.connect(config.mongodb, function(err, db) {
+	  mongoClient.connect(config.mongodb, function(err, db) {
 	      var coll = db.collection(USERS_COLLECTION);
 	      coll.findOne({username: username}, function(result){
 		  console.log(result);
