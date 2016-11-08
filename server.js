@@ -347,7 +347,6 @@ app.post('/login', function(req, res, next) {
 	    res.status(500).send(err);
 	    return next(err);
 	}
-	res.status(200).send("Success");
 	return res.redirect('/');
     });
   })(req, res, next);
