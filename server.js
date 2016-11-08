@@ -334,10 +334,19 @@ app.post('/local-reg', passport.authenticate('local-signup', {
 //sends the request through our local login/signin strategy, and if successful takes user to homepage, otherwise returns then to signin page
 app.post('/login', function(req, res, next) {
   passport.authenticate('local-signin', function(err, user, info) {
-    if (err) { return next(err); }
-    if (!user) { return res.redirect('/signin'); }
+      if (err) {
+	  res.json([null, err]);
+	  return next(err);
+      }
+      if (!user) {
+	  return res.redirect('/signin');
+      }
     req.logIn(user, function(err) {
-      if (err) { return next(err); }
+	if (err) {
+	    res.json([null, err]);
+	    return next(err);
+	}
+	return res.json([true]);
       return res.redirect('/');
     });
   })(req, res, next);
