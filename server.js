@@ -341,7 +341,7 @@ app.post('/login',
 	     //{
 	     //successRedirect: '/',
 	     //failureRedirect: '/signin'
-}));
+	 });
 
 //logs user out of site, deleting them from the session, and returns to homepage
 app.get('/logout', function(req, res){
