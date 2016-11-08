@@ -331,17 +331,16 @@ app.post('/local-reg', passport.authenticate('local-signup', {
   }));
 
 //sends the request through our local login/signin strategy, and if successful takes user to homepage, otherwise returns then to signin page
-app.post('/login', passport.authenticate('local-signin', function(req, res) {
-    // If this function gets called, authentication was successful.
-    // `req.user` contains the authenticated user.
-    if (req.user){
-	res.redirect('/');
-    } else {
-	res.redirect('/signin');
-	res.status(500).send('User not found');
-    }
-}));
-
+app.post('/login', function(req, res, next) {
+    passport.authenticate('local-signin', function(err, user, info) {
+	if (err) { return next(err); }
+	if (!user) {
+	    return res.redirect('/signin');
+	} else {
+	    res.redirect('/');
+	}
+    });
+});
 	 //{
     //successRedirect: '/',
     //failureRedirect: '/signin'
