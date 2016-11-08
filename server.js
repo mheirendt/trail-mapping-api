@@ -337,7 +337,7 @@ app.post('/login',
 	     // If this function gets called, authentication was successful.
 	     // `req.user` contains the authenticated user.
 	     res.redirect('/');
-	     res.status(500).send('Sign in failed');
+	     //res.status(500).send('Sign in failed');
 	     //{
 	     //successRedirect: '/',
 	     //failureRedirect: '/signin'
