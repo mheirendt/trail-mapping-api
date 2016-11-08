@@ -331,6 +331,23 @@ app.post('/local-reg', passport.authenticate('local-signup', {
   }));
 
 //sends the request through our local login/signin strategy, and if successful takes user to homepage, otherwise returns then to signin page
+app.post('/login', function(req, res, next) {
+  passport.authenticate('local', function(err, user, info) {
+      if (err) {
+	  res.json([null, err]);
+	  return next(err);
+      }
+      if (!user) { return res.redirect('/signin'); } else {
+	  res.json([null, "Login failed"]);
+	  res.redirect('/');
+      }
+    //req.logIn(user, function(err) {
+      //if (err) { return next(err); }
+      //return res.redirect('/' + user.username);
+    });
+  })(req, res, next);
+});
+/*
 app.post('/login', passport.authenticate('local-signin', function(req, res, next) {
     passport.authenticate('local', function(err, user, info) {
 	if (err) {
@@ -342,9 +359,6 @@ app.post('/login', passport.authenticate('local-signin', function(req, res, next
 	} else {
 	    res.redirect('/');
 	}
-	//req.logIn(user, function(err) {
-	    //if (err) { return next(err); }
-	    //return res.redirect('/');
 	});
     })(req, res, next);
 });
@@ -352,6 +366,7 @@ app.post('/login', passport.authenticate('local-signin', function(req, res, next
     //successRedirect: '/',
     //failureRedirect: '/signin'
 //}));
+*/
 
 //logs user out of site, deleting them from the session, and returns to homepage
 app.get('/logout', function(req, res){
