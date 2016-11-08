@@ -334,13 +334,13 @@ app.post('/local-reg', passport.authenticate('local-signup', {
 app.post('/login', function(req, res, next) {
   passport.authenticate('local', function(err, user, info) {
       if (err) {
-	  res.json([null, err]);
+	  //res.json([null, err]);
 	  return next(err);
       }
       if (!user) {
 	  return res.redirect('/signin');
       } else {
-	  res.json([null, "Login failed"]);
+	  //res.json([null, "Login failed"]);
 	  res.redirect('/');
       }
     //req.logIn(user, function(err) {
