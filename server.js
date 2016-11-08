@@ -69,6 +69,7 @@ passport.use('local-signin', new LocalStrategy(
 	    })
 	    .fail(function (err){
 		console.log("Error desc: " + err);
+		done(null, false);
 	    });
     }
 ));
@@ -331,39 +332,10 @@ app.post('/local-reg', passport.authenticate('local-signup', {
   }));
 
 //sends the request through our local login/signin strategy, and if successful takes user to homepage, otherwise returns then to signin page
-app.post('/login'), function(req, res, next) {
-    passport.authenticate('local'), function(err, user, info) {
-	if (err) {
-	    res.json([null, err]);
-	    return next(err);
-	}
-	if (!user) {
-	    res.redirect('/signin');
-	} else {
-	    res.redirect('/');
-	}
-    }
-};
-/*
-app.post('/login', passport.authenticate('local-signin', function(req, res, next) {
-    passport.authenticate('local', function(err, user, info) {
-	if (err) {
-	    res.json([null, err]);
-	    return next(err);
-	}
-	if (!user) {
-	    return res.redirect('/signin');
-	} else {
-	    res.redirect('/');
-	}
-	});
-    })(req, res, next);
-});
-    //{
-    //successRedirect: '/',
-    //failureRedirect: '/signin'
-//}));
-*/
+app.post('/login', passport.authenticate('local-signin',  {
+    successRedirect: '/',
+    failureRedirect: '/signin'
+}));
 
 //logs user out of site, deleting them from the session, and returns to homepage
 app.get('/logout', function(req, res){
