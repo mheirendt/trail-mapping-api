@@ -331,14 +331,16 @@ app.post('/local-reg', passport.authenticate('local-signup', {
   }));
 
 //sends the request through our local login/signin strategy, and if successful takes user to homepage, otherwise returns then to signin page
-app.post('/login', passport.authenticate('local-signin', function(req, res) {
-    // If this function gets called, authentication was successful.
-    // `req.user` contains the authenticated user.
-    res.redirect('/');
-    res.status(500).send('Sign in failed');
-    //{
-    //successRedirect: '/',
-    //failureRedirect: '/signin'
+app.post('/login',
+	 passport.authenticate('local-signin'),
+	 function(req, res) {
+	     // If this function gets called, authentication was successful.
+	     // `req.user` contains the authenticated user.
+	     res.redirect('/');
+	     res.status(500).send('Sign in failed');
+	     //{
+	     //successRedirect: '/',
+	     //failureRedirect: '/signin'
 }));
 
 //logs user out of site, deleting them from the session, and returns to homepage
