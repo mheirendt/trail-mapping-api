@@ -337,15 +337,16 @@ app.post('/login', function(req, res, next) {
 	  res.json([null, err]);
 	  return next(err);
       }
-      if (!user) { return res.redirect('/signin'); } else {
+      if (!user) {
+	  return res.redirect('/signin');
+      } else {
 	  res.json([null, "Login failed"]);
 	  res.redirect('/');
       }
     //req.logIn(user, function(err) {
       //if (err) { return next(err); }
       //return res.redirect('/' + user.username);
-    });
-  })(req, res, next);
+  });(req, res, next);
 });
 /*
 app.post('/login', passport.authenticate('local-signin', function(req, res, next) {
