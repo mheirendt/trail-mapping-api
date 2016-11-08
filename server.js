@@ -340,7 +340,7 @@ app.post('/login', passport.authenticate('local-signin', function(req, res) {
 	res.redirect('/signin');
 	res.status(500).send('User not found');
     }
-});
+}));
 
 	 //{
     //successRedirect: '/',
