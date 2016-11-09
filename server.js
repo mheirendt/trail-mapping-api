@@ -347,7 +347,6 @@ app.post('/login', function(req, res, next) {
 	  //res.status(500).send("Cound not find user");
 	  console.log("The server has been hit and the user cannot be found");
 	  res.statusCode = 401;
-	  Res.Redirect('/signin');
 	  return;
 	  //return Res.Redirect('/signin');
       }
