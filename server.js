@@ -352,7 +352,7 @@ app.post('/login', //function(req, res, next) {
   })(req, res, next);
 });
 */
-	 passport.authenticate('local-signin',  //{
+	 passport.authenticate('local-signin',  {
     successRedirect: '/',
     failureRedirect: '/signin'
 }));
