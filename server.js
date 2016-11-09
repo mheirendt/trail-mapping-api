@@ -335,16 +335,16 @@ app.post('/local-reg', passport.authenticate('local-signup', {
 app.post('/login', function(req, res, next) {
   passport.authenticate('local-signin', function(err, user, info) {
       if (err) {
-	  res.status(500).send(error);
+	  //res.status(500).send(error);
 	  return next(err);
       }
       if (!user) {
-	  res.status(500).send("Cound not find user");
+	  //res.status(500).send("Cound not find user");
 	  return res.redirect('/signin');
       }
     req.logIn(user, function(err) {
 	if (err) {
-	    res.status(500).send(err);
+	    //res.status(500).send(err);
 	    return next(err);
 	}
 	return res.redirect('/');
