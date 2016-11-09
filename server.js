@@ -350,7 +350,7 @@ app.post('/login', function(req, res, next) {
 	    res.statusCode = 403;
 	    return next(err);
 	}
-	return res.redirect('/');
+	//return res.redirect('/');
     });
   })(req, res, next);
 });
