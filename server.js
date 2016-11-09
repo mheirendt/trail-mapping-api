@@ -70,7 +70,7 @@ passport.use('local-signin', new LocalStrategy(
 		}
 	    })
 	    .fail(function (err){
-		console.log("Error desc: " + err);
+		console.log("local auth here...Error desc: " + err);
 		done(null, false);
 	    });
     }
@@ -347,7 +347,7 @@ app.post('/login', function(req, res, next) {
 	  //res.status(500).send("Cound not find user");
 	  console.log("The server has been hit and the user cannot be found");
 	  res.statusCode = 401;
-	  //return res.redirect('/signin');
+	  return res.redirect('/signin');
       }
     req.logIn(user, function(err) {
 	if (err) {
@@ -356,6 +356,7 @@ app.post('/login', function(req, res, next) {
 	    res.statusCode = 403;
 	    return next(err);
 	}
+	res.statusCode = 201;
 	console.log("The user has been successfully logged in!");
 	return res.redirect('/');
     });
