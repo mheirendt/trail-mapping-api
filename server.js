@@ -332,7 +332,7 @@ app.post('/local-reg', passport.authenticate('local-signup', {
   }));
 
 //sends the request through our local login/signin strategy, and if successful takes user to homepage, otherwise returns then to signin page
-app.post('/login', //function(req, res, next) {
+app.post('/login', function(req, res, next) {
   passport.authenticate('local-signin', function(err, user, info) {
       if (err) {
 	  //res.status(500).send(error);
