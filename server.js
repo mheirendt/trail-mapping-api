@@ -347,6 +347,7 @@ app.post('/login', function(req, res, next) {
     req.logIn(user, function(err) {
 	if (err) {
 	    //res.status(500).send(err);
+	    console.log("General Error: " + error);
 	    res.statusCode = 403;
 	    return next(err);
 	}
