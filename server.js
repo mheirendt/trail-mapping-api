@@ -336,11 +336,13 @@ app.post('/login', function(req, res, next) {
   passport.authenticate('local-signin', function(err, user, info) {
       if (err) {
 	  //res.status(500).send(error);
+	  console.log("There is some random error");
 	  res.statusCode = 402;
 	  return next(err);
       }
       if (!user) {
 	  //res.status(500).send("Cound not find user");
+	  console.log("The server has been hit and the user cannot be found");
 	  res.statusCode = 401;
 	  //return res.redirect('/signin');
       }
@@ -351,6 +353,7 @@ app.post('/login', function(req, res, next) {
 	    res.statusCode = 403;
 	    return next(err);
 	}
+	console.log("The user has been successfully logged in!");
 	return res.redirect('/');
     });
   })(req, res, next);
