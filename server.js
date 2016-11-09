@@ -56,12 +56,14 @@ passport.use('local-signin', new LocalStrategy(
 	    .then(function (user) {
 		console.log("server.js local auth");
 		if (user) {
+		    console.log("local auth here... user info: " + username + ",  " + password);
 		    PROFILE_USERNAME = user.username;
 		    req.session.success = 'You are successfully logged in ' + user.username + '!';
 		    console.log("Almost done with local auth in server.js");
 		    done(null, user);
 		}
 		if (!user) {
+		    console.log("local auth here.. cant seem to find the user....);
 		    PROFILE_USERNAME = null;
 		    req.session.error = 'Could not log user in. Please try again.'; //inform user could not log them in
 		    done(null, false);
@@ -333,7 +335,8 @@ app.post('/local-reg', passport.authenticate('local-signup', {
 
 //sends the request through our local login/signin strategy, and if successful takes user to homepage, otherwise returns then to signin page
 app.post('/login', function(req, res, next) {
-  passport.authenticate('local-signin', function(err, user, info) {
+    passport.authenticate('local-signin', function(err, user, info) {
+	console.log("And the user info is: " + user);
       if (err) {
 	  //res.status(500).send(error);
 	  console.log("There is some random error");
@@ -349,7 +352,7 @@ app.post('/login', function(req, res, next) {
     req.logIn(user, function(err) {
 	if (err) {
 	    //res.status(500).send(err);
-	    console.log("General Error: " + error);
+	    console.log("General Error: " + err);
 	    res.statusCode = 403;
 	    return next(err);
 	}
