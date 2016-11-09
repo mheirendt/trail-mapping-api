@@ -342,7 +342,7 @@ app.post('/login', function(req, res, next) {
       if (!user) {
 	  //res.status(500).send("Cound not find user");
 	  res.statusCode = 401;
-	  return res.redirect('/signin');
+	  //return res.redirect('/signin');
       }
     req.logIn(user, function(err) {
 	if (err) {
@@ -350,7 +350,7 @@ app.post('/login', function(req, res, next) {
 	    res.statusCode = 403;
 	    return next(err);
 	}
-	//return res.redirect('/');
+	return res.redirect('/');
     });
   })(req, res, next);
 });
