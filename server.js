@@ -63,7 +63,7 @@ passport.use('local-signin', new LocalStrategy(
 		    done(null, user);
 		}
 		if (!user) {
-		    console.log("local auth here.. cant seem to find the user....);
+		    console.log("local auth here.. cant seem to find the user....");
 		    PROFILE_USERNAME = null;
 		    req.session.error = 'Could not log user in. Please try again.'; //inform user could not log them in
 		    done(null, false);
