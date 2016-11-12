@@ -4,9 +4,11 @@ var passport = require('passport');
 module.exports = {};
 
 module.exports.create = function(req, res) {
-    if (!req.body.username || !req.body.password || !req.body.email)
+    if (!req.body.username || !req.body.password || !req.body.email){
+	console.log("Req body: " + req.body);
         return res.status(400).end('Invalid input');
-
+    }
+    console.log("Req body: " + req.body);
     User.findOne({ username:  req.body.username }, function(err, user) {
         if (user) {
             return res.status(400).end('User already exists');

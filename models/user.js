@@ -4,11 +4,15 @@ var bcrypt   = require('bcrypt-nodejs');
 //var md5 = require('MD5');
 
 var userSchema = mongoose.Schema({
+    id: Number,
     username: String,
     password: String,
     email: String,
     score: Number,
     created: Date
+},
+{
+    collection : 'users'
 });
 
 userSchema.methods.generateHash = function(password) {
