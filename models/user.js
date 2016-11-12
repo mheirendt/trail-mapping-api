@@ -1,7 +1,7 @@
 
 var mongoose = require('mongoose');
 var bcrypt   = require('bcrypt-nodejs');
-var md5 = require('MD5');
+//var md5 = require('MD5');
 
 var userSchema = mongoose.Schema({
     username: String,
