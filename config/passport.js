@@ -12,7 +12,7 @@ module.exports = function(passport) {
             done(err, user);
         });
     });
-
+/*
     //===============FACEBOOK================
 passport.use(new FacebookStrategy({
     clientID: FACEBOOK_APP_ID,
@@ -25,6 +25,7 @@ passport.use(new FacebookStrategy({
       return cb(null, user);
   }
 ));
+*/
 
     //===============LOCAL STRATEGIES================
     passport.use(new LocalStrategy(function(username, password, done) {
