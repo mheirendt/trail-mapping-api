@@ -4,7 +4,7 @@ var passport = require('passport');
 module.exports = {};
 
 module.exports.create = function(req, res) {
-    if (!req.body.name || !req.body.username || !req.body.password || !req.body.email)
+    if (!req.body.username || !req.body.password || !req.body.email)
         return res.status(400).end('Invalid input');
 
     User.findOne({ username:  req.body.username }, function(err, user) {
