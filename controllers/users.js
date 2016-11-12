@@ -5,7 +5,7 @@ module.exports = {};
 
 module.exports.create = function(req, res) {
     if (!req.body.username || !req.body.password || !req.body.email){
-	console.log("Req body is not what we think it is: " + req.body);
+	console.log("Req body is not what we think it is: " + req.body.username + ", " + req.body.password + ", " +  req.body.email);
         return res.status(400).end('Invalid input');
     }
     console.log("Req body: " + req.body.username + ", " + req.body.password);
