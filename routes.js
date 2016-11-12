@@ -35,7 +35,7 @@ module.exports = function(app, passport) {
         res.end('Logged out')
     });
 };
-
+/*
 //==========Facebook Authentication Routes============
 app.get('/auth/facebook',
   passport.authenticate('facebook'));
@@ -46,7 +46,7 @@ app.get('/auth/facebook/callback',
     // Successful authentication, redirect home.
     res.redirect('/');
   });
-
+*/
 
 function isLoggedIn(req, res, next) {
     if (req.isAuthenticated())
