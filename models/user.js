@@ -7,11 +7,11 @@ var userSchema = mongoose.Schema({
     id: {
 	type: string,
 	index: true
-    }
+    },
     username: {
 	type: String,
 	index: true
-    }
+    },
     password: String,
     email: String,
     score: Number,
