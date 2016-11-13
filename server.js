@@ -1,16 +1,17 @@
 require('dotenv').load();
 
 var express = require('express'),
-  app = express(),
-  port = process.env.PORT || 3000,
-  mongoose = require('mongoose'),
-  passport = require('passport'),
-  flash = require('connect-flash'),
-  socketio = require('socket.io'),
-  morgan = require('morgan'),
-  cookieParser = require('cookie-parser'),
-  bodyParser = require('body-parser'),
-  session = require('express-session');
+    app = express(),
+    port = process.env.PORT || 3000,
+    mongoose = require('mongoose'),
+    passport = require('passport'),
+    flash = require('connect-flash'),
+    socketio = require('socket.io'),
+    morgan = require('morgan'),
+    cookieParser = require('cookie-parser'),
+    bodyParser = require('body-parser'),
+    session = require('express-session'),
+    MongoStore = require('connect-mongo')(session);
 
 
 mongoose.connect( process.env.MONGOLAB_URI, function(err) {
@@ -28,6 +29,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use(session({
     secret: 'saltydoob',
+    store: new MongoStore(db),
     cookie: { 
         secure: true
     }
