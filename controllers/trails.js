@@ -26,3 +26,13 @@ module.exports.create = function(req, res) {
  
     });
 };
+
+module.exports.getTrails = function(req, res){
+    Trail.find({}, function(err, trails) {
+	var trailObjects = {};
+	trails.forEach(function(trail) {
+	    trailObjects[trail._id] = trail;
+    });
+    res.send(trailObjects);
+    }
+};

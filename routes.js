@@ -1,4 +1,5 @@
 var users  = require('./controllers/users');
+var trails  = require('./controllers/trails');
 var express = require('express');
 
 module.exports = function(app, passport) {
@@ -7,7 +8,7 @@ module.exports = function(app, passport) {
         res.writeHead(200, {"Content-Type": "application/json"});
         res.end("MobilePassport API v1");
     });
-
+//==========Authentication Routes============
     // Login [x]
     app.post('/login', users.login);
 
@@ -34,6 +35,14 @@ module.exports = function(app, passport) {
         req.logout();
         res.end('Logged out')
     });
+
+    //==========Trail Mapping Routes============
+    // Create a new trail [x]
+    app.post('/trails', isLoggedIn, trails.create);
+
+    // Get all trails [x]
+    app.get('/trails', isLoggedIn, getTrails.); 
+    
 };
 /*
 //==========Facebook Authentication Routes============
