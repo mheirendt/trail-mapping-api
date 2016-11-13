@@ -14,7 +14,7 @@ module.exports.create = function(req, res) {
     newTrail.categories = req.body.categories;
     newTrail.tags = req.body.tags;
     newTrail.geometry = req.body.geometry;
-    newTrail. submittedUser = "";
+    newTrail. submittedUser = req.session.user;
     newTrail.created = new Date();
 
 
@@ -31,6 +31,7 @@ module.exports.create = function(req, res) {
 
 module.exports.getTrails = function(req, res){
     console.log("finding trails....");
+    console.log("trailsLoggedIn: " + req.isAuthenticated());
     Trail.find({}, function(err, trails) {
 	if (!err)
 	    res.send(trails);
