@@ -54,6 +54,14 @@ module.exports.login = function(req, res, next) {
                 
             });
         })(req, res, next);
+    var temp = req.session.passport; // {user: 1}
+    req.session.regenerate(function(err){
+        //req.session.passport is now undefined
+        req.session.passport = temp;
+        req.session.save(function(err){
+            res.send(200);
+        });
+    });
 };
 
 module.exports.read = function(req, res) {
