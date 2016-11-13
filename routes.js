@@ -62,8 +62,8 @@ app.get('/auth/facebook/callback',
 */
 
 function isLoggedIn(req, res, next) {
-    console.log("isLoggedIn: " + req.user + req.users + req.User);
-    if (req.isAuthenticated())
+    console.log("isLoggedIn: " + req.session + req.session.user);
+    if (req.session.user)
         return next();
     res.status(400).end('Not logged in');
 }

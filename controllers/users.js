@@ -48,20 +48,12 @@ module.exports.login = function(req, res, next) {
             req.logIn(user, function(err) {
                 if (err)
                     return next(err);
-                if (!err){
+                else
                     return res.json({ SERVER_RESPONSE: 1, SERVER_MESSAGE: "Logged in!" });
 		}
                 
             });
         })(req, res, next);
-    var temp = req.session.passport; // {user: 1}
-    req.session.regenerate(function(err){
-        //req.session.passport is now undefined
-        req.session.passport = temp;
-        req.session.save(function(err){
-            res.send(200);
-        });
-    });
 };
 
 module.exports.read = function(req, res) {
