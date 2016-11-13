@@ -24,9 +24,8 @@ module.exports.create = function(req, res) {
             newUser.save(function(error, user){
 		console.log(error + ", " + user);
 	    });
-
+	    req.login();
             res.writeHead(200, {"Content-Type": "application/json"});
-	    newUser.login();
             newUser = newUser.toObject();
             delete newUser.password;
             res.end(JSON.stringify(newUser));
@@ -44,7 +43,7 @@ module.exports.login = function(req, res, next) {
                 if (err)
                     return next(err);
                 if (!err){
-		    user.login();
+		    req.login();
                     return res.json({ SERVER_RESPONSE: 1, SERVER_MESSAGE: "Logged in!" });
 		}
                 
