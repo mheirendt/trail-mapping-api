@@ -13,9 +13,10 @@ var express = require('express'),
   session = require('express-session');
 
 
-var db = mongoose.connect( process.env.MONGOLAB_URI, function(err) {
+mongoose.connect( process.env.MONGOLAB_URI, function(err) {
     if (err) throw err;
 });
+var db = mongoose.connection;
 db.once('open', function(){
     console.log('MongoDB connection successful.');
 });
