@@ -38,7 +38,7 @@ module.exports = function(app, passport) {
 
     //==========Trail Mapping Routes============
     // Create a new trail [x]
-    app.post('/trails', isLoggedIn, trails.create);
+    app.post('/trails', trails.create);
 
     // Get all trails [x]
     app.get('/trails', isLoggedIn, trails.getTrails);
