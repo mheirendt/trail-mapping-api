@@ -31,7 +31,11 @@ app.use(session({
     secret: 'saltydoob',
     store: new MongoStore( {mongooseConnection: mongoose.connection} ),
     resave: false,
-    saveUninitialized: false
+    saveUninitialized: false,
+    cookie: {
+	httpOnly: false,
+	maxAge: 36000
+    }
 }));
 app.use(passport.initialize());
 app.use(passport.session());
