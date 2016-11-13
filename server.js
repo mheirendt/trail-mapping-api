@@ -13,8 +13,11 @@ var express = require('express'),
   session = require('express-session');
 
 
-mongoose.connect( process.env.MONGOLAB_URI, function(err) {
+var db = mongoose.connect( process.env.MONGOLAB_URI, function(err) {
     if (err) throw err;
+});
+db.once('open', function(){
+    console.log('MongoDB connection successful.');
 });
 
 app.use(morgan('dev'));
