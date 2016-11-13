@@ -9,6 +9,7 @@ module.exports = function(passport) {
     });
 
     passport.deserializeUser(function(id, done) {
+	cosole.log("Trying to deserialize user");
         User.findById(id, function(err, user) {
 	    console.log("And the deserialized user is: " + user);
             done(err, user);
