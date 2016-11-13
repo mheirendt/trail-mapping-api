@@ -22,9 +22,7 @@ module.exports.create = function(req, res) {
 
      newTrail = newTrail.toObject();
      
-     res.end(JSON.stringify(newTrail));
- 
-    });
+    res.end(JSON.stringify(newTrail));
 };
 
 module.exports.getTrails = function(req, res){
