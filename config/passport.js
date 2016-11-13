@@ -11,7 +11,8 @@ module.exports = function(passport) {
         //User.findById(id, function(err, user) {
 	User.findById({"_id": new ObjectID(id)}, callback);
             done(err, user);
-        });
+        //});
+    
     });
 /*
     //===============FACEBOOK================
