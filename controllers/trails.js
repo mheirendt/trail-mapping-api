@@ -32,7 +32,7 @@ module.exports.getTrails = function(req, res){
 	var trailObjects = {};
 	trails.forEach(function(trail) {
 	    trailObjects[trail._id] = trail;
-    });
+	});
     res.send(trailObjects);
-    }
+    });
 };

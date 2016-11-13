@@ -41,7 +41,7 @@ module.exports = function(app, passport) {
     app.post('/trails', isLoggedIn, trails.create);
 
     // Get all trails [x]
-    app.get('/trails', isLoggedIn, getTrails.); 
+    app.get('/trails', isLoggedIn, getTrails); 
     
 };
 /*
