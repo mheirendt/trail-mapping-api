@@ -4,10 +4,12 @@ var passport = require('passport');
 module.exports = {};
 
 module.exports.create = function(req, res) {
+    console.log("creating trails....");
     if (!req.body.categories || !req.body.tags || !req.body.geometry){
         return res.status(400).end('Invalid input');
     }
 
+    console.log("2nd phase!");
      var newTrail = new Trail();
      newTrail.categories = req.body.categories;
      newTrail.tags = req.body.tags;
