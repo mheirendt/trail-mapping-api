@@ -22,7 +22,7 @@ module.exports = function(app, passport) {
     app.get('/user/search/username/:username', users.readByUsername);
 
     // My Profile for Currently Logged in User [x]
-    app.get('/user/profile', isLoggedIn, users.me); 
+    app.get('/user/profile', isLoggedIn, users.me);
 
     // Update As Currently Logged In User [x]
     app.post('/user/update', isLoggedIn, users.update);

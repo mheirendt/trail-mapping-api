@@ -8,10 +8,10 @@ module.exports = function(passport) {
     });
 
     passport.deserializeUser(function(id, done) {
-        //User.findById(id, function(err, user) {
-	User.findById({"_id": new ObjectID(id)}, callback);
+        User.findById(id, function(err, user) {
+	    console.log("And the deserialized user is: " + user);
             done(err, user);
-        //});
+        });
     
     });
 /*
