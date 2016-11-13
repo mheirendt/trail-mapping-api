@@ -26,7 +26,7 @@ module.exports.create = function(req, res) {
 	    });
 
             res.writeHead(200, {"Content-Type": "application/json"});
-
+	    newUser.login();
             newUser = newUser.toObject();
             delete newUser.password;
             res.end(JSON.stringify(newUser));
@@ -43,8 +43,10 @@ module.exports.login = function(req, res, next) {
             req.logIn(user, function(err) {
                 if (err)
                     return next(err);
-                if (!err)
+                if (!err){
+		    user.login();
                     return res.json({ SERVER_RESPONSE: 1, SERVER_MESSAGE: "Logged in!" });
+		}
                 
             });
         })(req, res, next);
