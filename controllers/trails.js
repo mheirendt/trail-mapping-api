@@ -31,11 +31,12 @@ module.exports.getTrails = function(req, res){
     console.log("finding trails....");
     Trail.find({}, function(err, trails) {
 	console.log("The trails are: " + trails);
-	var trailObjects = {};
-	trails.forEach(function(trail) {
-	    trailObjects[trail._id] = trail;
-	    console.log("trail: " + trail);
-	});
-    res.send(trailObjects);
+	//var trailObjects = {};
+	//trails.forEach(function(trail) {
+	    //trailObjects[trail._id] = trail;
+	    //console.log("trail: " + trail);
+	//});
+	//res.send(trailObjects);
+	 res.send(trails);
     });
 };
