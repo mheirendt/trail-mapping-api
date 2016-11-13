@@ -21,7 +21,9 @@ module.exports.create = function(req, res) {
             newUser.score = 0;
 	    newUser.created = new Date();
 
-            newUser.save();
+            newUser.save(function(error, user){
+		console.log(error + ", " + user);
+	    });
 
             res.writeHead(200, {"Content-Type": "application/json"});
 
