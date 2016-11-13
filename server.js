@@ -26,7 +26,12 @@ app.use(cookieParser());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-app.use(session({ secret: 'your secret key' }));
+app.use(session({
+    secret: 'saltydoob',
+    cookie: { 
+        secure: true
+    }
+}));
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(flash());
