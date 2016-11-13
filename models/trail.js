@@ -4,7 +4,10 @@ var GeoJSON = require('mongoose-geojson-schema');
 var trailSchema = mongoose.Schema({
     tags:  array,
     categories: array,
-    email: String,
+    submittedUser: {
+	type: String,
+	ref: 'User'
+    },
     Geometry: mongoose.Schema.Types.LineString,
     created: Date
 });
