@@ -16,10 +16,10 @@ module.exports = function(app, passport) {
     app.post('/signup', users.create); 
 
     // Search For User by ID [x]
-    app.get('/user/search/id/:id', users.read);
+    app.get('/user/search/id/:id', isLoggedIn, users.read);
 
     // Search For User by Username [x]
-    app.get('/user/search/username/:username', users.readByUsername);
+    app.get('/user/search/username/:username', isLoggedIn, users.readByUsername);
 
     // My Profile for Currently Logged in User [x]
     app.get('/user/profile', isLoggedIn, users.me);
@@ -31,7 +31,7 @@ module.exports = function(app, passport) {
     app.delete('/user/delete', isLoggedIn, users.delete);
 
     // [x]
-    app.post('/logout', function(req, res) {
+    app.post('/logout', isLoggedIn, function(req, res) {
         req.logout();
         res.end('Logged out')
     });
