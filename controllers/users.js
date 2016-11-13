@@ -20,12 +20,18 @@ module.exports.create = function(req, res) {
             newUser.email = req.body.email;
             newUser.score = 0;
 	    newUser.created = new Date();
-
+	    
             newUser.save(function(error, user){
 		console.log(error + ", " + user);
 	    });
-	    req.login();
-            res.writeHead(200, {"Content-Type": "application/json"});
+
+	    req.login(user, function(err) {
+                if (err) {
+                    res.status(500).end('Failed to login');
+                }
+            });
+
+            res.writeHead(200, {"Content-Type": "application/json"});;
             newUser = newUser.toObject();
             delete newUser.password;
             res.end(JSON.stringify(newUser));
@@ -43,7 +49,6 @@ module.exports.login = function(req, res, next) {
                 if (err)
                     return next(err);
                 if (!err){
-		    req.login();
                     return res.json({ SERVER_RESPONSE: 1, SERVER_MESSAGE: "Logged in!" });
 		}
                 
