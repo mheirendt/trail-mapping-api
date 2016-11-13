@@ -2,8 +2,8 @@ var mongoose = require('mongoose');
 var GeoJSON = require('mongoose-geojson-schema');
 
 var trailSchema = mongoose.Schema({
-    tags:  array,
-    categories: array,
+    tags:  Array,
+    categories: Array,
     submittedUser: {
 	type: String,
 	ref: 'User'
