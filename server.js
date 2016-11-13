@@ -29,7 +29,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use(session({
     secret: 'saltydoob',
-    store: new MongoStore(mongooseConnection: mongoose.connection),
+    store: new MongoStore( {mongooseConnection: mongoose.connection} ),
     cookie: { 
         secure: true
     }
