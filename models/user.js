@@ -4,10 +4,10 @@ var bcrypt   = require('bcrypt-nodejs');
 //var md5 = require('MD5');
 
 var userSchema = mongoose.Schema({
-    id: {
-	type: String,
-	index: true
-    },
+    //id: {
+	//type: String,
+	//index: true
+    //},
     username: {
 	type: String,
 	index: true
