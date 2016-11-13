@@ -50,7 +50,6 @@ module.exports.login = function(req, res, next) {
                     return next(err);
                 else
                     return res.json({ SERVER_RESPONSE: 1, SERVER_MESSAGE: "Logged in!" });
-		}
                 
             });
         })(req, res, next);
