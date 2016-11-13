@@ -26,8 +26,8 @@
       "connect-mongo": "*",
       "morgan": "~1.0.0",
       "multer": "^1.1.0",
-      "passport": "~0.1.17",
-      "passport-local": "~0.1.6",
+      "passport": "*",
+      "passport-local": "*",
       "socket.io": "^1.4.4"
   }
 }
