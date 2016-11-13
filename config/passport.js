@@ -3,17 +3,14 @@ var User = require('../models/user');
 
 module.exports = function(passport) {
 
-    passport.serializeUser(function(user, done) {
-	console.log("serializing user: " + user);
+    passport.serializeUser(function(user, done)
         done(null, user.id);
-    });
+    );
 
     passport.deserializeUser(function(id, done) {
-	console.log("Trying to deserialize user");
-        User.findById(id, function(err, user) {
-	    console.log("And the deserialized user is: " + user);
+        User.findById(id, function(err, user)
             done(err, user);
-        });
+        );
     
     });
 /*
