@@ -34,7 +34,7 @@ app.use(session({
     saveUninitialized: false,
     cookie: {
 	httpOnly: false,
-	expires: new Date(253402300000000
+	expires: new Date(253402300000000);
     }
 }));
 app.use(passport.initialize());
