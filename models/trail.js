@@ -8,7 +8,7 @@ var trailSchema = mongoose.Schema({
 	type: String,
 	ref: 'User'
     },
-    Geometry: mongoose.Schema.Types.LineString,
+    geometry: mongoose.Schema.Types.LineString,
     created: Date
 });
 
