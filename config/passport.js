@@ -9,7 +9,7 @@ module.exports = function(passport) {
     });
 
     passport.deserializeUser(function(id, done) {
-	cosole.log("Trying to deserialize user");
+	console.log("Trying to deserialize user");
         User.findById(id, function(err, user) {
 	    console.log("And the deserialized user is: " + user);
             done(err, user);
@@ -33,6 +33,7 @@ passport.use(new FacebookStrategy({
 
     //===============LOCAL STRATEGIES================
     passport.use(new LocalStrategy(function(username, password, done) {
+	
         User.findOne({ username: username }, function (err, user) {
             if (err) { return done(err); }
             if (!user) {
