@@ -48,12 +48,13 @@ module.exports = function(app, passport) {
 //==========Feed Post Routes============
     
 };
+/*
 //======Facebook Authentication Routes=======
 app.get('/auth/facebook', users.facebookAuthenticate);
 
 app.get('/auth/facebook/callback', users.facebookCallback);
 
-
+*/
 
 function isLoggedIn(req, res, next) {
     if (req.isAuthenticated())
