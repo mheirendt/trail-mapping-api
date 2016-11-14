@@ -55,7 +55,7 @@ module.exports = function(passport) {
                 });
             };
 	});
-    });
+    }));
 
     //===============LOCAL STRATEGIES================
     passport.use(new LocalStrategy(function(username, password, done) {
