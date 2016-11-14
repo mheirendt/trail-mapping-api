@@ -53,23 +53,9 @@ module.exports = function(passport) {
                         });
                     }
                 });
-            } else {
-                // user already exists and is logged in, we have to link accounts
-                var user = req.user;
-
-                user.facebook.id    = profile.id;
-                user.facebook.token = token;
-                user.facebook.name  = profile.name.givenName + ' ' + profile.name.familyName;
-                user.facebook.email = profile.emails[0].value;
-
-                user.save(function(err) {
-                    if (err)
-                        throw err;
-                    return done(null, user);
-                });
-            }
-        });
-    }));
+            };
+	});
+    });
 
     //===============LOCAL STRATEGIES================
     passport.use(new LocalStrategy(function(username, password, done) {
