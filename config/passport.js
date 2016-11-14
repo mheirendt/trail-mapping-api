@@ -19,6 +19,7 @@ module.exports = function(passport) {
     });
 
     //===============FACEBOOK================
+    /*
     passport.use(new FacebookStrategy({
 
         // pull in our app id and secret from our auth.js file
@@ -29,6 +30,7 @@ module.exports = function(passport) {
         passReqToCallback : true 
 
     },
+				      
     function(req, token, refreshToken, profile, done) {
         process.nextTick(function() {
             if (!req.user) {
@@ -53,9 +55,24 @@ module.exports = function(passport) {
                         });
                     }
                 });
-            };
+            }  else {
+                // user already exists and is logged in, we have to link accounts
+                var user = req.user;
+
+                user.facebook.id    = profile.id;
+                user.facebook.token = token;
+                user.facebook.name  = profile.name.givenName + ' ' + profile.name.familyName;
+                user.facebook.email = profile.emails[0].value;
+
+                user.save(function(err) {
+                    if (err)
+                        throw err;
+                    return done(null, user);
+                });
+            }
 	});
     }));
+*/
 
     //===============LOCAL STRATEGIES================
     passport.use(new LocalStrategy(function(username, password, done) {
@@ -70,5 +87,4 @@ module.exports = function(passport) {
             }
             return done(null, user);
         });
-    }
-));
+    }));
