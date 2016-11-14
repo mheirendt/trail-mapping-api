@@ -4,10 +4,6 @@ var bcrypt   = require('bcrypt-nodejs');
 //var md5 = require('MD5');
 
 var userSchema = mongoose.Schema({
-    //id: {
-	//type: String,
-	//index: true
-    //},
     username: {
 	type: String,
 	index: true
@@ -27,3 +23,24 @@ userSchema.methods.validPassword = function(password) {
 };
 
 module.exports = mongoose.model('User', userSchema);
+
+/*
+    local: {
+	username: {
+	    type: String,
+	    index: true
+	},
+	password: String,
+	email: String,
+	score: Number,
+	created: Date
+    },
+    facebook: {
+	id: String,
+	token: String,
+	name: String,
+	email: String,
+	score: Number,
+	created: Date
+    }
+*/

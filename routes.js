@@ -36,30 +36,24 @@ module.exports = function(app, passport) {
         res.end('Logged out')
     });
 
-    //==========Trail Mapping Routes============
+//==========Trail Mapping Routes============
     // Create a new trail [x]
     app.post('/trails', isLoggedIn, trails.create);
 
     // Get all trails [x]
     app.get('/trails', isLoggedIn, trails.getTrails);
 
-    //==========Trail Event Routes============
+//==========Trail Event Routes============
 
-    //==========Feed Post Routes============
+//==========Feed Post Routes============
     
 };
-/*
-//==========Facebook Authentication Routes============
-app.get('/auth/facebook',
-  passport.authenticate('facebook'));
+//======Facebook Authentication Routes=======
+app.get('/auth/facebook', users.facebookAuthenticate);
 
-app.get('/auth/facebook/callback',
-  passport.authenticate('facebook', { failureRedirect: '/signin' }),
-  function(req, res) {
-    // Successful authentication, redirect home.
-    res.redirect('/');
-  });
-*/
+app.get('/auth/facebook/callback', users.facebookCallback);
+
+
 
 function isLoggedIn(req, res, next) {
     if (req.isAuthenticated())

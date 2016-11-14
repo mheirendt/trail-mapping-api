@@ -126,5 +126,15 @@ module.exports.update = function(req, res) {
 module.exports.delete = function(req, res) {
     User.remove({_id: req.user.id}, function(err) {
         res.end('Deleted')
-});
+    });
+};
+
+module.exports.facebookCallback = function(req, res) {
+    passport.authenticate('facebook', { failureRedirect: '/signin' }),
+    function(req, res) {
+	res.status(200).end('success');
+    }
+};
+module.exports.facebookAuthenticate = function(req, res) {
+    passport.authenticate('facebook');
 };
