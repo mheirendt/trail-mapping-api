@@ -28,12 +28,17 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use(session({
     secret: 'saltydoob',
-    store: new MongoStore( {mongooseConnection: mongoose.connection} ),
+    store: new MongoStore( {
+	mongooseConnection: mongoose.connection,
+	touchAfter: 24 * 3600
+    } ),
     resave: false,
     saveUninitialized: false,
     cookie: {
 	httpOnly: false,
-	expires: new Date(253402300000000)
+	resave: false,
+	expires: new Date(253402300000000),
+	maxAge: new Date(253402300000000)
     }
 }));
 app.use(passport.initialize());
