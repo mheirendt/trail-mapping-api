@@ -52,7 +52,7 @@ module.exports = function(app, passport) {
 
 //==========Feed Post Routes============
     
-};
+//};
 /*
 //======Facebook Authentication Routes=======
 app.get('/auth/facebook', users.facebookAuthenticate);
