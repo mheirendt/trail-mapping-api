@@ -32,8 +32,13 @@ module.exports = function(app, passport) {
 
     // [x]
     app.post('/logout', isLoggedIn, function(req, res) {
-        req.logout();
-        res.end('Logged out')
+	req.session.destroy(function(err) {
+	    if (err)
+		console.log(err);
+	    else {
+		req.logout();
+		res.end('Logged out');
+	    }
     });
 
 //==========Trail Mapping Routes============

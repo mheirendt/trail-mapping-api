@@ -8,7 +8,6 @@ var express = require('express'),
     flash = require('connect-flash'),
     socketio = require('socket.io'),
     morgan = require('morgan'),
-    cookieParser = require('cookie-parser'),
     bodyParser = require('body-parser'),
     session = require('express-session'),
     MongoStore = require('connect-mongo')(session);
@@ -23,7 +22,7 @@ db.once('open', function(){
 });
 
 app.use(morgan('dev'));
-app.use(cookieParser());
+//app.use(cookieParser());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
