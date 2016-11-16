@@ -9,7 +9,6 @@ var express = require('express'),
     socketio = require('socket.io'),
     morgan = require('morgan'),
     bodyParser = require('body-parser'),
-    redis = require('redis'),
     session = require('express-session'),
     redisStore = require('connect-redis')(session);
 
@@ -27,14 +26,19 @@ app.use(morgan('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-var client = redis.createClient('11299', 'redis://redistogo:a75b00727694689e037e5a0bb0672956@viperfish.redistogo.com');
-client.on('connect', function() {
-    console.log('connected');
-});
+if (process.env.REDISTOGO_URL) {
+    var rtg   = require("url").parse(process.env.REDISTOGO_URL);
+    var redis = require("redis").createClient(rtg.port, rtg.hostname);
+} else {
+    var redis = require("redis").createClient();
+}
+
+
+redis.auth(rtg.auth.split(":")[1]);
 
 app.use(session({
     secret: 'saltydoob',
-    store: new redisStore( {db: process.env.REDIS_URL}),
+    store: new redisStore( redis ),
     resave: false,
     saveUninitialized: false,
     cookie: {
