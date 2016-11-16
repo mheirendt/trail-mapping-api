@@ -32,13 +32,12 @@ module.exports = function(app, passport) {
 
     // [x]
     app.post('/logout', isLoggedIn, function(req, res) {
-	req.session.destroy(function(err) {
-	    if (err)
+	req.session.destroy(function(err){
+            if(err){
 		console.log(err);
-	    else {
-		req.logout();
-		res.end('Logged out');
-	    }
+            } else {
+		res.end('logged out');
+            }
 	});
     });
 
@@ -63,7 +62,8 @@ app.get('/auth/facebook/callback', users.facebookCallback);
 */
 
 function isLoggedIn(req, res, next) {
-    if (req.isAuthenticated())
+    //if (req.isAuthenticated())
+    if(req.session.key)
         return next();
     res.status(400).end('Not logged in');
 }
