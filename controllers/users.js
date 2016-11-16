@@ -31,9 +31,6 @@ module.exports.create = function(req, res) {
             });*/
 
             //res.writeHead(200, {"Content-Type": "application/json"});;
-
-	    req.session.user = req.session.user || { id: uuid.v1() };
-	    req.user = req.session.user;
 	    
             newUser = newUser.toObject();
             delete newUser.password;
