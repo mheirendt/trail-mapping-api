@@ -9,7 +9,7 @@ var express = require('express'),
     socketio = require('socket.io'),
     morgan = require('morgan'),
     bodyParser = require('body-parser'),
-    //redis = require('redis'),
+    redis = require('redis'),
     session = require('express-session'),
     redisStore = require('connect-redis')(session);
 
