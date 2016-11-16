@@ -9,6 +9,7 @@ var express = require('express'),
     socketio = require('socket.io'),
     morgan = require('morgan'),
     bodyParser = require('body-parser'),
+    //redis = require('redis'),
     session = require('express-session'),
     redisStore = require('connect-redis')(session);
 
@@ -25,6 +26,11 @@ app.use(morgan('dev'));
 //app.use(cookieParser());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+
+var client = redis.createClient('11299', 'redis://redistogo:a75b00727694689e037e5a0bb0672956@viperfish.redistogo.com');
+client.on('connect', function() {
+    console.log('connected');
+});
 
 app.use(session({
     secret: 'saltydoob',

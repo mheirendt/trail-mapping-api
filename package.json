@@ -21,6 +21,7 @@
       "md5": "^2.0.0",
       "method-override": "~1.0.0",
       "mongoose": "*",
+      "redis": "*",
       "connect-redis": "*",
       "morgan": "~1.0.0",
       "multer": "^1.1.0",
