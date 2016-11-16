@@ -12,7 +12,7 @@ var express = require('express'),
     session = require('express-session'),
     MongoStore = require('connect-mongo')(session);
 
-
+mongoose.Promise = global.Promise;
 mongoose.connect( process.env.MONGOLAB_URI, function(err) {
     if (err) throw err;
 });
