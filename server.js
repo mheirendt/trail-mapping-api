@@ -44,6 +44,7 @@ app.use(session({
     cookie: {
 	httpOnly: false,
 	resave: false,
+	path    : '/',
 	expires: new Date(253402300000000),
 	maxAge: new Date(253402300000000)
     }
