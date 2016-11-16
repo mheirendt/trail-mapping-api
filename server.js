@@ -10,7 +10,7 @@ var express = require('express'),
     morgan = require('morgan'),
     bodyParser = require('body-parser'),
     session = require('express-session'),
-    MongoStore = require('connect-mongo')(session);
+    redisStore = require('connect-redis')(session);
 
 mongoose.Promise = global.Promise;
 mongoose.connect( process.env.MONGOLAB_URI, function(err) {
@@ -28,7 +28,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use(session({
     secret: 'saltydoob',
-    store: new MongoStore( {mongooseConnection: mongoose.connection} ),
+    store: new redisStore( {process.env.REDIS_URL} ),
     resave: false,
     saveUninitialized: false,
     cookie: {
