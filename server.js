@@ -28,7 +28,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use(session({
     secret: 'saltydoob',
-    store: new redisStore( {redis://h:p27m91r19rkiin16bnrf28tt4b9@ec2-174-129-196-231.compute-1.amazonaws.com:10749} ),
+    store: new redisStore(process.env.REDIS_URL),
     resave: false,
     saveUninitialized: false,
     cookie: {
