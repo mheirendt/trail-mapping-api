@@ -4,9 +4,9 @@ var passport = require('passport');
 module.exports = {};
 
 module.exports.create = function(req, res) {
-    if (!req.body.username || !req.body.password || !req.body.email)
+    if (!req.body.username || !req.body.password || !req.body.email){
         return res.status(400).end('Invalid input');
-    
+    }
     console.log("Req body: " + req.body.username + ", " + req.body.password);
     User.findOne({ username:  req.body.username }, function(err, user) {
         if (user) {
@@ -126,15 +126,5 @@ module.exports.update = function(req, res) {
 module.exports.delete = function(req, res) {
     User.remove({_id: req.user.id}, function(err) {
         res.end('Deleted')
-    });
-};
-
-module.exports.facebookCallback = function(req, res) {
-    passport.authenticate('facebook', { failureRedirect: '/signin' }),
-    function(req, res) {
-	res.status(200).end('success');
-    }
-};
-module.exports.facebookAuthenticate = function(req, res) {
-    passport.authenticate('facebook');
+});
 };
