@@ -24,11 +24,11 @@ module.exports.create = function(req, res) {
 		console.log(error + ", " + user);
 	    });
 
-	    req.login(user, function(err) {
+	    /*req.login(user, function(err) {
                 if (err) {
                     res.status(500).end('Failed to login');
                 }
-            });
+            });*/
 
             //res.writeHead(200, {"Content-Type": "application/json"});;
             newUser = newUser.toObject();
