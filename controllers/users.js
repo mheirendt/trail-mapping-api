@@ -29,8 +29,8 @@ module.exports.create = function(req, res) {
                     res.status(500).end('Failed to login');
                 }
             });
-	    res.status(200);
-            //res.writeHead(200, {"Content-Type": "application/json"});;
+
+            res.writeHead(200, {"Content-Type": "application/json"});;
             newUser = newUser.toObject();
             delete newUser.password;
             res.end(JSON.stringify(newUser));
