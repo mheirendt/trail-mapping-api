@@ -38,7 +38,7 @@ redis.auth(rtg.auth.split(":")[1]);
 
 app.use(session({
     secret: 'saltydoob',
-    store: new redisStore( redis ),
+    store: new redisStore( {db: redis} ),
     resave: false,
     saveUninitialized: false,
     cookie: {
