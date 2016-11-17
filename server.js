@@ -38,10 +38,10 @@ console.log("info: " + redisUrl.hostname + ", " + redisUrl.port + ", " + redisAu
 //redis.keys("sess:*", function(error, keys){
     //console.log("Number of active sessions: ", keys.length);
 //});
-
+var cli = redisClient.initClient;
 app.use(session({
     secret: 'saltydoob',
-    store: new redisStore( {client: redisClient.initClient} ),
+    store: new redisStore( {client: cli} ),
     resave: false,
     saveUninitialized: false,
     cookie: {
