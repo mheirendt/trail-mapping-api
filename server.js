@@ -10,7 +10,7 @@ var express = require('express'),
     morgan = require('morgan'),
     bodyParser = require('body-parser'),
     session = require('express-session'),
-    redis = require('redis').createClient();
+    redis = require('redis').createClient(redisUrl.port[, redisUrl.hostname]);
     redisStore = require('connect-redis')(session),
     url = require('url');
 
