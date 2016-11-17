@@ -50,8 +50,10 @@ module.exports.login = function(req, res, next) {
             req.logIn(user, function(err) {
                 if (err)
                     return next(err);
-                else
+                else{
+		    req.session.key=req.body.username;
                     return res.json({ SERVER_RESPONSE: 1, SERVER_MESSAGE: "Logged in!" });
+		}
                 
             });
         })(req, res, next);
