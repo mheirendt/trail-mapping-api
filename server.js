@@ -10,7 +10,6 @@ var express = require('express'),
     morgan = require('morgan'),
     bodyParser = require('body-parser'),
     session = require('express-session'),
-    redis = require('redis').createClient();
     redisStore = require('connect-redis')(session),
     url = require('url');
 
@@ -36,12 +35,15 @@ var redisUrl = url.parse(process.env.REDISTOGO_URL),
 app.set('redisPass', redisAuth[1]);
 console.log("info: " + redisUrl.hostname + ", " + redisUrl.port + ", " + redisAuth[0] + ", " + redisAuth[1]);
 
+var redis = require('redis').createClient(redisUrl.port, redisUrl.hostname).auth(redisAuth[1]);
+
 app.use(session({
     secret: 'saltydoob',
     store: new redisStore({
         host: redisUrl.hostname,
         port: redisUrl.port,
-	pass:  redisAuth[1]
+	pass:  redisAuth[1],
+	client: redis
     }),
     resave: false,
     saveUninitialized: false,
