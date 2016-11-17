@@ -27,7 +27,7 @@ app.use(morgan('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-var redisUrl = url.parse(process.env.REDISTOGO_URL),
+var redisUrl = url.parse(process.env.REDIS_URL),
     redisAuth = redisUrl.auth.split(':');
     app.set('redisHost', redisUrl.hostname);
     app.set('redisPort', redisUrl.port);
