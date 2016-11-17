@@ -11,7 +11,8 @@ var express = require('express'),
     bodyParser = require('body-parser'),
     session = require('express-session'),
     redisStore = require('connect-redis')(session),
-    url = require('url');
+    url = require('url'),
+    redisClient  = require('./config/redis');
 
 mongoose.Promise = global.Promise;
 mongoose.connect( process.env.MONGOLAB_URI, function(err) {
@@ -29,29 +30,18 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 var redisUrl = url.parse(process.env.REDIS_URL),
     redisAuth = redisUrl.auth.split(':');
-    app.set('redisHost', redisUrl.hostname);
-    app.set('redisPort', redisUrl.port);
-    app.set('redisDb', redisAuth[0]);
-app.set('redisPass', redisAuth[1]);
 console.log("info: " + redisUrl.hostname + ", " + redisUrl.port + ", " + redisAuth[0] + ", " + redisAuth[1]);
 
-var redis = require('redis').createClient(redisUrl.port, redisUrl.hostname);
-redis.auth(redisAuth[1]);
+//var redis = require('redis').createClient(redisUrl.port, redisUrl.hostname);
+//redis.auth(redisAuth[1]);
 
-redis.keys("sess:*", function(error, keys){
-    console.log("Number of active sessions: ", keys.length);
-});
+//redis.keys("sess:*", function(error, keys){
+    //console.log("Number of active sessions: ", keys.length);
+//});
 
 app.use(session({
     secret: 'saltydoob',
-    store: new redisStore({
-	/*
-        host: redisUrl.hostname,
-        port: redisUrl.port,
-	pass:  redisAuth[1],
-*/
-	client: redis
-    }),
+    store: new redisStore( {client: redisClient.initClient} ),
     resave: false,
     saveUninitialized: false,
     cookie: {
