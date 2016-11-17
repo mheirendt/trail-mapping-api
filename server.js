@@ -36,7 +36,7 @@ var redisUrl = url.parse(process.env.REDISTOGO_URL),
 
 app.use(session({
     secret: 'saltydoob',
-    store: new RedisStore({
+    store: new redisStore({
             host: app.set('redisHost'),
             port: app.set('redisPort'),
             db: app.set('redisDb'),

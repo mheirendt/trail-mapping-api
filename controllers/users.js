@@ -32,7 +32,7 @@ module.exports.create = function(req, res) {
 
             //res.writeHead(200, {"Content-Type": "application/json"});
 	    console.log("session: " + req.session);
-	    //req.session.key=req.body.username;
+	    req.session.key=req.body.username;
 	    
             newUser = newUser.toObject();
             delete newUser.password;
