@@ -32,15 +32,16 @@ var redisUrl = url.parse(process.env.REDISTOGO_URL),
     app.set('redisHost', redisUrl.hostname);
     app.set('redisPort', redisUrl.port);
     app.set('redisDb', redisAuth[0]);
-    app.set('redisPass', redisAuth[1]);
+app.set('redisPass', redisAuth[1]);
+console.log("info: " + redisUrl.hostname + ", " + redisUrl.port + ", " + redisAuth[0] + ", " + redisAuth[1]);
 
 app.use(session({
     secret: 'saltydoob',
     store: new redisStore({
-            host: app.set('redisHost'),
-            port: app.set('redisPort'),
-            db: app.set('redisDb'),
-            pass: app.set('redisPass')
+            host: redisUrl.hostname,
+            port: redisUrl.port,
+            db: redisAuth[0],
+            pass: redisAuth[1]
     }),
     resave: false,
     saveUninitialized: false,
