@@ -45,9 +45,11 @@ redis.keys("sess:*", function(error, keys){
 app.use(session({
     secret: 'saltydoob',
     store: new redisStore({
+	/*
         host: redisUrl.hostname,
         port: redisUrl.port,
 	pass:  redisAuth[1],
+*/
 	client: redis
     }),
     resave: false,
