@@ -38,6 +38,10 @@ console.log("info: " + redisUrl.hostname + ", " + redisUrl.port + ", " + redisAu
 var redis = require('redis').createClient(redisUrl.port, redisUrl.hostname);
 redis.auth(redisAuth[1]);
 
+redis.keys("sess:*", function(error, keys){
+    console.log("Number of active sessions: ", keys.length);
+});
+
 app.use(session({
     secret: 'saltydoob',
     store: new redisStore({
