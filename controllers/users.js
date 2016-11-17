@@ -51,6 +51,7 @@ module.exports.login = function(req, res, next) {
                 if (err)
                     return next(err);
                 else{
+		    //set the session key
 		    req.session.key=req.body.username;
                     return res.json({ SERVER_RESPONSE: 1, SERVER_MESSAGE: "Logged in!" });
 		}
