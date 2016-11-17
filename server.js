@@ -40,7 +40,7 @@ app.use(session({
     store: new redisStore({
             host: redisUrl.hostname,
             port: redisUrl.port,
-            db: redisAuth[0],
+            db: 425552,
             pass: redisAuth[1]
     }),
     resave: false,
