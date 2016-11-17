@@ -1,4 +1,5 @@
 var url = require('url'),
+    session = require('express-session'),
     redisStore = require('connect-redis')(session);
 
 module.exports = {};
