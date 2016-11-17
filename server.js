@@ -35,7 +35,8 @@ var redisUrl = url.parse(process.env.REDISTOGO_URL),
 app.set('redisPass', redisAuth[1]);
 console.log("info: " + redisUrl.hostname + ", " + redisUrl.port + ", " + redisAuth[0] + ", " + redisAuth[1]);
 
-var redis = require('redis').createClient(redisUrl.port, redisUrl.hostname).auth(redisAuth[1]);
+var redis = require('redis').createClient(redisUrl.port, redisUrl.hostname);
+redis.auth(redisAuth[1]);
 
 app.use(session({
     secret: 'saltydoob',
