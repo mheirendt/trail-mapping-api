@@ -23,6 +23,7 @@
       "mongoose": "*",
       "redis": "*",
       "connect-redis": "*",
+      "url": "*",
       "morgan": "~1.0.0",
       "multer": "^1.1.0",
       "passport": "*",

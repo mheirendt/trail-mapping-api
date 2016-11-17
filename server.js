@@ -10,7 +10,8 @@ var express = require('express'),
     morgan = require('morgan'),
     bodyParser = require('body-parser'),
     session = require('express-session'),
-    redisStore = require('connect-redis')(session);
+    redisStore = require('connect-redis')(session),
+    url = require('url');
 
 mongoose.Promise = global.Promise;
 mongoose.connect( process.env.MONGOLAB_URI, function(err) {
@@ -26,19 +27,21 @@ app.use(morgan('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-if (process.env.REDISTOGO_URL) {
-    var rtg   = require("url").parse(process.env.REDISTOGO_URL);
-    var redis = require("redis").createClient(rtg.port, rtg.hostname);
-} else {
-    var redis = require("redis").createClient();
-}
-
-
-redis.auth(rtg.auth.split(":")[1]);
+var redisUrl = url.parse(process.env.REDISTOGO_URL),
+    redisAuth = redisUrl.auth.split(':');
+    app.set('redisHost', redisUrl.hostname);
+    app.set('redisPort', redisUrl.port);
+    app.set('redisDb', redisAuth[0]);
+    app.set('redisPass', redisAuth[1]);
 
 app.use(session({
     secret: 'saltydoob',
-    store: new redisStore( {db: redis} ),
+    store: new RedisStore({
+            host: app.set('redisHost'),
+            port: app.set('redisPort'),
+            db: app.set('redisDb'),
+            pass: app.set('redisPass')
+    }),
     resave: false,
     saveUninitialized: false,
     cookie: {
