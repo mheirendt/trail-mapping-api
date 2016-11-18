@@ -10,6 +10,7 @@ module.exports = function(passport) {
     });
 
     passport.deserializeUser(function(id, done) {
+	console.log("Deserializing user");
         User.findById(id, function(err, user){
             done(err, user);
         });
@@ -76,16 +77,20 @@ passport.use(new FacebookStrategy({
                     } else {
                         // if there is no user, create them
                         var newUser = new User();
+			newUser.facebook.username = req.body.username;
                         newUser.facebook.id = profile.id;
                         newUser.facebook.token = token;
                         newUser.facebook.name = profile.name.givenName + ' ' + profile.name.familyName;
                         newUser.facebook.email = profile.emails[0].value;
+			newUser.facebook.score = 0;
+			newUser.facebook.created = new Date();
 
                         newUser.save(function(err) {
                             if (err)
                                 throw err;
                             return done(null, newUser);
                         });
+			req.session.key=req.body.username;
                     }
                 });
 
