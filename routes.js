@@ -1,6 +1,7 @@
 var users  = require('./controllers/users');
 var trails  = require('./controllers/trails');
 var express = require('express');
+var passport = require('./config/passport');
 
 module.exports = function(app, passport) {
 
@@ -53,13 +54,16 @@ module.exports = function(app, passport) {
 //==========Feed Post Routes============
     
 };
-/*
+
 //======Facebook Authentication Routes=======
-app.get('/auth/facebook', users.facebookAuthenticate);
+app.get('/auth/facebook', passport.authenticate('facebook', { scope : 'email' }));
 
-app.get('/auth/facebook/callback', users.facebookCallback);
+app.get('/auth/facebook/callback', passport.authenticate('facebook', {
+				successRedirect : '/profile',
+				failureRedirect : '/'
+			}));;
 
-*/
+
 
 function isLoggedIn(req, res, next) {
     //if (req.isAuthenticated())
