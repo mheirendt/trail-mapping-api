@@ -12,7 +12,7 @@ module.exports.create = function(req, res) {
         if (user) {
             return res.status(400).end('User already exists');
         } else {
-
+	    //Create a new user from mongoose schema
             var newUser = new User();
             newUser.username = req.body.username;
             newUser.password = newUser.generateHash(req.body.password);
