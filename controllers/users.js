@@ -14,11 +14,11 @@ module.exports.create = function(req, res) {
         } else {
 	    //Create a new user from mongoose schema
             var newUser = new User();
-            newUser.username = req.body.username;
-            newUser.password = newUser.generateHash(req.body.password);
-            newUser.email = req.body.email;
-            newUser.score = 0;
-	    newUser.created = new Date();
+            newUser.local.username = req.body.username;
+            newUser.local.password = newUser.generateHash(req.body.password);
+            newUser.local.email = req.body.email;
+            newUser.local.score = 0;
+	    newUser.local.created = new Date();
 	    
             newUser.save(function(error, user){
 		console.log(error + ", " + user);
