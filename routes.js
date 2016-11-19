@@ -60,8 +60,7 @@ module.exports = function(app, passport) {
 	     function (req, res) {
 		 // do something with req.user
 		 res.send(req.user? 200 : 401);
-	     }
-);
+	     });
     
     /*
 app.get('/auth/facebook', passport.authenticate('facebook-token', { scope : 'email' }));
