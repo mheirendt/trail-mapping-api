@@ -69,7 +69,8 @@ module.exports.facebookAuthenticate = function(req, res, next) {
 	    return;
 	else {
 	    console.log("req: " + req.body);
-    });//{ scope : 'email' });
+	};//{ scope : 'email' });
+    });
 }
 
 module.exports.read = function(req, res) {
