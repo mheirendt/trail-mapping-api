@@ -48,17 +48,16 @@ passport.use(new FacebookStrategy({
 	     console.log("successfully found");
             return done(null, user);
         });
-    }
-));
+    }));
 
-        passport.use(new FacebookStrategy({
-	    console.log("using facebook strategy");
+    passport.use(new FacebookStrategy({
+	
         clientID: auth.facebookAuth.clientID,
         clientSecret: auth.facebookAuth.clientSecret,
         callbackURL: auth.facebookAuth.callbackURL,
         passReqToCallback: true 
-    },
-    function(req, token, refreshToken, profile, done) {
+    }, function(req, token, refreshToken, profile, done) {
+	console.log("next tick);
         process.nextTick(function() {
 	    console.log("starting facebook");
             if (!req.user) {
