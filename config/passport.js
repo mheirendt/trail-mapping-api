@@ -53,12 +53,12 @@ passport.use(new FacebookStrategy({
     passport.use(new FacebookStrategy({
         clientID: auth.facebookAuth.clientID,
         clientSecret: auth.facebookAuth.clientSecret,
-        callbackURL: auth.facebookAuth.callbackURL
-        //passReqToCallback: true 
-    }, function(/*req, */token, refreshToken, profile, done) {
+        callbackURL: auth.facebookAuth.callbackURL,
+        passReqToCallback: true 
+    }, function(req, token, refreshToken, profile, done) {
         process.nextTick(function() {
 	    console.log("starting facebook");
-            //if (!req.user) {
+            if (!req.user) {
 		 console.log("No session");
                 User.findOne({ 'facebook.id' : profile.id }, function(err, user) {
                     if (err)
@@ -67,7 +67,7 @@ passport.use(new FacebookStrategy({
 			 console.log("There is a user id already but no token");
                         // if there is a user id already but no token (user was linked at one point and then removed)
                         if (!user.facebook.token) {
-			     console.log("assigning facebook token");
+			    console.log("assigning facebook token");
                             user.facebook.token = token;
                             user.facebook.name  = profile.name.givenName + ' ' + profile.name.familyName;
                             user.facebook.email = profile.emails[0].value;
@@ -98,10 +98,10 @@ passport.use(new FacebookStrategy({
 			    console.log("facebook user created");
                             return done(null, newUser);
                         });
-			//req.session.key=req.body.username;
+			req.session.key=req.body.username;
                     }
                 });
-/*
+
             } else {
 		 console.log("linking user to facebook");
                 // user already exists and is logged in, we have to link accounts
@@ -120,7 +120,6 @@ passport.use(new FacebookStrategy({
                 });
 
             }
-*/
         });
 
     }));
