@@ -51,8 +51,8 @@ passport.use(new FacebookStrategy({
     }));
 
     passport.use(new FacebookTokenStrategy({
-	clientID: FACEBOOK_APP_ID,
-	clientSecret: FACEBOOK_APP_SECRET
+	clientID:  auth.facebookAuth.clientID,
+	clientSecret: auth.facebookAuth.clientSecret
     }, function(accessToken, refreshToken, profile, done) {
                 User.findOne({ 'facebook.id' : profile.id }, function(err, user) {
                     if (err)
