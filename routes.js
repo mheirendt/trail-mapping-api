@@ -65,6 +65,7 @@ module.exports = function(app, passport) {
 		     res.status(200);
 		 } else {
 		     res.status(401);
+		 }
 	     });
     
     /*
