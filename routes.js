@@ -63,7 +63,16 @@ module.exports = function(app, passport) {
 		 //res.status(req.user? 200 : 401);
 		 if (req.user){
 		     console.log("set the key: " + req.user.facebook.token);
-		     req.session.key = req.user.token;
+		     req.logIn(user, function(err) {
+			 if (err)
+			     return next(err);
+			 else{
+			     console.log("session: " + req.session);
+			     //set the session key
+			     req.session.key = req.user.token;
+			     return res.json({ SERVER_RESPONSE: 1, SERVER_MESSAGE: "Logged in!" });
+			 }
+		     });
 		     return res.status(200).end('user successfully authenticated with facebook');
 		 } else {
 		     console.log("we got a 401 here");
