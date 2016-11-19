@@ -64,13 +64,7 @@ module.exports.login = function(req, res, next) {
 
 module.exports.facebookAuthenticate = function(req, res, next) {
     console.log("first step for facebook");
-    passport.authenticate('facebook', function(err) {
-	if (err)
-	    return;
-	else {
-	    console.log("req: " + req.body);
-	};//{ scope : 'email' });
-    });
+    passport.authenticate('facebook', { scope : 'email' });
 }
 
 module.exports.read = function(req, res) {

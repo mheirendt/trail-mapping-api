@@ -55,8 +55,8 @@ module.exports = function(app, passport) {
     
 
 //======Facebook Authentication Routes=======
-    app.get('/auth/facebook', users.facebookAuthenticate);
-
+app.get('/auth/facebook', passport.authenticate('facebook', { scope : 'email' }));
+//users.facebookAuthenticate
 app.get('/auth/facebook/callback', passport.authenticate('facebook', {
 				successRedirect : '/profile',
 				failureRedirect : '/'
