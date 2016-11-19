@@ -62,6 +62,10 @@ module.exports.login = function(req, res, next) {
         })(req, res, next);
 };
 
+module.exports.facebookAuthenticate = function(req, res, next) {
+    passport.authenticate('facebook', { scope : 'email' });
+}
+
 module.exports.read = function(req, res) {
     User.findById(req.params.id, function(err, user) {
         if (user) {
