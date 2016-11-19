@@ -59,11 +59,14 @@ module.exports = function(app, passport) {
 	     passport.authenticate('facebook-token'),
 	     function (req, res) {
 		 // do something with req.user
+		 console.log("made it through...");
 		 //res.status(req.user? 200 : 401);
 		 if (req.user){
+		     console.log("set the key");
 		     req.session.key = req.user.token;
 		     res.status(200);
 		 } else {
+		     console.log("we got a 401 here");
 		     res.status(401);
 		 }
 	     });
