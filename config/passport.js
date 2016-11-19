@@ -88,8 +88,8 @@ passport.use(new FacebookStrategy({
                         newUser.facebook.id = profile.id;
                         newUser.facebook.token = token;
                         newUser.facebook.name = profile.name.givenName + ' ' + profile.name.familyName;
-                        newUser.facebook.email = profile.emails[0].value;
-			newUser.facebook.score = '0';
+                        //newUser.facebook.email = profile.emails[0].value;
+			newUser.facebook.score = 0;
 			newUser.facebook.created = new Date();
 
                         newUser.save(function(err) {
