@@ -57,7 +57,6 @@ passport.use(new FacebookStrategy({
         callbackURL: auth.facebookAuth.callbackURL,
         passReqToCallback: true 
     }, function(req, token, refreshToken, profile, done) {
-	console.log("next tick);
         process.nextTick(function() {
 	    console.log("starting facebook");
             if (!req.user) {
