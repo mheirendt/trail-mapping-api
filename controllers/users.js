@@ -63,6 +63,7 @@ module.exports.login = function(req, res, next) {
 };
 
 module.exports.facebookAuthenticate = function(req, res, next) {
+    console.log("first step for facebook");
     passport.authenticate('facebook', { scope : 'email' });
 }
 
