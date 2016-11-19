@@ -1,5 +1,5 @@
 var LocalStrategy = require('passport-local').Strategy;
-var FacebookStrategy = require('passport-facebook');
+var FacebookStrategy = require('passport-facebook').Strategy;
 var User = require('../models/user');
 var auth = require('../config/auth');
 
