@@ -90,7 +90,9 @@ app.get('/auth/facebook/callback',
 
 function isLoggedIn(req, res, next) {
     //if (req.isAuthenticated())
-    if(req.session.key)
+    if(req.session.key){
+	console.log("the session key is set, we are all good here");
         return next();
+    }
     res.status(400).end('Not logged in');
 }
