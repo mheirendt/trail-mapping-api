@@ -51,13 +51,12 @@ passport.use(new FacebookStrategy({
     }));
 
     passport.use(new FacebookStrategy({
-	
         clientID: auth.facebookAuth.clientID,
         clientSecret: auth.facebookAuth.clientSecret,
         callbackURL: auth.facebookAuth.callbackURL,
         passReqToCallback: true 
     }, function(req, token, refreshToken, profile, done) {
-        process.nextTick(function() {
+        //process.nextTick(function() {
 	    console.log("starting facebook");
             if (!req.user) {
 		 console.log("No session");
@@ -121,7 +120,7 @@ passport.use(new FacebookStrategy({
                 });
 
             }
-        });
+        //});
 
     }));
 
