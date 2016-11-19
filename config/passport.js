@@ -59,7 +59,7 @@ passport.use(new FacebookStrategy({
         process.nextTick(function() {
 	    console.log("starting facebook");
             if (!req.user) {
-		 console.log("No session");
+		console.log("No session");
                 User.findOne({ 'facebook.id' : profile.id }, function(err, user) {
                     if (err)
                         return done(err);
