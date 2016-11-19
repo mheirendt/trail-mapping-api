@@ -51,9 +51,9 @@ passport.use(new FacebookStrategy({
     }));
 
     passport.use(new FacebookStrategy({
-        clientID: auth.facebookAuth.clientID,
-        clientSecret: auth.facebookAuth.clientSecret,
-        callbackURL: auth.facebookAuth.callbackURL,
+        clientID: '143683242760890',
+        clientSecret: '095c264c52e8cd9001ab259070d5e971',
+        callbackURL: 'https://secure-garden-50529.herokuapp.com/auth/facebook/callback',
         passReqToCallback: true 
     }, function(req, token, refreshToken, profile, done) {
         process.nextTick(function() {
