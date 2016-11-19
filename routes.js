@@ -54,11 +54,20 @@ module.exports = function(app, passport) {
 //==========Feed Post Routes============
     
 
-//======Facebook Authentication Routes=======
-app.get('/auth/facebook', passport.authenticate('facebook', { scope : 'email' }));
+    //======Facebook Authentication Routes=======
+    app.post('/auth/facebook/token',
+	     passport.authenticate('facebook-token'),
+	     function (req, res) {
+		 // do something with req.user
+		 res.send(req.user? 200 : 401);
+	     }
+);
+    
+    /*
+app.get('/auth/facebook', passport.authenticate('facebook-token', { scope : 'email' }));
 //users.facebookAuthenticate
 app.get('/auth/facebook/callback',
-	passport.authenticate('facebook', { failureRedirect: '/signin' }),
+	passport.authenticate('facebook-token', { failureRedirect: '/signin' }),
 	function(req, res) {
 	    // Successful authentication, redirect home.
 	    res.status(200);
@@ -66,7 +75,7 @@ app.get('/auth/facebook/callback',
 	});
 
     };
-
+*/
 
 
 function isLoggedIn(req, res, next) {

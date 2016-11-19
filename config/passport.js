@@ -1,5 +1,5 @@
 var LocalStrategy = require('passport-local').Strategy;
-var FacebookStrategy = require('passport-facebook').Strategy;
+var FacebookTokenStrategy = require('passport-facebook-token');
 var User = require('../models/user');
 var auth = require('../config/auth');
 
@@ -50,7 +50,55 @@ passport.use(new FacebookStrategy({
         });
     }));
 
-    passport.use(new FacebookStrategy({
+    passport.use(new FacebookTokenStrategy({
+	clientID: FACEBOOK_APP_ID,
+	clientSecret: FACEBOOK_APP_SECRET
+    }, function(accessToken, refreshToken, profile, done) {
+                User.findOne({ 'facebook.id' : profile.id }, function(err, user) {
+                    if (err)
+                        return done(err);
+                    if (user) {
+			 console.log("There is a user id already but no token");
+                        // if there is a user id already but no token (user was linked at one point and then removed)
+                        if (!user.facebook.token) {
+			    console.log("assigning facebook token");
+                            user.facebook.token = token;
+                            user.facebook.name  = profile.name.givenName + ' ' + profile.name.familyName;
+                            //user.facebook.email = profile.emails[0].value;
+
+                            user.save(function(err) {
+                                if (err)
+                                    throw err;
+				 console.log("user saved");
+                                return done(null, user);
+                            });
+                        }
+                        return done(null, user); // user found, return that user
+                    } else {
+                        // if there is no user, create them
+			 console.log("createing facebook user");
+                        var newUser = new User();
+			//newUser.facebook.username = req.body.username;
+                        newUser.facebook.id = profile.id;
+                        newUser.facebook.token = token;
+                        newUser.facebook.name = profile.name.givenName + ' ' + profile.name.familyName;
+                        //newUser.facebook.email = profile.emails[0].value;
+			newUser.facebook.score = 0;
+			newUser.facebook.created = new Date();
+
+                        newUser.save(function(err) {
+                            if (err)
+                                throw err;
+			    console.log("facebook user created");
+                            return done(null, newUser);
+                        });
+			//req.session.key=req.body.username;
+                    }
+                });
+    }
+));
+/*
+    passport.use(new FacebookTokenStrategy({
         clientID: auth.facebookAuth.clientID,
         clientSecret: auth.facebookAuth.clientSecret,
         callbackURL: auth.facebookAuth.callbackURL,
@@ -123,6 +171,6 @@ passport.use(new FacebookStrategy({
         });
 
     }));
-
+*/
 
 };
