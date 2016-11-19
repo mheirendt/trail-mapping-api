@@ -52,7 +52,7 @@ passport.use(new FacebookStrategy({
 ));
 
         passport.use(new FacebookStrategy({
-
+	    console.log("using facebook strategy");
         clientID: auth.facebookAuth.clientID,
         clientSecret: auth.facebookAuth.clientSecret,
         callbackURL: auth.facebookAuth.callbackURL,
