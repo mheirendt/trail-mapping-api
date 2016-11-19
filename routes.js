@@ -64,10 +64,10 @@ module.exports = function(app, passport) {
 		 if (req.user){
 		     console.log("set the key");
 		     req.session.key = req.user.token;
-		     res.status(200);
+		     return res.status(200);
 		 } else {
 		     console.log("we got a 401 here");
-		     res.status(401);
+		     return res.status(401);
 		 }
 	     });
     
