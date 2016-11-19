@@ -75,7 +75,7 @@ app.get('/auth/facebook/callback',
 
     };
 */
-
+};
 
 function isLoggedIn(req, res, next) {
     //if (req.isAuthenticated())
