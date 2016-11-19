@@ -63,6 +63,7 @@ module.exports = function(app, passport) {
 	     });
     
     /*
+//why
 app.get('/auth/facebook', passport.authenticate('facebook-token', { scope : 'email' }));
 //users.facebookAuthenticate
 app.get('/auth/facebook/callback',
