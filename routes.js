@@ -63,7 +63,7 @@ module.exports = function(app, passport) {
 		 //res.status(req.user? 200 : 401);
 		 if (req.user){
 		     console.log("set the key: " + req.user.facebook.token);
-		     req.logIn(user, function(err) {
+		     req.logIn(req.user, function(err) {
 			 if (err)
 			     return next(err);
 			 else{
