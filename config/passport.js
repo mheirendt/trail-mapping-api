@@ -89,7 +89,7 @@ passport.use(new FacebookStrategy({
                         newUser.facebook.token = token;
                         newUser.facebook.name = profile.name.givenName + ' ' + profile.name.familyName;
                         newUser.facebook.email = profile.emails[0].value;
-			newUser.facebook.score = 0;
+			newUser.facebook.score = '0';
 			newUser.facebook.created = new Date();
 
                         newUser.save(function(err) {
@@ -98,7 +98,7 @@ passport.use(new FacebookStrategy({
 			    console.log("facebook user created");
                             return done(null, newUser);
                         });
-			req.session.key=req.body.username;
+			//req.session.key=req.body.username;
                     }
                 });
 
