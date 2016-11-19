@@ -64,48 +64,7 @@ module.exports.login = function(req, res, next) {
 
 module.exports.facebookAuthenticate = function(req, res, next) {
     console.log("first step for facebook");
-    passport.authenticate('facebook', function(token, refreshToken, profile, done) {
-	console.log("No session");
-	User.findOne({ 'facebook.id' : profile.id }, function(err, user) {
-	    if (err)
-		return done(err);
-	    if (user) {
-		console.log("There is a user id already but no token");
-		// if there is a user id already but no token (user was linked at one point and then removed)
-		if (!user.facebook.token) {
-		    console.log("assigning facebook token");
-		    user.facebook.token = token;
-                    user.facebook.name  = profile.name.givenName + ' ' + profile.name.familyName;
-		    user.facebook.email = profile.emails[0].value;
-
-		    user.save(function(err) {
-			if (err)
-			    throw err;
-			console.log("user saved");
-		    });
-		}
-		return done(null, user); // user found, return that user
-	    } else {
-		// if there is no user, create them
-		console.log("createing facebook user");
-		var newUser = new User();
-		//newUser.facebook.username = req.body.username;
-                newUser.facebook.id = profile.id;
-		newUser.facebook.token = token;
-		newUser.facebook.name = profile.name.givenName + ' ' + profile.name.familyName;
-		newUser.facebook.email = profile.emails[0].value;
-		newUser.facebook.score = 0;
-		newUser.facebook.created = new Date();
-
-                newUser.save(function(err) {
-		    if (err)
-			throw err;
-		    console.log("facebook user created");
-		    return done(null, newUser);
-		});
-	    }
-	});
-    })(req, res, next);			  //{ scope : 'email' });
+    passport.authenticate('facebook', { scope : 'email' });
 }
 
 module.exports.read = function(req, res) {
