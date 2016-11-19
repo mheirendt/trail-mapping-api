@@ -57,10 +57,13 @@ module.exports = function(app, passport) {
 //======Facebook Authentication Routes=======
 app.get('/auth/facebook', passport.authenticate('facebook', { scope : 'email' }));
 //users.facebookAuthenticate
-app.get('/auth/facebook/callback', passport.authenticate('facebook', {
-				successRedirect : '/profile',
-				failureRedirect : '/'
-}));
+app.get('/auth/facebook/callback',
+	passport.authenticate('facebook', { failureRedirect: '/signin' }),
+	function(req, res) {
+	    // Successful authentication, redirect home.
+	    res.status(200);
+	    res.redirect('/');
+	});
 
     };
 
