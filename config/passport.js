@@ -51,14 +51,14 @@ passport.use(new FacebookStrategy({
     }));
 
     passport.use(new FacebookStrategy({
-        clientID: '143683242760890',
-        clientSecret: '095c264c52e8cd9001ab259070d5e971',
-        callbackURL: 'https://secure-garden-50529.herokuapp.com/auth/facebook/callback',
-        passReqToCallback: true 
-    }, function(req, token, refreshToken, profile, done) {
+        clientID: auth.facebookAuth.clientID,
+        clientSecret: auth.facebookAuth.clientSecret,
+        callbackURL: auth.facebookAuth.callbackURL
+        //passReqToCallback: true 
+    }, function(/*req, */token, refreshToken, profile, done) {
         process.nextTick(function() {
 	    console.log("starting facebook");
-            if (!req.user) {
+            //if (!req.user) {
 		 console.log("No session");
                 User.findOne({ 'facebook.id' : profile.id }, function(err, user) {
                     if (err)
@@ -84,7 +84,7 @@ passport.use(new FacebookStrategy({
                         // if there is no user, create them
 			 console.log("createing facebook user");
                         var newUser = new User();
-			newUser.facebook.username = req.body.username;
+			//newUser.facebook.username = req.body.username;
                         newUser.facebook.id = profile.id;
                         newUser.facebook.token = token;
                         newUser.facebook.name = profile.name.givenName + ' ' + profile.name.familyName;
@@ -98,10 +98,10 @@ passport.use(new FacebookStrategy({
 			    console.log("facebook user created");
                             return done(null, newUser);
                         });
-			req.session.key=req.body.username;
+			//req.session.key=req.body.username;
                     }
                 });
-
+/*
             } else {
 		 console.log("linking user to facebook");
                 // user already exists and is logged in, we have to link accounts
@@ -120,6 +120,7 @@ passport.use(new FacebookStrategy({
                 });
 
             }
+*/
         });
 
     }));
