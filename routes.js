@@ -69,7 +69,6 @@ module.exports = function(app, passport) {
 function isLoggedIn(req, res, next) {
     //if (req.isAuthenticated())
     console.log(JSON.stringify(req.session, null, 4));
-    console.log("should be: " + req.session.passport.user);
     console.log("req: " + req + ", Session: " + req.session + ", key: " + req.session.key);
     if(req.session.key){
 	console.log("the session key is set, we are all good here");
