@@ -116,7 +116,7 @@ passport.use(new FacebookStrategy({
 				if (err)
 				    return next(err);
 				else{
-				    console.log("session: " + req.session);
+				    console.log("f user: " + JSON.stringify(newUser));
 				    //set the session key
 				    req.session.key=accessToken;
 				    console.log("facebook user created");
