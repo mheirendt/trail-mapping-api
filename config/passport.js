@@ -54,7 +54,7 @@ passport.use(new FacebookStrategy({
 	clientID:  auth.facebookAuth.clientID,
 	clientSecret: auth.facebookAuth.clientSecret,
 	passReqToCallback: true
-    }, function(accessToken, refreshToken, profile, done) {
+    }, function(req, accessToken, refreshToken, profile, done) {
                 User.findOne({ 'facebook.id' : profile.id }, function(err, user) {
                     if (err)
                         return done(err);
@@ -70,21 +70,21 @@ passport.use(new FacebookStrategy({
                             user.save(function(err) {
                                 if (err)
                                     throw err;
+				req.logIn(user, function(err) {
+				    if (err)
+					return next(err);
+				    else{
+					console.log("session: " + req.session);
+					//set the session key
+					req.session.key=accessToken;
+					console.log("user saved");
+					return done(null, user);
+				    }
+                
+				});
                             });
-			    req.logIn(user, function(err) {
-				if (err)
-				    return next(err);
-				else{
-				    console.log("session: " + req.session);
-				    //set the session key
-				    console.log("user saved");
-                               
-				    req.session.key = accessToken;
-				    return done(null, user);
-				}
-			    });
                         }
-                        //return done(null, user); // user found, return that user
+                        return done(null, user); // user found, return that user
                     } else {
                         // if there is no user, create them
 			 console.log("createing facebook user");
@@ -100,19 +100,19 @@ passport.use(new FacebookStrategy({
                         newUser.save(function(err) {
                             if (err)
                                 throw err;
+			    req.logIn(user, function(err) {
+				if (err)
+				    return next(err);
+				else{
+				    console.log("session: " + req.session);
+				    //set the session key
+				    req.session.key=accessToken;
+				    console.log("facebook user created");
+				    return done(null, newUser);
+				}
+			    });
                         });
-			req.logIn(user, function(err) {
-			    if (err)
-				return next(err);
-			    else{
-				console.log("session: " + req.session);
-				//set the session key
-				console.log("user saved");
-                               
-				req.session.key = accessToken;
-				return done(null, user);
-			    }
-			});
+			//req.session.key=req.body.username;
                     }
                 });
     }
