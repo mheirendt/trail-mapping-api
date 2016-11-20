@@ -115,8 +115,6 @@ module.exports = function(passport) {
                             });
 			} else {
 			    //
-
-			    else {
 			    //user exists locally, we must link accounts
 			    var localUser = req.user;
 			    localUser.facebook.id    = profile.id;
