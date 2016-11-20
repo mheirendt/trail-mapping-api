@@ -137,7 +137,7 @@ module.exports = function(passport) {
 			    }
 			    });
                     }
-                });
+                }
     }
 ));
 
