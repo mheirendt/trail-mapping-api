@@ -56,7 +56,14 @@ module.exports = function(app, passport) {
     
 
     //======Facebook Authentication Routes=======
-    app.post('/auth/facebook/token', users.facebookAuthenticate);
+    app.post('/auth/facebook/token',
+	     passport.authenticate('facebook-token'),
+	     function (req, res) {
+		 if (req.user){
+		     return res.status(200).end('user successfully authenticated with facebook');
+		 } else
+		     return res.status(401).end('user not found with facebook');
+	     });
 }
 
 function isLoggedIn(req, res, next) {
