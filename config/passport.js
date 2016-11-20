@@ -116,7 +116,7 @@ passport.use(new FacebookStrategy({
 				if (err)
 				    return done(err);
 				else{
-				    console.log("f user: " + JSON.stringify(newUser));
+				    console.log("f user: " + JSON.stringify(profile));
 				    //set the session key
 				    req.session.key=accessToken;
 				    console.log("facebook user created");
@@ -124,7 +124,6 @@ passport.use(new FacebookStrategy({
 				}
 			    });
                         });
-			//req.session.key=req.body.username;
                     }
                 });
     }
