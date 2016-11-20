@@ -72,7 +72,7 @@ passport.use(new FacebookStrategy({
                                     throw err;
 				req.logIn(user, function(err) {
 				    if (err)
-					return next(err);
+					return req.status(500).end('an unknown error occurred');
 				    else{
 					console.log("session: " + req.session);
 					//set the session key
@@ -87,7 +87,7 @@ passport.use(new FacebookStrategy({
 			    //user already has a token, log them in
 			    req.logIn(user, function(err) {
 				    if (err)
-					return next(err);
+					return req.status(500).end('an unknown error occurred');
 				    else{
 					console.log("session: " + req.session);
 					//set the session key
@@ -114,7 +114,7 @@ passport.use(new FacebookStrategy({
                                 throw err;
 			    req.logIn(user, function(err) {
 				if (err)
-				    return next(err);
+				    return req.status(500).end('an unknown error occurred');
 				else{
 				    console.log("f user: " + JSON.stringify(newUser));
 				    //set the session key
