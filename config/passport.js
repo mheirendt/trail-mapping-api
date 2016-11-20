@@ -65,7 +65,7 @@ passport.use(new FacebookStrategy({
 			    console.log("assigning facebook token");
                             user.facebook.token = accessToken;
                             user.facebook.name  = profile.name.givenName + ' ' + profile.name.familyName;
-                            //user.facebook.email = profile.emails[0].value;
+                            user.facebook.email = profile.emails[0].value;
 
                             user.save(function(err) {
                                 if (err)
@@ -105,7 +105,7 @@ passport.use(new FacebookStrategy({
                         newUser.facebook.id = profile.id;
                         newUser.facebook.token = accessToken;
                         newUser.facebook.name = profile.name.givenName + ' ' + profile.name.familyName;
-                        //newUser.facebook.email = profile.emails[0].value;
+                        newUser.facebook.email = profile.emails[0].value;
 			newUser.facebook.score = 0;
 			newUser.facebook.created = new Date();
 
