@@ -133,9 +133,8 @@ module.exports = function(passport) {
 					    req.session.key=token;
 					    return done(null, localUser);
 					}
-				    }
-			    });
-			    
+				    });
+			    }
 			    });
                     }
                 });
