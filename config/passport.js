@@ -62,7 +62,7 @@ passport.use(new FacebookStrategy({
                         // if there is a user id already but no token (user was linked at one point and then removed)
                         if (!user.facebook.token) {
 			    console.log("assigning facebook token");
-                            user.facebook.token = token;
+                            user.facebook.token = accessToken;
                             user.facebook.name  = profile.name.givenName + ' ' + profile.name.familyName;
                             //user.facebook.email = profile.emails[0].value;
 
@@ -80,7 +80,7 @@ passport.use(new FacebookStrategy({
                         var newUser = new User();
 			//newUser.facebook.username = req.body.username;
                         newUser.facebook.id = profile.id;
-                        newUser.facebook.token = token;
+                        newUser.facebook.token = accessToken;
                         newUser.facebook.name = profile.name.givenName + ' ' + profile.name.familyName;
                         //newUser.facebook.email = profile.emails[0].value;
 			newUser.facebook.score = 0;
