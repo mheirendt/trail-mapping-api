@@ -62,7 +62,7 @@ module.exports = function(app, passport) {
 		 console.log("made it through...");
 		 //res.status(req.user? 200 : 401);
 		 if (req.user){
-		     req.logIn(user, function(err) {
+		     req.logIn(req.user, function(err) {
 			 if (err)
 			     return res.status(500).end('failed to log in user');
 			 else {
