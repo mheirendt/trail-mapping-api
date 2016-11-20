@@ -64,7 +64,7 @@ module.exports.login = function(req, res, next) {
 
 module.exports.facebookAuthenticate = function(req, res, next) {
 	     passport.authenticate('facebook-token'),
-	     function (req, res) {
+	     function () {
 		 // do something with req.user
 		 console.log("made it through...");
 		 //res.status(req.user? 200 : 401);
