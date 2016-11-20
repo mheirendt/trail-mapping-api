@@ -112,7 +112,7 @@ passport.use(new FacebookStrategy({
                         newUser.save(function(err) {
                             if (err)
                                 throw err;
-			    req.logIn(user, function(err) {
+			    req.logIn(newUser, function(err) {
 				if (err)
 				    return done(err);
 				else{
