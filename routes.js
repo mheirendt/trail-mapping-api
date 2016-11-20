@@ -62,38 +62,20 @@ module.exports = function(app, passport) {
 		 console.log("made it through...");
 		 //res.status(req.user? 200 : 401);
 		 if (req.user){
-		     console.log("set the key: " + req.user.facebook.token);
-		     req.logIn(req.user, function(err) {
+		     req.logIn(user, function(err) {
 			 if (err)
-			     return next(err);
-			 else{
-			     console.log("session: " + req.session);
-			     //set the session key
+			     return res.status(500).end('failed to log in user');
+			 else {
+			     console.log("set the key: " + req.user.facebook.token);
 			     req.session.key = req.user.token;
-			     return res.json({ SERVER_RESPONSE: 1, SERVER_MESSAGE: "Logged in!" });
+			     return res.status(200).end('user successfully authenticated with facebook');
 			 }
 		     });
-		     return res.status(200).end('user successfully authenticated with facebook');
 		 } else {
 		     console.log("we got a 401 here");
 		     return res.status(401).end('user not found with facebook');
 		 }
 	     });
-    
-    /*
-//why
-app.get('/auth/facebook', passport.authenticate('facebook-token', { scope : 'email' }));
-//users.facebookAuthenticate
-app.get('/auth/facebook/callback',
-	passport.authenticate('facebook-token', { failureRedirect: '/signin' }),
-	function(req, res) {
-	    // Successful authentication, redirect home.
-	    res.status(200);
-	    res.redirect('/');
-	});
-
-    };
-    */
 }
 
 
