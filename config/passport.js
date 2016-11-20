@@ -70,20 +70,19 @@ passport.use(new FacebookStrategy({
                             user.save(function(err) {
                                 if (err)
                                     throw err;
-				req.logIn(user, function(err) {
-				    if (err)
-					return next(err);
-				    else{
-					console.log("session: " + req.session);
-					//set the session key
-					console.log("user saved");
-                               
-					req.session.key = accessToken;
-					return done(null, user);
-				    }
-                
-				});
                             });
+			    req.logIn(user, function(err) {
+				if (err)
+				    return next(err);
+				else{
+				    console.log("session: " + req.session);
+				    //set the session key
+				    console.log("user saved");
+                               
+				    req.session.key = accessToken;
+				    return done(null, user);
+				}
+			    });
                         }
                         //return done(null, user); // user found, return that user
                     } else {
@@ -101,19 +100,19 @@ passport.use(new FacebookStrategy({
                         newUser.save(function(err) {
                             if (err)
                                 throw err;
-			    req.logIn(user, function(err) {
-				if (err)
-				    return next(err);
-				else{
-				    console.log("session: " + req.session);
-				    //set the session key
-				    console.log("user saved");
-                               
-				    req.session.key = accessToken;
-				    return done(null, user);
-				}
-			    });
                         });
+			req.logIn(user, function(err) {
+			    if (err)
+				return next(err);
+			    else{
+				console.log("session: " + req.session);
+				//set the session key
+				console.log("user saved");
+                               
+				req.session.key = accessToken;
+				return done(null, user);
+			    }
+			});
                     }
                 });
     }
