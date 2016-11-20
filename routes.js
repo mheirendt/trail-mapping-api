@@ -79,7 +79,6 @@ module.exports = function(app, passport) {
 	     });
 }
 
-
 function isLoggedIn(req, res, next) {
     //if (req.isAuthenticated())
     console.log(JSON.stringify(req.session, null, 4));
