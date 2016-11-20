@@ -84,7 +84,6 @@ passport.use(new FacebookStrategy({
 				});
                             });
                         }
-                        return done(null, user); // user found, return that user
                     } else {
                         // if there is no user, create them
 			 console.log("createing facebook user");
