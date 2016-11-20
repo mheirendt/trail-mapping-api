@@ -125,9 +125,9 @@ module.exports = function(passport) {
 			    localUser.facebook.email = profile.emails[0].value;
 
 			    user.save(function(err) {
-				if (err)
+				if (err){
 				    throw err;
-				else{
+				} else {
 				    req.logIn(localUser, function(err) {
 					if (err)
 					    return done(err);
