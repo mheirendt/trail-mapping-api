@@ -62,9 +62,9 @@ module.exports.login = function(req, res, next) {
         })(req, res, next);
 };
 
-module.exports.facebookAuthenticate = function(req, res, next) {
+module.exports.facebookAuthenticate = function() {
 	     passport.authenticate('facebook-token'),
-	     function () {
+	     function (req, res) {
 		 // do something with req.user
 		 console.log("made it through...");
 		 //res.status(req.user? 200 : 401);
