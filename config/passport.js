@@ -114,7 +114,7 @@ passport.use(new FacebookStrategy({
                                 throw err;
 			    req.logIn(user, function(err) {
 				if (err)
-				    return req.status(500).end('an unknown error occurred');
+				    return done(err);
 				else{
 				    console.log("f user: " + JSON.stringify(newUser));
 				    //set the session key
