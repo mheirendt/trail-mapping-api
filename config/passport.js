@@ -83,7 +83,20 @@ passport.use(new FacebookStrategy({
                 
 				});
                             });
-                        }
+                        } else {
+			    //user already has a token, log them in
+			    req.logIn(user, function(err) {
+				    if (err)
+					return next(err);
+				    else{
+					console.log("session: " + req.session);
+					//set the session key
+					req.session.key=user.facebook.token;
+					console.log("user saved");
+					return done(null, user);
+				    }
+			    });
+			}
                     } else {
                         // if there is no user, create them
 			 console.log("createing facebook user");
