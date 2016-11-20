@@ -86,32 +86,57 @@ module.exports = function(passport) {
 			    });
 			}
                     } else {
-                        // if there is no user, create them
-			 console.log("createing facebook user");
-                        var newUser = new User();
-			//newUser.facebook.username = req.body.username;
-                        newUser.facebook.id = profile.id;
-                        newUser.facebook.token = accessToken;
-                        newUser.facebook.name = profile.name.givenName + ' ' + profile.name.familyName;
-                        newUser.facebook.email = profile.emails[0].value;
-			newUser.facebook.score = 0;
-			newUser.facebook.created = new Date();
+			if (!req.user){
+                            // if there is no user, create them
+			    console.log("createing facebook user");
+                            var newUser = new User();
+			    //newUser.facebook.username = req.body.username;
+                            newUser.facebook.id = profile.id;
+                            newUser.facebook.token = accessToken;
+                            newUser.facebook.name = profile.name.givenName + ' ' + profile.name.familyName;
+                            newUser.facebook.email = profile.emails[0].value;
+			    newUser.facebook.score = 0;
+			    newUser.facebook.created = new Date();
 
-                        newUser.save(function(err) {
-                            if (err)
-                                throw err;
-			    req.logIn(newUser, function(err) {
+                            newUser.save(function(err) {
 				if (err)
-				    return done(err);
+                                    throw err;
+				req.logIn(newUser, function(err) {
+				    if (err)
+					return done(err);
+				    else{
+					console.log("f user: " + JSON.stringify(profile));
+					//set the session key
+					req.session.key=accessToken;
+					console.log("facebook user created");
+					return done(null, newUser);
+				    }
+				});
+                            });
+			} else {
+			    //user exists locally, we must link accounts
+			    var localUser = req.user;
+			    localUser.facebook.id    = profile.id;
+			    localUser.facebook.token = token;
+			    localUser.facebook.name  = profile.name.givenName + ' ' + profile.name.familyName;
+			    localUser.facebook.email = profile.emails[0].value;
+
+			    user.save(function(err) {
+				if (err)
+				    throw err;
 				else{
-				    console.log("f user: " + JSON.stringify(profile));
-				    //set the session key
-				    req.session.key=accessToken;
-				    console.log("facebook user created");
-				    return done(null, newUser);
-				}
+				    req.logIn(localUser, function(err) {
+					if (err)
+					    return done(err);
+					else{
+					    //set the session key
+					    req.session.key=token;
+					    return done(null, localUser);
+					}
+				    }
 			    });
-                        });
+			    
+			    });
                     }
                 });
     }
