@@ -35,7 +35,8 @@ module.exports = function(app, passport) {
     app.post('/logout', isLoggedIn, function(req, res) {
 	req.session.destroy(function(err){
             if(err){
-		console.log(err);
+		console.log('an internal error occurred at: ' + JSON.stringify(err));
+		res.status(500).end('an internal error occurred');
             } else {
 		res.end('logged out');
             }
@@ -55,28 +56,7 @@ module.exports = function(app, passport) {
     
 
     //======Facebook Authentication Routes=======
-    app.post('/auth/facebook/token',
-	     passport.authenticate('facebook-token'),
-	     function (req, res) {
-		 // do something with req.user
-		 console.log("made it through...");
-		 //res.status(req.user? 200 : 401);
-		 if (req.user){
-		     //req.logIn(req.user, function(err) {
-			 //if (err)
-			     //return res.status(500).end('failed to log in user');
-			 //else {
-			     //console.log("set the key: " + req.user.facebook.token);
-			     //req.session.key = req.user.token;
-			     //req.session.save();
-		     return res.status(200).end('user successfully authenticated with facebook');
-			 //}
-		     //});
-		 } else {
-		     console.log("we got a 401 here");
-		     return res.status(401).end('user not found with facebook');
-		 }
-	     });
+    app.post('/auth/facebook/token', users.facebookAuthenticate);
 }
 
 function isLoggedIn(req, res, next) {
