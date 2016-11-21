@@ -18,8 +18,9 @@ module.exports.create = function(req, res) {
             newUser.local.email = req.body.email;
             newUser.local.score = 0;
 	    newUser.local.created = new Date();
-	    //newUser.local.followers = new Array();
-	    //newUser.local.following = new Array();
+	    newUser.local.followers = new Array();
+	    newUser.local.following = new Array();
+	    newUser.facebook = null;
 	    
             newUser.save(function(error, user){
 		if (error)
