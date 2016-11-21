@@ -23,22 +23,19 @@ module.exports.create = function(req, res) {
 	    newUser.local.following = [];
 	    
             newUser.save(function(error, user){
-		console.log(error + ", " + user);
+		if (error)
+		    return res.status(500).end('an internal error occurred');
+		req.login(newUser, function(err) {
+                    if (err) 
+			res.status(500).end('Failed to login');
+                    else {
+			req.session.key = newUser.local.username;
+			newUser = newUser.toObject();
+			delete newUser.password;
+			res.end(JSON.stringify(newUser));
+		    }
+		});
 	    });
-
-	    /*req.login(user, function(err) {
-                if (err) {
-                    res.status(500).end('Failed to login');
-                }
-            });*/
-
-            //res.writeHead(200, {"Content-Type": "application/json"});
-	    console.log("session: " + req.session);
-	    req.session.key=req.body.username;
-	    
-            newUser = newUser.toObject();
-            delete newUser.password;
-            res.end(JSON.stringify(newUser));
         }
     });
 };
