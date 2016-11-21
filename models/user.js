@@ -12,9 +12,9 @@ var userSchema = mongoose.Schema({
 	password: String,
 	email: String,
 	score: Number,
-	created: Date
-	//following: Array,
-	//followers: Array
+	created: Date,
+	following: Array,
+	followers: Array
     },
     facebook: {
 	username: String,
@@ -24,8 +24,8 @@ var userSchema = mongoose.Schema({
         name: String,
 	score: Number,
 	created: Date,
-	//following: Array,
-	//followers: Array
+	following: Array,
+	followers: Array
     }
 });
 
