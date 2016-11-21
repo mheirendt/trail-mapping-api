@@ -24,8 +24,8 @@ var userSchema = mongoose.Schema({
         name: String,
 	score: Number,
 	created: Date,
-	//following: Array
-	//followers: Array
+	following: Array,
+	followers: Array
     }
 });
 
