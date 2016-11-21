@@ -62,8 +62,8 @@ module.exports = function(passport) {
                             newUser.facebook.email = profile.emails[0].value;
 			    newUser.facebook.score = 0;
 			    newUser.facebook.created = new Date();
-			    newUser.facebook.followers = [];
-			    newUser.facebook.following = [];
+			    newUser.facebook.followers = new Array();
+			    newUser.facebook.following = new Array();
                             newUser.save(function(err) {
 				if (err)
                                     throw err;
@@ -83,8 +83,8 @@ module.exports = function(passport) {
 			    localUser.facebook.token = token;
 			    localUser.facebook.name  = profile.name.givenName + ' ' + profile.name.familyName;
 			    localUser.facebook.email = profile.emails[0].value;
-			    localUser.facebook.followers = [];
-			    localUser.facebook.following = [];
+			    localUser.facebook.followers = new Array();
+			    localUser.facebook.following = new Array();
 			    localUser.save(function(err) {
 				if (err){
 				   return done(err);

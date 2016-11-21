@@ -7,7 +7,6 @@ module.exports.create = function(req, res) {
     if (!req.body.username || !req.body.password || !req.body.email){
         return res.status(400).end('Invalid input');
     }
-    console.log("Req body: " + req.body.username + ", " + req.body.password);
     User.findOne({ username:  req.body.username }, function(err, user) {
         if (user) {
             return res.status(400).end('User already exists');
@@ -19,8 +18,8 @@ module.exports.create = function(req, res) {
             newUser.local.email = req.body.email;
             newUser.local.score = 0;
 	    newUser.local.created = new Date();
-	    newUser.local.followers = [];
-	    newUser.local.following = [];
+	    newUser.local.followers = new Array();
+	    newUser.local.following = new Array();
 	    
             newUser.save(function(error, user){
 		if (error)
