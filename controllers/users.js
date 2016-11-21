@@ -18,8 +18,8 @@ module.exports.create = function(req, res) {
             newUser.local.email = req.body.email;
             newUser.local.score = 0;
 	    newUser.local.created = new Date();
-	    newUser.local.followers = new Array();
-	    newUser.local.following = new Array();
+	    //newUser.local.followers = new Array();
+	    //newUser.local.following = new Array();
 	    
             newUser.save(function(error, user){
 		if (error)
@@ -50,9 +50,7 @@ module.exports.login = function(req, res, next) {
                 if (err)
                     return next(err);
                 else{
-		     console.log("session: " + req.session);
-		    //set the session key
-		    req.session.key=req.body.username;
+		    req.session.key = req.body.username;
                     return res.json({ SERVER_RESPONSE: 1, SERVER_MESSAGE: "Logged in!" });
 		}
                 
