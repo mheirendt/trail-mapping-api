@@ -12,7 +12,9 @@ var userSchema = mongoose.Schema({
 	password: String,
 	email: String,
 	score: Number,
-	created: Date
+	created: Date,
+	following: Array,
+	followers: Array
     },
     facebook: {
 	username: String,
@@ -21,7 +23,9 @@ var userSchema = mongoose.Schema({
         email: String,
         name: String,
 	score: Number,
-	created: Date
+	created: Date,
+	following: Array,
+	followers: Array
     }
 });
 
@@ -34,24 +38,3 @@ userSchema.methods.validPassword = function(password) {
 };
 
 module.exports = mongoose.model('User', userSchema);
-
-/*
-    local: {
-	username: {
-	    type: String,
-	    index: true
-	},
-	password: String,
-	email: String,
-	score: Number,
-	created: Date
-    },
-    facebook: {
-	id: String,
-	token: String,
-	name: String,
-	email: String,
-	score: Number,
-	created: Date
-    }
-*/

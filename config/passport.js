@@ -47,17 +47,13 @@ module.exports = function(passport) {
 			    if (err)
 				return done(err);
 			    else{
-				console.log("session: " + req.session);
-				//set the session key
 				req.session.key=user.facebook.token;
-				console.log("user saved");
 				return done(null, user);
 			    }
 			});
                     } else {
 			if (!req.user){
-                            // if there is no user, create them
-			    console.log("creating facebook user");
+                            // if there is no user in the database, create them
                             var newUser = new User();
 			    //newUser.facebook.username = req.body.username;
                             newUser.facebook.id = profile.id;
@@ -66,6 +62,8 @@ module.exports = function(passport) {
                             newUser.facebook.email = profile.emails[0].value;
 			    newUser.facebook.score = 0;
 			    newUser.facebook.created = new Date();
+			    newUser.facebook.followers = [];
+			    newUser.facebook.following = [];
                             newUser.save(function(err) {
 				if (err)
                                     throw err;
@@ -85,7 +83,9 @@ module.exports = function(passport) {
 			    localUser.facebook.token = token;
 			    localUser.facebook.name  = profile.name.givenName + ' ' + profile.name.familyName;
 			    localUser.facebook.email = profile.emails[0].value;
-			    user.save(function(err) {
+			    localUser.facebook.followers = [];
+			    localUser.facebook.following = [];
+			    localUser.save(function(err) {
 				if (err){
 				   return done(err);
 				} else {

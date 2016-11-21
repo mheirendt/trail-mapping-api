@@ -34,12 +34,10 @@ module.exports = function(app, passport) {
     // [x]
     app.post('/logout', isLoggedIn, function(req, res) {
 	req.session.destroy(function(err){
-            if(err){
-		console.log('an internal error occurred at: ' + JSON.stringify(err));
+            if(err)
 		res.status(500).end('an internal error occurred');
-            } else {
+            else
 		res.end('logged out');
-            }
 	});
     });
 
@@ -56,23 +54,19 @@ module.exports = function(app, passport) {
     
 
     //======Facebook Authentication Routes=======
+    // Authenticate a user with facebook [x]
     app.post('/auth/facebook/token',
 	     passport.authenticate('facebook-token'),
 	     function (req, res) {
 		 if (req.user){
-		     return res.status(200).end('user successfully authenticated with facebook');
+		     return res.status(200).end('User successfully authenticated with facebook');
 		 } else
-		     return res.status(401).end('user not found with facebook');
+		     return res.status(401).end('Facebook user not found');
 	     });
 }
-
+// Make a call to redis to ensure an active session [x]
 function isLoggedIn(req, res, next) {
-    //if (req.isAuthenticated())
-    console.log(JSON.stringify(req.session, null, 4));
-    console.log("req: " + req + ", Session: " + req.session + ", key: " + req.session.key);
-    if(req.session.key){
-	console.log("the session key is set, we are all good here");
+    if(req.session.key)
         return next();
-    }
     res.status(400).end('Not logged in');
 }
