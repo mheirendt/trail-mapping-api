@@ -86,7 +86,6 @@ module.exports = function(passport) {
 			    localUser.facebook.email = profile.emails[0].value;
 			    localUser.facebook.followers = new Array();
 			    localUser.facebook.following = new Array();
-			    localUser.local = null;
 			    localUser.save(function(err) {
 				if (err){
 				   return done(err);
