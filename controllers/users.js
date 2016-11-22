@@ -173,8 +173,8 @@ module.exports.me = function(req, res) {
             res.writeHead(200, {"Content-Type": "application/json"});
             user = user.toObject();
 	    if (user){
-		delete user.local.password;
-		delete user.__v;
+		//delete user.local.password;
+		//delete user.__v;
 		res.end(JSON.stringify(user));
 	    } else {
 		res.status(400).end('An internal server error has occurred');
