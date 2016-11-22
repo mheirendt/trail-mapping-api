@@ -47,7 +47,7 @@ module.exports = function(passport) {
 			    if (err)
 				return done(err);
 			    else{
-				req.session.key=user.facebook.token;
+				req.session.key = user.facebook.token;
 				return done(null, user);
 			    }
 			});
@@ -55,7 +55,7 @@ module.exports = function(passport) {
 			if (!req.user){
                             // if there is no user in the database, create them
                             var newUser = new User();
-			    //newUser.facebook.username = req.body.username;
+			    newUser.username = req.body.username;
                             newUser.facebook.id = profile.id;
                             newUser.facebook.token = accessToken;
                             newUser.facebook.name = profile.name.givenName + ' ' + profile.name.familyName;
@@ -72,7 +72,7 @@ module.exports = function(passport) {
 				    if (err)
 					return done(err);
 				    else{
-					req.session.key=accessToken;
+					req.session.key = accessToken;
 					return done(null, newUser);
 				    }
 				});
@@ -80,6 +80,7 @@ module.exports = function(passport) {
 			} else {
 			    //user exists locally, we must link accounts
 			    var localUser = req.user;
+			    localUser.username = req.body.username;
 			    localUser.facebook.id    = profile.id;
 			    localUser.facebook.token = token;
 			    localUser.facebook.name  = profile.name.givenName + ' ' + profile.name.familyName;

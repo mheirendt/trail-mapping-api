@@ -29,9 +29,9 @@ module.exports.create = function(req, res) {
                     if (err) 
 			res.status(500).end('Failed to login');
                     else {
-			req.session.key = newUser.local.username;
+			req.session.key = newUser.username;
 			newUser = newUser.toObject();
-			delete newUser.password;
+			delete newUser.local.password;
 			res.end(JSON.stringify(newUser));
 		    }
 		});
