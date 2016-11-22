@@ -12,9 +12,9 @@ var userSchema = mongoose.Schema({
     score: Number,
     created: Date,
     following: Array,
-    followers: Array
+    followers: Array,
     local: {
-	password: String,
+	password: String
     },
     facebook: {
         id: String,
