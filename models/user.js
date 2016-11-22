@@ -8,6 +8,7 @@ var userSchema = mongoose.Schema({
 	    type: String,
 	    index: true
     },
+    avatar: String,
     email: String,
     score: Number,
     created: Date,

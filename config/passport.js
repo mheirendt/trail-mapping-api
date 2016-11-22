@@ -56,6 +56,7 @@ module.exports = function(passport) {
                             // if there is no user in the database, create them
                             var newUser = new User();
 			    newUser.username = req.body.username;
+			    newUser.avatar = req.body.avatar;
                             newUser.facebook.id = profile.id;
                             newUser.facebook.token = accessToken;
                             newUser.facebook.name = profile.name.givenName + ' ' + profile.name.familyName;
@@ -81,6 +82,7 @@ module.exports = function(passport) {
 			    //user exists locally, we must link accounts
 			    var localUser = req.user;
 			    localUser.username = req.body.username;
+			    localUser.avatar = req.body.avatar;
 			    localUser.facebook.id    = profile.id;
 			    localUser.facebook.token = token;
 			    localUser.facebook.name  = profile.name.givenName + ' ' + profile.name.familyName;
