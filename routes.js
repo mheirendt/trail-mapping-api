@@ -22,6 +22,24 @@ module.exports = function(app, passport) {
     // Search For User by Username [x]
     app.get('/user/search/username/:username', isLoggedIn, users.readByUsername);
 
+    // Follow User by Username [x]
+    app.get('/user/follow/username/:username', isLoggedIn, users.follow);
+    
+    // Unfollow User by Username [x]
+    app.get('/user/unfollow/username/:username', isLoggedIn, users.unfollow);
+
+    // Get all followers of the current user [x]
+    app.get('/user/followers', isLoggedIn, users.getFollowers);
+    
+    // Get all followers of a specific user [x]
+    app.get('/user/followers/:username', isLoggedIn, users.viewFollowers);
+    
+    // Get all current user is following [x]
+    app.get('/user/followers', isLoggedIn, users.getFollowing);
+    
+    // Get all a specific user is following [x]
+    app.get('/user/followers/:username', isLoggedIn, users.viewFollowing);
+    
     // My Profile for Currently Logged in User [x]
     app.get('/user/profile', isLoggedIn, users.me);
 

@@ -13,14 +13,14 @@ module.exports.create = function(req, res) {
         } else {
 	    //Create a new user from mongoose schema
             var newUser = new User();
-            newUser.local.username = req.body.username;
+            newUser.username = req.body.username;
             newUser.local.password = newUser.generateHash(req.body.password);
-            newUser.local.email = req.body.email;
-            newUser.local.score = 0;
-	    newUser.local.created = new Date();
-	    newUser.local.followers = new Array();
-	    newUser.local.following = new Array();
-	    newUser.facebook = null;
+            newUser.email = req.body.email;
+            newUser.score = 0;
+	    newUser.created = new Date();
+	    newUser.followers = new Array();
+	    newUser.following = new Array();
+	    //newUser.facebook = null;
 	    
             newUser.save(function(error, user){
 		if (error)
@@ -64,7 +64,7 @@ module.exports.read = function(req, res) {
         if (user) {
             res.writeHead(200, {"Content-Type": "application/json"});
             user = user.toObject();
-            delete user.password;
+            delete user.local.password;
             delete user.__v;
             res.end(JSON.stringify(user));
         } else {
@@ -78,7 +78,7 @@ module.exports.readByUsername = function(req, res) {
         if (user) {
             res.writeHead(200, {"Content-Type": "application/json"});
             user = user.toObject();
-            delete user.password;
+            delete user.local.password;
             delete user.__v;
             res.end(JSON.stringify(user));
         } else {
@@ -87,13 +87,92 @@ module.exports.readByUsername = function(req, res) {
     });
 };
 
+//TODO refactor user schema and test
+module.exports.follow = function(req, res) {
+    User.findOne({ username: req.params.username }, function(err, user) {
+        if (user) {
+	    if (error)
+		res.end('internal server error');
+	    User.findOne({ username: req.user.username }, function(error, currentUser) {
+		if (error)
+		    res.end('internal server error');
+		currentUser.following.push(user.username);
+		user.followers.push(currentUser.username);
+		currentUser.save();
+		user.save();
+		res.status(200).end(currentUser.username + " has successfully followed " + user.username);
+	    });
+        } else {
+            return res.status(400).end('User not found');
+        }
+    });
+};
+
+//TODO refactor user schema and test
+module.exports.unfollow = function(req, res) {
+    User.findOne({ username: req.params.username }, function(err, user) {
+        if (user) {
+	    if (error)
+		res.end('internal server error');
+	    User.findOne({ username: req.user.username }, function(error, currentUser) {
+		if (error)
+		    res.end('internal server error');
+		currentUser.following.remove(user.username);
+		user.followers.remove(currentUser.username);
+		currentUser.save();
+		user.save();
+		res.status(200).end(currentUser.username + " has successfully unfollowed " + user.username);
+	    });
+        } else {
+            return res.status(400).end('User not found');
+        }
+    });
+};
+
+//the next four may not be necessary because the read method returns all needed info which can then be organized client side
+//TODO refactor user and test
+module.exports.getFollowers = function(req, res) {
+    User.findOne({ username: req.user.username }, function(error, currentUser) {
+	if (err)
+	    res.end('internal server error');
+	res.status(200).end(JSON.stringify(currentUser.followers));
+    });
+}
+
+//TODO refactor user and test
+module.exports.viewFollowers = function(req, res) {
+    User.findOne({ username: req.params.username }, function(err, user) {
+	if (err)
+	    res.end('internal server error');
+	res.status(200).end(JSON.stringify(user.followers));
+    });
+}
+
+//TODO refactor user and test
+module.exports.getFollowing = function(req, res) {
+    User.findOne({ username: req.user.username }, function(error, currentUser) {
+	if (err)
+	    res.end('internal server error');
+	res.status(200).end(JSON.stringify(currentUser.following));
+    });
+}
+
+//TODO refactor user and test
+module.exports.viewFollowing = function(req, res) {
+    User.findOne({ username: req.params.username }, function(err, user) {
+	if (err)
+	    res.end('internal server error');
+	res.status(200).end(JSON.stringify(user.following));
+    });
+}
+
 module.exports.me = function(req, res) {
 
     User.findOne({ username: req.user.username }, function(err, user) {
         if (user) {
             res.writeHead(200, {"Content-Type": "application/json"});
             user = user.toObject();
-            delete user.password;
+            delete user.local.password;
             delete user.__v;
             res.end(JSON.stringify(user));
         } else {
@@ -111,7 +190,7 @@ module.exports.update = function(req, res) {
                 return res.status(401).end('Modifying other user');
             } else {
                 user.username = req.body.username ? req.body.username : user.username;
-                user.password = req.body.password ? user.generateHash(req.body.password) : user.password;
+                user.local.password = req.body.password ? user.generateHash(req.body.password) : user.password;
                 user.email = req.body.email ? req.body.email : user.email;
                 user.save();
 
@@ -130,4 +209,16 @@ module.exports.delete = function(req, res) {
     User.remove({_id: req.user.id}, function(err) {
         res.end('Deleted')
 });
+};
+
+//Allow removal from array by text value
+Array.prototype.remove = function() {
+    var what, a = arguments, L = a.length, ax;
+    while (L && this.length) {
+        what = a[--L];
+        while ((ax = this.indexOf(what)) !== -1) {
+            this.splice(ax, 1);
+        }
+    }
+    return this;
 };
