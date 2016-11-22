@@ -172,9 +172,12 @@ module.exports.me = function(req, res) {
         if (user) {
             res.writeHead(200, {"Content-Type": "application/json"});
             user = user.toObject();
-            delete user.local.password;
-            delete user.__v;
-            res.end(JSON.stringify(user));
+	    if (user){
+		delete user.local.password;
+		delete user.__v;
+		res.end(JSON.stringify(user));
+	    } else {
+		 res.status(400).end('An internal server error has occurred');
         } else {
             return res.status(400).end('User not found');
         }
