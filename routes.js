@@ -1,5 +1,6 @@
 var users  = require('./controllers/users');
 var trails  = require('./controllers/trails');
+var posts = require('./controllers/posts');
 var express = require('express');
 var passport = require('./config/passport');
 
@@ -68,7 +69,24 @@ module.exports = function(app, passport) {
 
 //==========Trail Event Routes============
 
-//==========Feed Post Routes============
+//==========Post Routes============
+    // Create a new post [x]
+    app.post('/posts', isLoggedIn, posts.create);
+
+    //Get all posts of current user and following 
+    app.get('/posts', isLoggedIn, posts.getPosts);
+
+    //Get all the posts of only the current user 
+    app.get('/posts/user', isLoggedIn, posts.getUserPosts);
+
+    //A post is liked
+    app.post('/posts/liked', isLoggedIn, posts.like);
+
+    //A post is commented on
+    app.post('/posts/comment', isLoggedIn, posts.comment);
+
+    //Delete a post by ID [x]
+    app.delete('/posts/search/id/:id', isLoggedIn, posts.deletePost);
     
 
     //======Facebook Authentication Routes=======
