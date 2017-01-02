@@ -8,7 +8,9 @@ module.exports.create = function(req, res) {
     }
     var newPost = new Post();
     newPost.body = req.body.body;
-    newPost.type = req.body.type;
+    if (req.body.reference)
+        newPost.reference = req.body.reference;
+    newPost.submittedUsername = req.username;
     newPost.submittedUser = req.user;
     newPost.likes = 0;
     newPost.comments = new Array();
