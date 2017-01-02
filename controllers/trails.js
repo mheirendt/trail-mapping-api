@@ -8,7 +8,7 @@ module.exports.create = function(req, res) {
         return res.status(400).end('Invalid input');
     }
     var newTrail = new Trail();
-    console.log("submitted user = " + req.user);
+    //console.log("submitted user = " + req.user);
     newTrail.categories = req.body.categories;
     newTrail.tags = req.body.tags;
     newTrail.geometry = req.body.geometry;
