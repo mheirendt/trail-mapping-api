@@ -22,7 +22,7 @@ module.exports.create = function(req, res) {
 	    res.status(400).end('Could not save trail');
 	//post
 	var newPost = new Post();
-	newPost.submittedUsername = 'test';//req.user;
+	newPost.submittedUsername = req.session.key;
 	newPost.submittedUser = trail.submittedUser;
 	newPost.reference = trail._id;
 	newPost.body = "Created a new trail.";
