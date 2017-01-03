@@ -10,7 +10,6 @@ module.exports.create = function(req, res) {
     }
     //trail
     var newTrail = new Trail();
-    //console.log("submitted user = " + req.user);
     newTrail.categories = req.body.categories;
     newTrail.tags = req.body.tags;
     newTrail.geometry = req.body.geometry;
@@ -24,7 +23,7 @@ module.exports.create = function(req, res) {
 	var newPost = new Post();
 	newPost.submittedUsername = req.session.key;
 	newPost.submittedUser = trail.submittedUser;
-	newPost.reference = trail._id;
+	newPost.reference = trail;
 	newPost.body = "Created a new trail.";
 	newPost.created = new Date();
 
