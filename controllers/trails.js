@@ -19,7 +19,6 @@ module.exports.create = function(req, res) {
     //post
     var newPost = new Post();
     newPost.submittedUser = req.user;
-    newPost.reference = trail;
     newPost.body = "Created a new trail";// + "\n" + trail.categories + "\n" + trail.tags;
     newPost.created = new Date();
 
