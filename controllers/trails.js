@@ -16,25 +16,29 @@ module.exports.create = function(req, res) {
     newTrail. submittedUser = req.user;
     newTrail.created = new Date();
 
+    //post
+    var newPost = new Post();
+    newPost.submittedUser = trail.submittedUser;
+    newPost.reference = trail;
+    newPost.body = "Created a new trail";// + "\n" + trail.categories + "\n" + trail.tags;
+    newPost.created = new Date();
+
+    newTrail.reference = newPost;
+    newPost.reference = newTrail;
+
     newTrail.save(function(error, trail){
 	if (error)
 	    res.status(400).end('Could not save trail');
-	//post
-	var newPost = new Post();
-	newPost.submittedUser = trail.submittedUser;
-	newPost.reference = trail;
-	newPost.body = "Created a new trail";// + "\n" + trail.categories + "\n" + trail.tags;
-	newPost.created = new Date();
+    });
 
-	newPost.save(function(error, post) {
-	    if (error)
-		res.status(400).end('Could not save post');
-	    trail.reference = post;
-	    trail.save(function(error, trail) {
-		if (error)
-		    res.status(400).end('Could not save post');
-	    });
-	});
+    newPost.save(function(error, post) {
+	if (error)
+	    res.status(400).end('Could not save post');
+	//trail.reference = post;
+	//trail.save(function(error, trail) {
+	    //if (error)
+		//res.status(400).end('Could not save post');
+	//});
     });
 
     
