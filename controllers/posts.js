@@ -7,13 +7,11 @@ module.exports.create = function(req, res) {
 	return res.status(401).end('User not logged in')
     }
     var newPost = new Post();
-    
     newPost.body = req.body.body;
     newPost.submittedUser = req.user;
     newPost.likes = 0;
     newPost.comments = new Array();
     newPost.created = new Date();
-    
     newPost.save(function(error, post) {
 	if (error)
 	    res.status(400).end('Could not save post');
