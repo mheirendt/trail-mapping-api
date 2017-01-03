@@ -4,7 +4,6 @@ var trailSchema = mongoose.Schema({
     tags:  Array,
     categories: Array,
     submittedUser: {
-	type: String,
 	ref: 'User'
     },
     geometry: Array,
