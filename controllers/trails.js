@@ -24,7 +24,7 @@ module.exports.create = function(req, res) {
 	newPost.submittedUsername = req.session.key;
 	newPost.submittedUser = trail.submittedUser;
 	newPost.reference = trail;
-	newPost.body = "Created a new trail.";
+	newPost.body = "Created a new trail:" + "\n" + trail.categories "\n" + trail.tags ;
 	newPost.created = new Date();
 
 	newPost.save(function(error, post) {
