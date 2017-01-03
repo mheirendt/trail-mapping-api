@@ -6,6 +6,7 @@ var postSchema = mongoose.Schema({
 	ref: 'Trail',
     },
     submittedUser: {
+	type: String,
 	ref: 'User'
     },
     likes: Number,
