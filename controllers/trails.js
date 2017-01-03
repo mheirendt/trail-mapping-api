@@ -47,7 +47,10 @@ module.exports.create = function(req, res) {
 };
 
 module.exports.getTrails = function(req, res){
-    Trail.find({}, function(err, trails) {
+    Trail.find({})
+    	.populate('reference')
+	.populate('submittedUser')
+	.exec(function(err, trails) {
 	if (!err)
 	    res.send(trails);
 	else
