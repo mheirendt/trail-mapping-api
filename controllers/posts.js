@@ -29,13 +29,14 @@ module.exports.getUserPosts = function (req, res) {
 }
 
 module.exports.getPosts = function (req, res) {
-     Post.find({}, function(err, posts) {
-	if (!err)
-	    res.send(posts);
-	else
-	    res.status(400).end('Could not fetch posts');
-	
-    });
+    Post.find({})
+	.populate('reference')
+	.exec(function(err, posts) {
+	    if (!err)
+		res.send(posts);
+	    else
+		res.status(400).end('Could not fetch posts');
+	});
 }
 
 module.exports.like = function (req, res) {
