@@ -29,6 +29,11 @@ module.exports.create = function(req, res) {
 	newPost.save(function(error, post) {
 	    if (error)
 		res.status(400).end('Could not save post');
+	    trail.reference = post;
+	    trail.save(function(error, trail) {
+		if (error)
+		    res.status(400).end('Could not save post');
+	    });
 	});
     });
 

@@ -7,6 +7,10 @@ var trailSchema = mongoose.Schema({
 	type: String,
 	ref: 'User'
     },
+    reference: {
+	type: String,
+	ref: 'Post'
+    },
     geometry: Array,
     created: Date
 });
