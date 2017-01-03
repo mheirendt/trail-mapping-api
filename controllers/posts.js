@@ -31,6 +31,7 @@ module.exports.getUserPosts = function (req, res) {
 module.exports.getPosts = function (req, res) {
     Post.find({})
 	.populate('reference')
+	.populate('submittedUser')
 	.exec(function(err, posts) {
 	    if (!err)
 		res.send(posts);
