@@ -8,25 +8,26 @@ var gfs = new Grid(mongoose.connection.db);
  
 exports.create = function(req, res) {
  
-    console.log("Req" + JSON.stringify(req));	   	
+    console.log("Req" + req);
+    console.log("JSON.STRINGIFY: " + req.toObject();
     var part = req.files.filefield;
  
-                var writeStream = gfs.createWriteStream({
-                    filename: part.name,
-    				mode: 'w',
-                    content_type:part.mimetype
-                });
+    var writeStream = gfs.createWriteStream({
+        filename: part.name,
+    	mode: 'w',
+        content_type:part.mimetype
+    });
  
  
-                writeStream.on('close', function() {
-                     return res.status(200).send({
-						message: 'Success'
-					});
-                });
+    writeStream.on('close', function() {
+        return res.status(200).send({
+	    message: 'Success'
+	});
+    });
                 
-                writeStream.write(part.data);
+    writeStream.write(part.data);
  
-                writeStream.end();
+    writeStream.end();
  
 };
  
