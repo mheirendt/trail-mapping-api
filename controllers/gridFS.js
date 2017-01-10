@@ -9,12 +9,12 @@ var gfs = new Grid(mongoose.connection.db);
 exports.create = function(req, res) {
     console.log(JSON.stringify(req.body));
     console.log(JSON.stringify(req.files));
-    var part = req.files;//.filefield;
+    var part = req.body;//.filefield;
  
     var writeStream = gfs.createWriteStream({
         filename: part.name,
     	mode: 'w',
-        content_type:part.mimetype
+        content_type:part.Content-Type
     });
  
  
