@@ -12,6 +12,9 @@ exports.create = function(req, res) {
     console.log(JSON.stringify(req.file.filefield));
     console.log(JSON.stringify(req.body.file));
     console.log(JSON.stringify(req.body.files));
+    console.log(JSON.stringify(req.body.filename));
+    console.log(JSON.stringify(req.body.name));
+    console.log(JSON.stringify(req.body.contentType));
     
     var part = req.files.filefield;//.filefield;
  
