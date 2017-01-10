@@ -3,7 +3,7 @@ var trails  = require('./controllers/trails');
 var posts = require('./controllers/posts');
 var express = require('express');
 var passport = require('./config/passport');
-var gridFs = require('./controllers/gridFs');
+var gridFs = require('./controllers/gridFS');
 
 module.exports = function(app, passport) {
 
