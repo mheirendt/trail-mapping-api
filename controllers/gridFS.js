@@ -23,7 +23,7 @@ exports.create = function(req, res) {
 	});
     });
                 
-    writeStream.write(part.files);
+    writeStream.write(req.files);
  
     writeStream.end();
  
