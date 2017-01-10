@@ -1,16 +1,15 @@
 'use strict';
  
-var mongoose = require('mongoose'),
- _ = require('lodash');
- 
+var mongoose = require('mongoose');
 var Grid = require('gridfs-stream');
+
 Grid.mongo = mongoose.mongo;
 var gfs = new Grid(mongoose.connection.db);
  
 exports.create = function(req, res) {
  
-	     	   	
-	    	var part = req.files.filefield;
+    console.log(JSON.stringify(req));	   	
+    var part = req.files.filefield;
  
                 var writeStream = gfs.createWriteStream({
                     filename: part.name,
