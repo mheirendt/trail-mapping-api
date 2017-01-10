@@ -3,6 +3,7 @@ var trails  = require('./controllers/trails');
 var posts = require('./controllers/posts');
 var express = require('express');
 var passport = require('./config/passport');
+var gridFs = require('./controllers/gridFs');
 
 module.exports = function(app, passport) {
 
@@ -59,6 +60,13 @@ module.exports = function(app, passport) {
 		res.end('logged out');
 	});
     });
+
+    //==========File Store Routes============
+    // Read an existing filestream [x]
+    app.get('/upload/:filename', isLoggedIn, gridFs.read);
+
+    // Create a new filestream [x]
+    app.post('/upload', isLoggedIn, gridFs.create);
 
 //==========Trail Mapping Routes============
     // Create a new trail [x]
