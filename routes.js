@@ -63,10 +63,10 @@ module.exports = function(app, passport) {
 
     //==========File Store Routes============
     // Read an existing filestream [x]
-    app.get('/upload/:filename', isLoggedIn, gridFs.read);
+    app.get('/upload/:filename', gridFs.read);
 
     // Create a new filestream [x]
-    app.post('/upload', isLoggedIn, gridFs.create);
+    app.post('/upload', gridFs.create);
 
 //==========Trail Mapping Routes============
     // Create a new trail [x]
