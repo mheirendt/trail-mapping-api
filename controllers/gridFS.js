@@ -7,14 +7,13 @@ Grid.mongo = mongoose.mongo;
 var gfs = new Grid(mongoose.connection.db);
  
 exports.create = function(req, res) {
-    console.log(JSON.stringify(req.body));
-    console.log(JSON.stringify(req.files));
+    console.log(req.body.toObject());
     var part = req.body;//.filefield;
  
     var writeStream = gfs.createWriteStream({
         filename: part.name,
     	mode: 'w',
-        content_type:part.Content-Type
+        content_type:part.ContentType
     });
  
  
