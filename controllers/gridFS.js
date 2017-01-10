@@ -9,7 +9,7 @@ var gfs = new Grid(mongoose.connection.db);
 exports.create = function(req, res) {
     console.log(JSON.stringify(req.body));
     console.log(JSON.stringify(req.files));
-    var part = req.files.filefield;
+    var part = req.files;//.filefield;
  
     var writeStream = gfs.createWriteStream({
         filename: part.name,
