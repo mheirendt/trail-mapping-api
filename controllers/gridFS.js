@@ -10,7 +10,7 @@ exports.create = function(req, res) {
  
     console.log("Req" + req);
     console.log("JSON.STRINGIFY: " + req.toObject();
-    var part = req.files.filefield;
+    /*var part = req.files.filefield;
  
     var writeStream = gfs.createWriteStream({
         filename: part.name,
@@ -28,6 +28,7 @@ exports.create = function(req, res) {
     writeStream.write(part.data);
  
     writeStream.end();
+*/
  
 };
  
