@@ -7,8 +7,7 @@ Grid.mongo = mongoose.mongo;
 var gfs = new Grid(mongoose.connection.db);
  
 exports.create = function(req, res) {
-    var part = req.files.file.name;
-    console.log("about to write");
+    var part = req.files.filefield;
     var writeStream = gfs.createWriteStream({
         filename: part.name,
     	mode: 'w',
@@ -21,8 +20,9 @@ exports.create = function(req, res) {
 	    message: 'Success'
 	});
     });
-    console.log("stream closed");
+    
     writeStream.write(part.data);
+    
     writeStream.end();
  
 };

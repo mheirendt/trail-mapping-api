@@ -5,9 +5,9 @@ var express = require('express'),
     port = process.env.PORT || 3000,
     mongoose = require('mongoose'),
     passport = require('passport'),
-    flash = require('connect-flash'),
+    //flash = require('connect-flash'),
     socketio = require('socket.io'),
-    morgan = require('morgan'),
+    //morgan = require('morgan'),
     //bodyParser = require('body-parser'),
     busboyBodyParser = require('busboy-body-parser'),
     session = require('express-session'),
@@ -26,7 +26,7 @@ db.once('open', function(){
     console.log('MongoDB connection successful.');
 });
 
-app.use(morgan('dev'));
+//app.use(morgan('dev'));
 //app.use(cookieParser());
 //app.use(bodyParser.json());
 app.use(busboyBodyParser());
@@ -53,7 +53,7 @@ app.use(session({
 }));
 app.use(passport.initialize());
 app.use(passport.session());
-app.use(flash());
+//app.use(flash());
 
 require('./config/passport')(passport);
 require('./routes')(app, passport);
