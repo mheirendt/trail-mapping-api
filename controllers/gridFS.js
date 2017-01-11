@@ -8,18 +8,20 @@ var gfs = new Grid(mongoose.connection.db);
  
 exports.create = function(req, res) {
     var part = req.files.file.name;
+    console.log("about to write");
     var writeStream = gfs.createWriteStream({
         filename: part.name,
     	mode: 'w',
         content_type:part.mimetype
     });
+    console.log("created var" + JSON.stringify(writeStream));
     
     writeStream.on('close', function() {
         return res.status(200).send({
 	    message: 'Success'
 	});
     });
-    
+    console.log("stream closed");
     writeStream.write(part.data);
     writeStream.end();
  
