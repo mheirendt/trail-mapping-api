@@ -4,6 +4,7 @@ var posts = require('./controllers/posts');
 var express = require('express');
 var passport = require('./config/passport');
 var gridFs = require('./controllers/gridFS');
+var multiparty = require('connect-multiparty')();
 
 module.exports = function(app, passport) {
 
@@ -66,7 +67,7 @@ module.exports = function(app, passport) {
     app.get('/upload/:filename', gridFs.read);
 
     // Create a new filestream [x]
-    app.post('/upload', gridFs.create);
+    app.post('/upload', multiparty, gridFs.create);
 
 //==========Trail Mapping Routes============
     // Create a new trail [x]

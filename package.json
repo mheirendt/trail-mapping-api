@@ -13,7 +13,7 @@
       "bcrypt-nodejs": "latest",
       "body-parser": "~1.0.0",
       "gridfs-stream": "*",
-      "busboy-body-parser": "*",
+      "connect-multiparty": "*",
       "connect-flash": "~0.1.1",
       "dotenv": "^1.2.0",
       "ejs": "~0.8.5",
