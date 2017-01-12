@@ -25,11 +25,11 @@ db.once('open', function(){
     console.log('MongoDB connection successful.');
 });
 
-//app.use(morgan('dev'));
+app.use(morgan('dev'));
 //app.use(cookieParser());
 app.use(bodyParser.json());
 //app.use(busboyBodyParser());
-//app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.urlencoded({ extended: true }));
 
 redis.auth(redisAuth[1]);
 
@@ -52,7 +52,7 @@ app.use(session({
 }));
 app.use(passport.initialize());
 app.use(passport.session());
-//app.use(flash());
+app.use(flash());
 
 require('./config/passport')(passport);
 require('./routes')(app, passport);
