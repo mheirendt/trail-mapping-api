@@ -4,6 +4,7 @@ var passport = require('passport');
 module.exports = {};
 
 module.exports.create = function(req, res) {
+    console.log(JSON.stringify(req.body));
     if (!req.body.username || !req.body.password || !req.body.email){
         return res.status(400).end('Invalid input');
     }
