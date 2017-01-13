@@ -107,9 +107,9 @@ module.exports.findUsers = function(req, res) {
 	//users.push(user);
 	return res.end(results);
 	});
-    });
+    };
     //return res.end(users);
-};
+//};
 
 //TODO refactor user schema and test
 module.exports.follow = function(req, res) {
