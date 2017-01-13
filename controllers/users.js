@@ -106,7 +106,7 @@ module.exports.findUsers = function(req, res) {
             delete user.__v;
 	    users.push(user);
 	});
-	return res.status(200).end(users);;	
+	return res.end(users);
     });
 };
 
