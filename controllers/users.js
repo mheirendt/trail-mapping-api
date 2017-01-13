@@ -90,6 +90,8 @@ module.exports.readByUsername = function(req, res) {
 
 module.exports.findUsers = function(req, res) {
     //User.findOne({ username: req.params.username }, function(err, user) {
+    console.log("username" + req.params.usernames);
+    console.log(new RegExp(req.params.usernames, "i"));
     User.find({ $username : new RegExp(req.params.usernames, "i")})
     .limit(10)
     .exec(function(err, results) {
