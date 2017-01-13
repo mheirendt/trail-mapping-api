@@ -90,7 +90,8 @@ module.exports.readByUsername = function(req, res) {
 
 module.exports.findUsers = function(req, res) {
     //User.findOne({ username: req.params.username }, function(err, user) {
-    User.find({ $text : { $search : req.params.usernames } })
+    User.find({ $username : new RegExp(req.params.usernames, "i")} })
+    .limit(10)
     .exec(function(err, results) {
 	if (err)
 	    return res.status(400).end('User not found');
