@@ -92,12 +92,12 @@ module.exports.findUsers = function(req, res) {
     //User.findOne({ username: req.params.username }, function(err, user) {
     console.log("username" + req.params.usernames);
     console.log(new RegExp(req.params.usernames, "i"));
+    var users = [];
     User.find({username : new RegExp(req.params.usernames, "i")})//, function (err, results) {
     .limit(10)
     .exec(function(err, results) {
 	if (err)
 	    return res.status(400).end('User not found');
-	var users = [];
 	//res.writeHead(200, {"Content-Type": "application/json"});
 	console.log("results: " + results);
 	results.forEach(function(user) {
@@ -106,8 +106,8 @@ module.exports.findUsers = function(req, res) {
             delete user.__v;
 	    users.push(user);
 	});
-	return res.end(users);
     });
+    return res.end(users);
 };
 
 //TODO refactor user schema and test
