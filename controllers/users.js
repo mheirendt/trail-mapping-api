@@ -92,7 +92,7 @@ module.exports.findUsers = function(req, res) {
     //User.findOne({ username: req.params.username }, function(err, user) {
     console.log("username" + req.params.usernames);
     console.log(new RegExp(req.params.usernames, "i"));
-    User.find({ $username : new RegExp(req.params.usernames, "i")}, function (err, results) {
+    User.find({username : new RegExp(req.params.usernames, "i")}, function (err, results) {
     //.limit(10)
     //.exec(function(err, results) {
 	if (err)
