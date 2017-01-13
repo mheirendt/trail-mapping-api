@@ -106,19 +106,8 @@ module.exports.findUsers = function(req, res) {
             delete user.__v;
 	    users.push(user);
 	});
-	res.status(200).end(users);;
-	
+	return res.status(200).end(users);;	
     });
-        //if (user) {
-        //    res.writeHead(200, {"Content-Type": "application/json"});
-        //    user = user.toObject();
-        //    delete user.local.password;
-        //    delete user.__v;
-        //    res.end(JSON.stringify(user));
-        //} else {
-        //    return res.status(400).end('User not found');
-        //}
-    //});
 };
 
 //TODO refactor user schema and test
