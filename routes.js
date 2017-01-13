@@ -25,6 +25,9 @@ module.exports = function(app, passport) {
     // Search For User by Username [x]
     app.get('/user/search/username/:username', isLoggedIn, users.readByUsername);
 
+    // Search For Users by Useranme [x]
+    app.get('/user/search/usernames/:usernames', isLoggedIn, users.findUsers);
+
     // Follow User by Username [x]
     app.get('/user/follow/username/:username', isLoggedIn, users.follow);
     

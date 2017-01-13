@@ -88,6 +88,37 @@ module.exports.readByUsername = function(req, res) {
     });
 };
 
+module.exports.findUsers = function(req, res) {
+    //User.findOne({ username: req.params.username }, function(err, user) {
+        User.find(
+        { $text : { $search : req.params.usernames } }, 
+    ).exec(function(err, results) {
+	if (err)
+	    return res.status(400).end('User not found');
+	var users = [];
+	res.writeHead(200, {"Content-Type": "application/json"});
+	console.log("results: " + results);
+	results.forEach(function(user) {
+            user = user.toObject();
+            delete user.local.password;
+            delete user.__v;
+	    users.push(user);
+	});
+       res.send(users);
+	
+    });
+        if (user) {
+            res.writeHead(200, {"Content-Type": "application/json"});
+            user = user.toObject();
+            delete user.local.password;
+            delete user.__v;
+            res.end(JSON.stringify(user));
+        } else {
+            return res.status(400).end('User not found');
+        }
+    });
+};
+
 //TODO refactor user schema and test
 module.exports.follow = function(req, res) {
     User.findOne({ username: req.params.username }, function(err, user) {
