@@ -105,7 +105,7 @@ module.exports.findUsers = function(req, res) {
             //delete user.local.password;
             //delete user.__v;
 	//users.push(user);
-	return res.status(200).end(results);
+	return res.status(200).end(JSON.stringify(results));
 	});
     };
     //return res.end(users);
