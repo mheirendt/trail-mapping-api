@@ -126,6 +126,8 @@ module.exports.follow = function(req, res) {
 		user.followers.push(currentUser._id);
 		currentUser.save();
 		user.save();
+		user.populate('following');
+		user.populate('followers');
 		res.status(200).end(JSON.stringify(user));
 	    });
 	});
