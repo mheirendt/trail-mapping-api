@@ -129,6 +129,7 @@ module.exports.follow = function(req, res) {
 	});
     } else {
 	return res.status(400).end("no username provided");
+    }
 };
 
 module.exports.unfollow = function(req, res) {
@@ -193,7 +194,7 @@ module.exports.update = function(req, res) {
 module.exports.delete = function(req, res) {
     User.remove({_id: req.user.id}, function(err) {
         res.end('Deleted')
-});
+    });
 };
 
 //Allow removal from array by text value
