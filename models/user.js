@@ -12,14 +12,8 @@ var userSchema = mongoose.Schema({
     email: String,
     score: Number,
     created: Date,
-    following: {
-	type: Array,
-	ref: 'User'
-    },
-    followers: {
-	type: Array,
-	ref: 'User'
-    },
+    following: Array,
+    followers: Array,
     local: {
 	password: String
     },
