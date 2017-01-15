@@ -75,7 +75,10 @@ module.exports.read = function(req, res) {
 };
 
 module.exports.readByUsername = function(req, res) {
-    User.findOne({ username: req.params.username }, function(err, user) {
+    User.findOne({ username: req.params.username })//, function(err, user) {
+    .populate('following')
+    .populate('followers')
+    .exec(function(err, user) {
         if (user) {
             res.writeHead(200, {"Content-Type": "application/json"});
             user = user.toObject();
