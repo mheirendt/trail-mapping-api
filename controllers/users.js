@@ -113,25 +113,25 @@ module.exports.findUsers = function(req, res) {
 
 //TODO refactor user schema and test
 module.exports.follow = function(req, res) {
-    console.log("Username: " + JSON.stringify(req.body));
-    User.findOne({ username: req.body.username }, function(err, user) {
-	 if (err)
+    if (req.body.username) {
+	User.findOne({ username: req.body.username }, function(err, user) {
+	    if (err)
 		res.end('User not found');
-	User.findOne({ username: req.user.username }, function(error, currentUser) {
-	    if (error)
-		res.end('User not signed in');
-	    currentUser.following.push(user.username);
-	    user.followers.push(currentUser.username);
-	    currentUser.save();
-	    user.save();
-	    res.end(user);
+	    User.findOne({ username: req.user.username }, function(error, currentUser) {
+		if (error)
+		    res.end('User not signed in');
+		currentUser.following.push(user.username);
+		user.followers.push(currentUser.username);
+		currentUser.save();
+		user.save();
+		res.end(user);
+	    });
 	});
-    });
+    } else {
+	return res.status(400).end("no username provided");
 };
 
-//TODO refactor user schema and test
 module.exports.unfollow = function(req, res) {
-    console.log("Username: " + JSON.stringify(req.body));
     User.findOne({ username: req.body.username }, function(err, user) {
 	if (err)
 	    res.end('user not found');
