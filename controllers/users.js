@@ -124,7 +124,7 @@ module.exports.follow = function(req, res) {
 	    user.followers.push(currentUser.username);
 	    currentUser.save();
 	    user.save();
-	    res.status(200).end(user);
+	    res.end(user);
 	});
     });
 };
@@ -142,7 +142,7 @@ module.exports.unfollow = function(req, res) {
 	    user.followers.remove(currentUser.username);
 	    currentUser.save();
 	    user.save();
-	    res.status(200).end(user);
+	    res.end(user);
 	});
     });
 };
