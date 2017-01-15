@@ -113,6 +113,7 @@ module.exports.findUsers = function(req, res) {
 
 //TODO refactor user schema and test
 module.exports.follow = function(req, res) {
+    console.log("Username: " + JSON.stringify(req.body));
     User.findOne({ username: req.body.username }, function(err, user) {
 	 if (err)
 		res.end('User not found');
@@ -130,6 +131,7 @@ module.exports.follow = function(req, res) {
 
 //TODO refactor user schema and test
 module.exports.unfollow = function(req, res) {
+    console.log("Username: " + JSON.stringify(req.body));
     User.findOne({ username: req.body.username }, function(err, user) {
 	if (err)
 	    res.end('user not found');
