@@ -124,7 +124,7 @@ module.exports.follow = function(req, res) {
 		user.followers.push(currentUser.username);
 		currentUser.save();
 		user.save();
-		res.end(user);
+		res.status(200).end(JSON.stringify(user));
 	    });
 	});
     } else {
