@@ -111,7 +111,76 @@ module.exports.findUsers = function(req, res) {
     //return res.end(users);
 //};
 
+//TODO refactor user schema and test
+module.exports.follow = function(req, res) {
+    User.findOne({ username: req.params.username }, function(err, user) {
+	 if (error)
+		res.end('User not found');
+	User.findOne({ username: req.user.username }, function(error, currentUser) {
+	    if (error)
+		res.end('User not signed in');
+	    currentUser.following.push(user.username);
+	    user.followers.push(currentUser.username);
+	    currentUser.save();
+	    user.save();
+	    res.status(200).end(currentUser.username + " has successfully followed " + user.username);
+	});
+    });
+};
 
+//TODO refactor user schema and test
+module.exports.unfollow = function(req, res) {
+    User.findOne({ username: req.params.username }, function(err, user) {
+	if (error)
+	    res.end('user not found');
+	User.findOne({ username: req.user.username }, function(error, currentUser) {
+	    if (error)
+		res.end('User not signed in');
+	    currentUser.following.remove(user.username);
+	    user.followers.remove(currentUser.username);
+	    currentUser.save();
+	    user.save();
+	    res.status(200).end(currentUser.username + " has successfully unfollowed " + user.username);
+	});
+    });
+};
+
+//the next four may not be necessary because the read method returns all needed info which can then be organized client side
+//TODO refactor user and test
+module.exports.getFollowers = function(req, res) {
+    User.findOne({ username: req.user.username }, function(error, currentUser) {
+	if (err)
+	    res.end('internal server error');
+	res.status(200).end(JSON.stringify(currentUser.followers));
+    });
+}
+
+//TODO refactor user and test
+module.exports.viewFollowers = function(req, res) {
+    User.findOne({ username: req.params.username }, function(err, user) {
+	if (err)
+	    res.end('internal server error');
+	res.status(200).end(JSON.stringify(user.followers));
+    });
+}
+
+//TODO refactor user and test
+module.exports.getFollowing = function(req, res) {
+    User.findOne({ username: req.user.username }, function(error, currentUser) {
+	if (err)
+	    res.end('internal server error');
+	res.status(200).end(JSON.stringify(currentUser.following));
+    });
+}
+
+//TODO refactor user and test
+module.exports.viewFollowing = function(req, res) {
+    User.findOne({ username: req.params.username }, function(err, user) {
+	if (err)
+	    res.end('internal server error');
+	res.status(200).end(JSON.stringify(user.following));
+    });
+}
 
 module.exports.me = function(req, res) {
 
