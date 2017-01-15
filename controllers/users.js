@@ -93,7 +93,9 @@ module.exports.findUsers = function(req, res) {
     console.log("username" + req.params.usernames);
     console.log(new RegExp(req.params.usernames, "i"));
     //var users = [];
-    User.find({username : new RegExp(req.params.usernames, "i")})//, function (err, results) {
+    User.find({username : new RegExp(req.params.usernames, "i")})
+    .populate('following')
+    .poplulate('followers')
     .limit(10)
     .exec(function(err, results) {
 	if (err)
