@@ -120,8 +120,8 @@ module.exports.follow = function(req, res) {
 	    User.findOne({ username: req.user.username }, function(error, currentUser) {
 		if (error)
 		    res.end('User not signed in');
-		currentUser.following.push(user.username);
-		user.followers.push(currentUser.username);
+		currentUser.following.push(user);
+		user.followers.push(currentUser);
 		currentUser.save();
 		user.save();
 		res.status(200).end(JSON.stringify(user));
@@ -139,8 +139,8 @@ module.exports.unfollow = function(req, res) {
 	User.findOne({ username: req.user.username }, function(error, currentUser) {
 	    if (error)
 		res.end('User not signed in');
-	    currentUser.following.remove(user.username);
-	    user.followers.remove(currentUser.username);
+	    currentUser.following.remove(user);
+	    user.followers.remove(currentUser);
 	    currentUser.save();
 	    user.save();
 	    res.end(user);
