@@ -111,39 +111,7 @@ module.exports.findUsers = function(req, res) {
     //return res.end(users);
 //};
 
-//TODO refactor user schema and test
-module.exports.follow = function(req, res) {
-    User.findOne({ username: req.params.username }, function(err, user) {
-	 if (err)
-		res.end('User not found');
-	User.findOne({ username: req.user.username }, function(error, currentUser) {
-	    if (error)
-		res.end('User not signed in');
-	    currentUser.following.push(user.username);
-	    user.followers.push(currentUser.username);
-	    currentUser.save();
-	    user.save();
-	    res.status(200).end(user);
-	});
-    });
-};
 
-//TODO refactor user schema and test
-module.exports.unfollow = function(req, res) {
-    User.findOne({ username: req.params.username }, function(err, user) {
-	if (err)
-	    res.end('user not found');
-	User.findOne({ username: req.user.username }, function(error, currentUser) {
-	    if (error)
-		res.end('User not signed in');
-	    currentUser.following.remove(user.username);
-	    user.followers.remove(currentUser.username);
-	    currentUser.save();
-	    user.save();
-	    res.status(200).end(user);
-	});
-    });
-};
 
 module.exports.me = function(req, res) {
 
