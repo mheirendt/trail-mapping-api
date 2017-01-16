@@ -126,9 +126,16 @@ module.exports.follow = function(req, res) {
 		user.followers.push(currentUser._id);
 		currentUser.save();
 		user.save();
-		res.status(200).end(JSON.stringify(user));
 	    });
 	});
+	User.findOne({ username: req.body.username })
+	    .populate('following')
+	    .populate('followers')
+	    .exec(function(e, finalUser) {
+		if (e)
+		    res.status(400).end(JSON.stringify(user));
+		res.status(200).end(JSON.stringify(finalUser));
+	    });
     } else {
 	return res.status(400).end("no username provided");
     }
