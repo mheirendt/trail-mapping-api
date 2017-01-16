@@ -48,17 +48,17 @@ module.exports.create = function(req, res) {
 };
 
 module.exports.getTrails = function(req, res){
-    User.findOne({ username : req.user.username})//, function(error, user) {
-	.populate('following')
-        .populate('followers')
-        .exec(function(error, user) {
-	    if (error)
-		res.status(401).end("User not signed in.");
-	    console.log("following: " + user.following);
-	    Trail.find({ submittedUser : {$in: user.following }})
-    		.populate('reference')
-		.populate('submittedUser')
-		.exec(function(err, trails) {
+    User.findOne({ username : req.user.username}, function(error, user) {
+	if (error)
+	    res.status(401).end("User not signed in.");
+	console.log("following: " + user.following);
+	User.find({ _id : { $in: user.following }}, function (err, users) {
+	    Trail.find({ submittedUser : { $in: users }})
+	
+	//Trail.find({ submittedUser : {$in: user.following }})
+    	    .populate('reference')
+	    .populate('submittedUser')
+	    .exec(function(err, trails) {
 		if (!err) {
 		    console.log("Trails: " + trails);
 		    res.send(trails);
@@ -66,5 +66,7 @@ module.exports.getTrails = function(req, res){
 		else
 		    res.status(400).end('Could not fetch trails');
 	    });
+	});
+
     });
 };
