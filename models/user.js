@@ -13,11 +13,11 @@ var userSchema = mongoose.Schema({
     score: Number,
     created: Date,
     following: [{
-	type : ObjectId,
+	type : mongoose.Schema.Types.ObjectId,
 	ref: 'User'
     }],
     followers: [{
-	type : ObjectId,
+	type : mongoose.Schema.Types.ObjectId,
 	ref: 'User'
     }],
     local: {
