@@ -1,4 +1,5 @@
 var Trail = require('../models/trail');
+var User = require('../models/user');
 var passport = require('passport');
 var Post = require('../models/post');
 
@@ -47,7 +48,8 @@ module.exports.create = function(req, res) {
 };
 
 module.exports.getTrails = function(req, res){
-    Trail.find({})
+    User.find({ username : req.user.username}, function(error, user) {
+	Trail.find({ submittedUser : {$in: user.following }})
     	.populate('reference')
 	.populate('submittedUser')
 	.exec(function(err, trails) {
