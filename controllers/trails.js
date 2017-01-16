@@ -63,7 +63,5 @@ module.exports.getTrails = function(req, res){
 		else
 		    res.status(400).end('Could not fetch trails');
 	    });
-	});
-
     });
 };
