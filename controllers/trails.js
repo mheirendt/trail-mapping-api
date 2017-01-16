@@ -52,7 +52,7 @@ module.exports.getTrails = function(req, res){
 	if (error)
 	    res.status(401).end("User not signed in.");
 	console.log("following: " + user.following);
-	Trail.find({ submittedUser : {$in: user.following._id }})
+	Trail.find({ submittedUser.$oid : {$in: user.following._id }})
     	    .populate('reference')
 	    .populate('submittedUser')
 	    .exec(function(err, trails) {
