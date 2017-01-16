@@ -48,7 +48,9 @@ module.exports.create = function(req, res) {
 };
 
 module.exports.getTrails = function(req, res){
-    User.find({ username : req.user.username}, function(error, user) {
+    User.findOne({ username : req.user.username}, function(error, user) {
+	if (error)
+	    res.status(401).end("User not signed in.");
 	Trail.find({ submittedUser : {$in: user.following }})
     	    .populate('reference')
 	    .populate('submittedUser')
