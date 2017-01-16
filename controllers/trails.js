@@ -50,13 +50,13 @@ module.exports.create = function(req, res) {
 module.exports.getTrails = function(req, res){
     User.find({ username : req.user.username}, function(error, user) {
 	Trail.find({ submittedUser : {$in: user.following }})
-    	.populate('reference')
-	.populate('submittedUser')
-	.exec(function(err, trails) {
-	if (!err)
-	    res.send(trails);
-	else
-	    res.status(400).end('Could not fetch trails');
-	
+    	    .populate('reference')
+	    .populate('submittedUser')
+	    .exec(function(err, trails) {
+		if (!err)
+		    res.send(trails);
+		else
+		    res.status(400).end('Could not fetch trails');
+	    });
     });
 };
