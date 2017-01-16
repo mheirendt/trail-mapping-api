@@ -52,7 +52,6 @@ module.exports.getTrails = function(req, res){
 	if (error)
 	    res.status(401).end("User not signed in.");
 	console.log("following: " + user.following);
-	//var us = user.following.followers.map(function(follower) { return follower.id })
 	var us = user.following.map(function(follower) {return follower.id});
 	console.log("Map: " + us);
 	Trail.find({ submittedUser : {$in: us }})
@@ -68,4 +67,3 @@ module.exports.getTrails = function(req, res){
 	    });
     });
 };
-followers.map(function(follower) { return follower.id }))
