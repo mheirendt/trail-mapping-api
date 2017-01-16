@@ -53,11 +53,9 @@ module.exports.getTrails = function(req, res){
 	    res.status(401).end("User not signed in.");
 	console.log("following: " + user.following);
 	var us = user.following.map(function(follower) {
-	    console.log("loop id: " + follower.id);
 	    return follower.id
 	});
-	console.log("Map: " + us);
-	Trail.find({ submittedUser : {$in: us }})
+	Trail.find({ submittedUser : {$in: user.following }})
     	    .populate('reference')
 	    .populate('submittedUser')
 	    .exec(function(err, trails) {

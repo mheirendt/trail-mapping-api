@@ -4,11 +4,11 @@ var trailSchema = mongoose.Schema({
     tags:  Array,
     categories: Array,
     submittedUser: {
-	type: String,
+	type: mongoose.Schema.Types.ObjectId,
 	ref: 'User'
     },
     reference: {
-	type: String,
+	type: mongoose.Schema.Types.ObjectId,
 	ref: 'Post'
     },
     geometry: Array,
