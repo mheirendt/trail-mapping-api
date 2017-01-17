@@ -27,13 +27,10 @@ db.once('open', function(){
 
 app.use(morgan('dev'));
 //app.use(cookieParser());
-app.use(bodyParser.json({
-    limit: '50mb'
-}));
-app.use(bodyParser.urlencoded({
-    limit: '50mb',
-    extended: true
-}));
+app.use(bodyParser.json());
+//app.use(busboyBodyParser());
+app.use(bodyParser.urlencoded({ extended: true }));
+
 redis.auth(redisAuth[1]);
 
 redis.keys("sess:*", function(error, keys){
