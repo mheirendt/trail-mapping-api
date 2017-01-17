@@ -16,17 +16,15 @@ exports.create = function(req, res) {
         content_type:req.files.file.mimetype,
 	metadata: req.body
     });
-    console.log("created var" + JSON.stringify(writeStream));
-    
     writeStream.on('close', function() {
         return res.status(200).send({
 	    message: 'Success'
 	});
     });
     
-    writeStream.write(part.data);
-    
-    writeStream.end();
+    writeStream.write(part.data).then(function() {
+	writeStream.end();
+    });
  
 };
  
