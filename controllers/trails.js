@@ -56,7 +56,7 @@ module.exports.getTrails = function(req, res){
 	    .populate('submittedUser')
 	    .exec(function(err, trails) {
 		if (!err) {
-		    console.log(trails.submittedUser);
+		    console.log(trails);
 		    res.send(JSON.stringify(trails));
 		}
 		else
