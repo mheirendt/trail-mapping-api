@@ -23,8 +23,9 @@ exports.create = function(req, res) {
     file.pipe(writeStream);
   }).on('finish', function() {
     // show a link to the uploaded file
-    res.writeHead(200, {'content-type': 'text/html'});
-    res.end('<a href="/file/' + fileId.toString() + '">download file</a>');
+      res.writeHead(200, {'content-type': 'text/html'});
+      console.log("fileID: " + fileId);
+    res.end(fileId);
   });
 
   req.pipe(busboy);
