@@ -24,7 +24,7 @@ exports.create = function(req, res) {
   }).on('finish', function() {
       res.writeHead(200, {'content-type': 'text/html'});
       console.log("fileID: " + fileId);
-      res.end(JSON.stringify(fileId);
+      res.end(JSON.stringify(fileId));
   });
 
   req.pipe(busboy);
