@@ -22,10 +22,9 @@ exports.create = function(req, res) {
     });
     file.pipe(writeStream);
   }).on('finish', function() {
-    // show a link to the uploaded file
       res.writeHead(200, {'content-type': 'text/html'});
       console.log("fileID: " + fileId);
-    res.end(fileId);
+      res.end(JSON.stringify(fileId);
   });
 
   req.pipe(busboy);
@@ -53,8 +52,26 @@ exports.create = function(req, res) {
 };
  
  
-exports.read = function(req, res) {
- 
+    exports.read = function(req, res) {
+	gfs.findOne({ _id: req.params.id }, function (err, file) {
+	    if (err) return res.status(400).send(err);
+	    if (!file) return res.status(404).send('');
+
+	    res.set('Content-Type', file.contentType);
+	    res.set('Content-Disposition', 'attachment; filename="' + file.filename + '"');
+
+	    var readstream = gfs.createReadStream({
+		_id: file._id
+	    });
+
+	    readstream.on("error", function(err) {
+		console.log("Got error while processing stream " + err.message);
+		res.end();
+	    });
+
+	    readstream.pipe(res);
+	});
+ /*
 	gfs.files.find({ filename: req.params.filename }).toArray(function (err, files) {
  
  	    if(files.length===0){
@@ -82,6 +99,7 @@ exports.read = function(req, res) {
 		  throw err;
 		});
 	});
+*/
  
 };
  
