@@ -26,15 +26,20 @@ module.exports.getUserPosts = function (req, res) {
 }
 
 module.exports.getPosts = function (req, res) {
-    Post.find({})
-	.populate('reference')
-	.populate('submittedUser')
-	.exec(function(err, posts) {
-	    if (!err)
-		res.send(posts);
-	    else
-		res.status(400).end('Could not fetch posts');
-	});
+        User.findOne({ username : req.user.username}, function(error, user) {
+	if (error)
+	    res.status(401).end("User not signed in.");
+	Post.find({ submittedUser : {$in: user.following }})
+    	    .populate('reference')
+	    .populate('submittedUser')
+	    .exec(function(err, posts) {
+		if (!err) {
+		    res.send(posts);
+		}
+		else
+		    res.status(400).end('Could not fetch posts');
+	    });
+    });
 }
 
 module.exports.like = function (req, res) {
