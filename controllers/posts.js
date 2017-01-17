@@ -30,7 +30,7 @@ module.exports.getPosts = function (req, res) {
         User.findOne({ username : req.user.username}, function(error, user) {
 	if (error)
 	    res.status(401).end("User not signed in.");
-	Post.find({ submittedUser : {$in: user.following }})
+	    Post.find({$or: [{ submittedUser : {$in: user.following }}, {submittedUser : user._id}]}
     	    .populate('reference')
 	    .populate('submittedUser')
 	    .exec(function(err, posts) {
