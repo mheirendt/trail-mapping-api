@@ -56,7 +56,7 @@ module.exports.getTrails = function(req, res){
 	    .populate('submittedUser')
 	    .exec(function(err, trails) {
 		if (!err) {
-		    res.send(trails);
+		    res.send(JSON.stringify(trails));
 		}
 		else
 		    res.status(400).end('Could not fetch trails');
