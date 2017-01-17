@@ -12,22 +12,22 @@ exports.create = function(req, res) {
     var busboy = new Busboy({ headers : req.headers });
     var fileId = new mongo.ObjectId();
 
-      busboy.on('file', function(fieldname, file, filename, encoding, mimetype) {
-    console.log('got file', filename, mimetype, encoding);
-    var writeStream = gfs.createWriteStream({
-      _id: fileId,
-      filename: filename,
-      mode: 'w',
-      content_type: mimetype,
+    busboy.on('file', function(fieldname, file, filename, encoding, mimetype) {
+	console.log('got file', filename, mimetype, encoding);
+	var writeStream = gfs.createWriteStream({
+	    _id: fileId,
+	    filename: filename,
+	    mode: 'w',
+	    content_type: mimetype,
+	});
+	file.pipe(writeStream);
+    }).on('finish', function() {
+	res.writeHead(200, {'content-type': 'text/html'});
+	console.log("fileID: " + fileId);
+	res.end(JSON.stringify(filename));
     });
-    file.pipe(writeStream);
-  }).on('finish', function() {
-      res.writeHead(200, {'content-type': 'text/html'});
-      console.log("fileID: " + fileId);
-      res.end(JSON.stringify(fileId));
-  });
 
-  req.pipe(busboy);
+    req.pipe(busboy);
     /*
     var part = req.files.file;
     console.log(req.files.file.name);
