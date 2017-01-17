@@ -16,6 +16,9 @@ exports.create = function(req, res) {
         content_type:req.files.file.mimetype,
 	metadata: req.body
     });
+
+     read_stream.pipe(writeStream);
+    /*
     writeStream.on('close', function() {
         return res.status(200).send({
 	    message: 'Success'
@@ -25,6 +28,7 @@ exports.create = function(req, res) {
     writeStream.write(part.data).then(function() {
 	writeStream.end();
     });
+*/
  
 };
  
