@@ -20,11 +20,12 @@ exports.create = function(req, res) {
 	    mode: 'w',
 	    content_type: mimetype,
 	});
+	console.log("filename: " + filename + ", fieldnaem: " + fieldname);
 	file.pipe(writeStream);
     }).on('finish', function() {
 	res.writeHead(200, {'content-type': 'text/html'});
 	console.log("fileID: " + fileId);
-	res.end(JSON.stringify(filename));
+	res.end(JSON.stringify(fileId));
     });
 
     req.pipe(busboy);
