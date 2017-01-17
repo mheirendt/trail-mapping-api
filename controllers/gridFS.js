@@ -22,9 +22,9 @@ exports.create = function(req, res) {
 	});
     });
     
-    writeStream.write(part.data).then(function() {
-	writeStream.end();
-    });
+    writeStream.write(part.data);
+    
+    writeStream.end();
  
 };
  
