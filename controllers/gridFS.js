@@ -3,11 +3,27 @@
 var mongoose = require('mongoose');
 var Grid = require('gridfs-stream');
 var Busboy = require('busboy');
+var fs = require("fs");
+var multer = require("multer");
+var upload = multer({dest: "./uploads"});
 
 Grid.mongo = mongoose.mongo;
 var gfs = new Grid(mongoose.connection.db);
  
 exports.create = function(req, res) {
+    var writestream = gfs.createWriteStream({
+      filename: 'test'//req.file.originalname
+    });
+    fs.createReadStream("./uploads/" + req.file.filename)
+	.on("end", function(){fs.unlink("./uploads/"+ req.file.filename, function(err) {
+	    res.send("success")
+	})
+     })
+        .on("err", function()
+	    {res.send("Error uploading image")
+	 })
+     .pipe(writestream);
+    /*
     var busboy = new Busboy({ headers : req.headers });
     var fileId = new mongo.ObjectId();
 
@@ -28,6 +44,7 @@ exports.create = function(req, res) {
     });
 
     req.pipe(busboy);
+*/
  
 };
  
