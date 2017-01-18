@@ -45,7 +45,7 @@ exports.create = function(req, res) {
 
         req.pipe(bb);
 
-    });
+    //});
     /*
 1.
     var busboy = new Busboy({ headers : req.headers });
