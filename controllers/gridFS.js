@@ -2,6 +2,7 @@
  
 var mongoose = require('mongoose');
 var Grid = require('gridfs-stream');
+var Busboy = require('busboy');
 
 Grid.mongo = mongoose.mongo;
 var gfs = new Grid(mongoose.connection.db);
