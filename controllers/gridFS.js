@@ -2,7 +2,7 @@
  
 var mongoose = require('mongoose');
 var Grid = require('gridfs-stream');
-var Busboy = require('busboy');
+//var Busboy = require('busboy');
 var fs = require("fs");
 var multer = require("multer");
 var upload = multer({dest: "./uploads"});
@@ -22,7 +22,7 @@ exports.create = function(req, res) {
         .on("err", function()
 	    {res.send("Error uploading image")
 	 })
-     .pipe(writestream);
+       .pipe(writestream);
     /*
     var busboy = new Busboy({ headers : req.headers });
     var fileId = new mongo.ObjectId();
