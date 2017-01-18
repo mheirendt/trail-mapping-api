@@ -20,7 +20,7 @@
       "ejs": "~0.8.5",
       "express": "*",
       "express-session": "*",
-      "fs": "*",
+      "fs": "0.0.2",
       "multer": "*",
       "md5": "^2.0.0",
       "method-override": "~1.0.0",
