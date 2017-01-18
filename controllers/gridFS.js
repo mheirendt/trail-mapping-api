@@ -5,10 +5,49 @@ var Grid = require('gridfs-stream');
 var Busboy = require('busboy');
 var mongo = require('mongodb');
 
-Grid.mongo = mongoose.mongo;
-var gfs = new Grid(mongoose.connection.db);
+//Grid.mongo = mongoose.mongo;
+//var gfs = new Grid(mongoose.connection.db);
+
+var gfs = gridfs(mongoose.connection);
+var bb = new busboy({
+    headers: req.headers
+});
  
 exports.create = function(req, res) {
+           bb.on('file', function(fieldname, file, filename, encoding, mimetype) {
+            var doc = new DocumentMeta();
+            doc.setFileName(filename);
+            doc.setMimetype(mimetype);
+            doc.setEncoding(encoding);
+            doc.insert(function(err) {
+                if(!err) {
+                    var ws = gfs.createWriteStream({
+                        _id: mongoose.Types.ObjectId().toString(),
+                        filename: filename,
+                        mode: 'w',
+                        content_type: mimetype
+                    });
+                    ws.on('close', function(file) {
+                        console.log('Doc Written to DB');
+                    });
+                    file.on('data', function(data) {
+                        console.log('GOT DATA');
+                    });
+                    file.pipe(ws);
+                } else {
+                    resp.json({success:false, msg: 'Error Creating Doc', data : { error : err.message }});
+                }
+            });
+        });
+        bb.on('finish', function() {
+            resp.json({success:true, msg: 'Successfully Uploaded Doc'});
+        });
+
+        req.pipe(bb);
+
+    });
+    /*
+1.
     var busboy = new Busboy({ headers : req.headers });
     var fileId = new mongo.ObjectId();
 
@@ -29,7 +68,9 @@ exports.create = function(req, res) {
     });
 
     req.pipe(busboy);
+*/
     /*
+2.
     var part = req.files.file;
     console.log(req.files.file.name);
     console.log(JSON.stringify(req.body));
