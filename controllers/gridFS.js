@@ -6,9 +6,9 @@ var Busboy = require('busboy');
 var mongo = require('mongodb');
 
 //Grid.mongo = mongoose.mongo;
-//var gfs = new Grid(mongoose.connection.db);
+var gfs = new Grid(mongoose.connection.db);
 
-var gfs = Grid(mongoose.connection);
+//var gfs = Grid(mongoose.connection);
 var bb = new busboy({
     headers: req.headers
 });
