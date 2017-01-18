@@ -2,7 +2,7 @@
  
 var mongoose = require('mongoose');
 var Grid = require('gridfs-stream');
-//var Busboy = require('busboy');
+var Busboy = require('busboy');
 var fs = require("fs");
 var multer = require("multer");
 var upload = multer({dest: "./uploads"});
@@ -11,18 +11,18 @@ Grid.mongo = mongoose.mongo;
 var gfs = new Grid(mongoose.connection.db);
  
 exports.create = function(req, res) {
-    var writestream = gfs.createWriteStream({
-      filename: 'test'//req.file.originalname
-    });
-    fs.createReadStream("./uploads/" + req.file.filename)
-	.on("end", function(){fs.unlink("./uploads/"+ req.file.filename, function(err) {
-	    res.send("success")
-	})
-     })
-        .on("err", function()
-	    {res.send("Error uploading image")
-	 })
-       .pipe(writestream);
+  var tmp_path = req.file.path;
+
+  /** The original name of the uploaded file
+      stored in the variable "originalname". **/
+  var target_path = 'uploads/' + req.file.originalname;
+
+  /** A better way to copy the uploaded file. **/
+  var src = fs.createReadStream(tmp_path);
+  var dest = fs.createWriteStream(target_path);
+  src.pipe(dest);
+  src.on('end', function() { res.status('400'); });
+    src.on('error', function(err) { res.status('200').end('upload complete')});
     /*
     var busboy = new Busboy({ headers : req.headers });
     var fileId = new mongo.ObjectId();
