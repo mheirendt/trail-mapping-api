@@ -37,6 +37,8 @@ exports.create = function(req, res) {
 	}
 	
     });
+    form.on('error', function(err) { console.log(err); });
+    form.on('aborted', function() { console.log('Aborted'); })
     form.on('end', function () {
         res.send('Completed ... go check fs.files & fs.chunks in mongodb');
     });
