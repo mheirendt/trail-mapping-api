@@ -10,7 +10,7 @@ var formidable = require("formidable");
 
 Grid.mongo = mongoose.mongo;
 var gfs = new Grid(mongoose.connection.db);
-//var conn = mongoose.connection;
+var conn = mongoose.connection;
  
 exports.create = function(req, res) {
     console.log(JSON.stringify(req.file));
@@ -19,11 +19,14 @@ exports.create = function(req, res) {
     var form = new formidable.IncomingForm();
     form.uploadDir = "./Uploads";
     form.keepExtensions = true;
+    console.log("about to start");
     form.parse(req, function (err, fields, files) {
+	console.log("parsed");
         if (!err) {
+	    console.log(no error);
             console.log('Files Uploaded: ' + files.file)
             grid.mongo = mongoose.mongo;
-            //var gfs = grid(conn.db);
+            var gfs = Grid(conn.db);
             var writestream = gfs.createWriteStream({
                 filename: files.file.name
             });
