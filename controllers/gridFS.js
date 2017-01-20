@@ -11,8 +11,8 @@ Grid.mongo = mongoose.mongo;
 var gfs = new Grid(mongoose.connection.db);
  
 exports.create = function(req, res) {
-    console.log(req.file);
-    console.log("body: " + req.body);
+    console.log(JSON.stringify(req.file));
+    console.log("body: " + JSON.stringify(req.body));
   var tmp_path = req.file.path;
   /** The original name of the uploaded file
       stored in the variable "originalname". **/
