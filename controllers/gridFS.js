@@ -38,7 +38,7 @@ exports.read = function(req, res) {
     //var gfs = req.gfs;
     Grid.mongo = mongoose.mongo;
     var gfs = new Grid(mongoose.connection.db);
-    console.log(JSON.stringify(gfs.files));
+    //console.log(JSON.stringify(gfs.files));
     gfs.files.find({filename: pic_id}).toArray(function (err, files) {
         if (err)
             res.end(err);
