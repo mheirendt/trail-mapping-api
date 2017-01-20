@@ -46,12 +46,12 @@ exports.read = function(req, res) {
 	//console.log(file);
 	if (err)
 	    res.status(400).end('File not found');
-        if (files.length > 0) {
+        //if (files.length > 0) {
             var mime = 'image/jpeg';
             res.set('Content-Type', mime);
             var read_stream = gfs.createReadStream({filename: pic_id});
             read_stream.pipe(res);
-        }
+        //}
     });
     
     /*gfs.files.find({_id: pic_id}).toArray(function (err, files) {
