@@ -12,20 +12,20 @@ exports.create = function(req, res) {
 	path = req.file.path,
 	type = req.file.mimetype,
 	read_stream =  fs.createReadStream(dirname + '/' + path);
-
+    
     Grid.mongo = mongoose.mongo;
     
-    var gfs = new Grid(mongoose.connection.db);
-
-    var	writestream = gfs.createWriteStream({
+    var gfs = new Grid(mongoose.connection.db),
+	writestream = gfs.createWriteStream({
             filename: filename
 	});
-    read_stream.pipe(writestream);
     
+    read_stream.pipe(writestream);
+
+    //Error - Success handling
     read_stream.on('end', function () {
         res.status(200).end('Upload Successful');
     });
-    
     read_stream.on('error', function(err) {
 	res.status(400).end(err);
     });
@@ -35,7 +35,9 @@ exports.create = function(req, res) {
  
 exports.read = function(req, res) {
     var pic_id = req.param('id');
-    var gfs = req.gfs;
+    //var gfs = req.gfs;
+    Grid.mongo = mongoose.mongo;
+    var gfs = new Grid(mongoose.connection.db),
  
     gfs.files.find({filename: pic_id}).toArray(function (err, files) {
         if (err)
