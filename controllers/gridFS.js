@@ -31,7 +31,11 @@ exports.create = function(req, res) {
                 filename: files.file.name
             });
             fs.createReadStream(files.file.path).pipe(writestream);
-        }
+        } else {
+	    console.log(JSON.stringify(err));
+	    res.status(400).end('unable to parse form');
+	}
+	
     });
     form.on('end', function () {
         res.send('Completed ... go check fs.files & fs.chunks in mongodb');
