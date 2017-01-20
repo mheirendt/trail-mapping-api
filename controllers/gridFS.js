@@ -23,7 +23,7 @@ exports.create = function(req, res) {
     form.parse(req, function (err, fields, files) {
 	console.log("parsed");
         if (!err) {
-	    console.log(no error);
+	    console.log("no error");
             console.log('Files Uploaded: ' + files.file)
             grid.mongo = mongoose.mongo;
             var gfs = Grid(conn.db);
