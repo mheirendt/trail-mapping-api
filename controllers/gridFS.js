@@ -11,13 +11,15 @@ exports.create = function(req, res) {
 	filename = req.file.name,
 	path = req.file.path,
 	type = req.file.mimetype,
-	read_stream =  fs.createReadStream(dirname + '/' + path),
-	gfs = new Grid(mongoose.connection.db),
-	writestream = gfs.createWriteStream({
-            filename: filename
-	});
+	read_stream =  fs.createReadStream(dirname + '/' + path);
 
     Grid.mongo = mongoose.mongo;
+    
+    var gfs = new Grid(mongoose.connection.db);
+
+    var	writestream = gfs.createWriteStream({
+            filename: filename
+	});
     read_stream.pipe(writestream);
     
     read_stream.on('end', function () {
