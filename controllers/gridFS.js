@@ -42,7 +42,7 @@ exports.read = function(req, res) {
 	_id: pic_id
     });
     read_stream.pipe(res);*/
-    gfs.findOne({ _id: pic_id }, function (err, file) {
+    gfs.files.findOne({ _id: pic_id }, function (err, file) {
 	//console.log(file);
 	if (err)
 	    res.status(400).end('File not found');
