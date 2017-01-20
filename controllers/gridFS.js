@@ -33,7 +33,7 @@ exports.create = function(req, res) {
         filename: filename
     });
     read_stream.pipe(writestream);
-    read_stream.on('end', function() {
+    writestream.on('end', function() {
 	res.status(200).end('File succesfully uploaded');
     });
  
