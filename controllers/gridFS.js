@@ -32,47 +32,10 @@ exports.create = function(req, res) {
      var writestream = gfs.createWriteStream({
         filename: filename
     });
-     read_stream.pipe(writestream);
-    
-    //delete app.use(express.bodyParser());
-    //var form = new formidable.IncomingForm();
-    //form.uploadDir = "./Uploads";
-    //form.keepExtensions = true;
-    //console.log("about to start");
-    //form.on('error', function(err) { console.log(err); });
-    //form.on('aborted', function() { console.log('Aborted'); })
-    //form.on('end', function () {
-        //res.send('Completed ... go check fs.files & fs.chunks in mongodb');
-    //});
-    //console.log(JSON.stringify(form));
-    //form.parse(req, function (err, fields, files) {
-/*	console.log("parsed");
-        if (!err) {
-	    console.log("no error");
-            console.log('Files Uploaded: ' + files.file)
-            grid.mongo = mongoose.mongo;
-            var gfs = Grid(conn.db);
-            var writestream = gfs.createWriteStream({
-                filename: files.file.name
-            });
-            fs.createReadStream(files.file.path).pipe(writestream);
-        } else {
-	    console.log(JSON.stringify(err));
-	    res.status(400).end('unable to parse form');
-	}
-	
-    });*/
-    
-  //var tmp_path = req.file.path;
-  /** The original name of the uploaded file
-      stored in the variable "originalname". **/
-    /*
-  var target_path = 'uploads/' + req.file.originalname;
-  var src = fs.createReadStream(tmp_path);
-  var dest = fs.createWriteStream(target_path);
-  src.pipe(dest);
-  src.on('end', function() { res.status('400'); });
-    src.on('error', function(err) { res.status('200').end('upload complete')});*/
+    read_stream.pipe(writestream);
+    read_stream.on('end', function() {
+	res.status(200).end('File succesfully uploaded');
+    });
  
 };
  
