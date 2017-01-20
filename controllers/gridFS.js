@@ -2,10 +2,10 @@
  
 var mongoose = require('mongoose');
 var Grid = require('gridfs-stream');
+var fs = require('fs');
 
 exports.create = function(req, res) {
     //console.log(JSON.stringify(req.file));
-    //console.log("body: " + JSON.stringify(req.body));
 
     var dirname = "./",
 	filename = req.file.name,
@@ -16,17 +16,14 @@ exports.create = function(req, res) {
 	writestream = gfs.createWriteStream({
             filename: filename
 	});
- 
-    //var conn = req.conn;
+
     Grid.mongo = mongoose.mongo;
- 
-    //var gfs = Grid(conn.db);
-    
     read_stream.pipe(writestream);
     
     read_stream.on('end', function () {
         res.status(200).end('Upload Successful');
     });
+    
     read_stream.on('error', function(err) {
 	res.status(400).end(err);
     });
