@@ -16,7 +16,7 @@ exports.create = function(req, res) {
     console.log(JSON.stringify(req.file));
     console.log("body: " + JSON.stringify(req.body));
 
-    var dirname = "./uploads";
+    var dirname = "./";
      var filename = req.file.name;
      var path = req.file.path;
      var type = req.file.mimetype;
@@ -25,7 +25,6 @@ exports.create = function(req, res) {
  
     var conn = req.conn;
     Grid.mongo = mongoose.mongo;
-
  
      var gfs = Grid(conn.db);
       
