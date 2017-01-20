@@ -27,11 +27,11 @@ db.once('open', function(){
 
 //app.use(morgan('dev'));
 //app.use(cookieParser());
-//app.use(bodyParser.json());
+app.use(bodyParser.json());
 //app.use(busboyBodyParser());
-//app.use(bodyParser.urlencoded({ extended: true }));
-app.use(express.json());
-app.use(express.urlencoded());
+app.use(bodyParser.urlencoded({ extended: true }));
+//app.use(express.json());
+//app.use(express.urlencoded());
 
 redis.auth(redisAuth[1]);
 
