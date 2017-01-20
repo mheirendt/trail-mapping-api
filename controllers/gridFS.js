@@ -38,10 +38,16 @@ exports.read = function(req, res) {
     //var gfs = req.gfs;
     Grid.mongo = mongoose.mongo;
     var gfs = new Grid(mongoose.connection.db);
-    var readstream = gfs.createReadStream({
+    /*var readstream = gfs.createReadStream({
 	_id: pic_id
     });
-    read_stream.pipe(res);
+    read_stream.pipe(res);*/
+    gfs.findOne({ _id: pic_id }, function (err, file) {
+	//console.log(file);
+	if (err)
+	    res.status(400).end('File not found');
+	res.end(file);
+    });
     
     /*gfs.files.find({_id: pic_id}).toArray(function (err, files) {
         if (err)
