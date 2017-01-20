@@ -32,15 +32,11 @@ exports.create = function(req, res) {
      var writestream = gfs.createWriteStream({
         filename: filename
     });
+    
     read_stream.pipe(writestream);
-
-    read_stream.on('open', function () {
-        console.log('*** stream opened');
-        readstream.pipe(writestream);
-    });
+    
     read_stream.on('end', function () {
         console.log('*** file upload finished');
-        doCSUpdate();
     });
     read_stream.on('error', function() {
         console.log('*** error occured');
