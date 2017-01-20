@@ -17,9 +17,9 @@ exports.create = function(req, res) {
     console.log("body: " + JSON.stringify(req.body));
 
     var dirname = "./uploads";
-     var filename = req.file.file.name;
-     var path = req.file.file.path;
-     var type = req.file.file.mimetype;
+     var filename = req.file.name;
+     var path = req.file.path;
+     var type = req.file.mimetype;
       
      var read_stream =  fs.createReadStream(dirname + '/' + path);
  
