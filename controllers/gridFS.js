@@ -2,19 +2,15 @@
  
 var mongoose = require('mongoose');
 var Grid = require('gridfs-stream');
-//var Busboy = require('busboy');
 var fs = require("fs");
 var multer = require("multer");
 var upload = multer({dest: "./uploads"});
-//var formidable = require("formidable");
 
 
 var gfs = new Grid(mongoose.connection.db);
-Grid.mongo = mongoose.mongo;
- 
 exports.create = function(req, res) {
-    //console.log(JSON.stringify(req.file));
-    //console.log("body: " + JSON.stringify(req.body));
+    console.log(JSON.stringify(req.file));
+    console.log("body: " + JSON.stringify(req.body));
 
     var dirname = "./";
     var filename = req.file.name;
@@ -22,6 +18,9 @@ exports.create = function(req, res) {
     var type = req.file.mimetype;
       
     var read_stream =  fs.createReadStream(dirname + '/' + path);
+
+    Grid.mongo = mongoose.mongo;
+ 
     var writestream = gfs.createWriteStream({
         filename: filename
     });
@@ -29,10 +28,10 @@ exports.create = function(req, res) {
     read_stream.pipe(writestream);
     
     read_stream.on('end', function () {
-        res.status(200).end('File uploaded');
+        res.status(200).end('Upload Successful');
     });
-    read_stream.on('error', function() {
-	res.status(400).end('There was a problem uploading image');
+    read_stream.on('error', function(err) {
+	res.status(400).end(err);
     });
  
 };
