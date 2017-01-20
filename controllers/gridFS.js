@@ -32,38 +32,17 @@ exports.create = function(req, res) {
  
 };
  
- 
 exports.read = function(req, res) {
-    var pic_id = req.params.id;
-    //var gfs = req.gfs;
     Grid.mongo = mongoose.mongo;
-    var gfs = new Grid(mongoose.connection.db);
-    /*var readstream = gfs.createReadStream({
-	_id: pic_id
-    });
-    read_stream.pipe(res);*/
+    var pic_id = req.params.id,
+	gfs = new Grid(mongoose.connection.db);
     gfs.files.findOne({ _id: pic_id }, function (err, file) {
 	//console.log(file);
 	if (err)
 	    res.status(400).end('File not found');
-        //if (files.length > 0) {
-            var mime = 'image/jpeg';
-            res.set('Content-Type', mime);
-            var read_stream = gfs.createReadStream({filename: pic_id});
-            read_stream.pipe(res);
-        //}
+        var mime = 'image/jpeg',
+	    readStream = gfs.createReadStream({filename: pic_id});
+        res.set('Content-Type', mime);
+        readStream.pipe(res);
     });
-    
-    /*gfs.files.find({_id: pic_id}).toArray(function (err, files) {
-        if (err)
-            res.end(err);
-        if (files.length > 0) {
-            var mime = 'image/jpeg';
-            res.set('Content-Type', mime);
-            var read_stream = gfs.createReadStream({filename: pic_id});
-            read_stream.pipe(res);
-        } else {
-            res.status(400).end('File Not Found');
-        }
-    });*/
 };
