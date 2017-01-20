@@ -30,6 +30,8 @@ db.once('open', function(){
 //app.use(bodyParser.json());
 //app.use(busboyBodyParser());
 //app.use(bodyParser.urlencoded({ extended: true }));
+app.use(express.json());
+app.use(express.urlencoded());
 
 redis.auth(redisAuth[1]);
 
