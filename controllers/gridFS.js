@@ -11,40 +11,17 @@ Grid.mongo = mongoose.mongo;
 var gfs = new Grid(mongoose.connection.db);
  
 exports.create = function(req, res) {
+    console.log(req.file);
+    console.log("body: " + req.body);
   var tmp_path = req.file.path;
-
   /** The original name of the uploaded file
       stored in the variable "originalname". **/
   var target_path = 'uploads/' + req.file.originalname;
-
-  /** A better way to copy the uploaded file. **/
   var src = fs.createReadStream(tmp_path);
   var dest = fs.createWriteStream(target_path);
   src.pipe(dest);
   src.on('end', function() { res.status('400'); });
     src.on('error', function(err) { res.status('200').end('upload complete')});
-    /*
-    var busboy = new Busboy({ headers : req.headers });
-    var fileId = new mongo.ObjectId();
-
-    req.busboy.on('file', function(fieldname, file, filename, encoding, mimetype) {
-	console.log('got file', filename, mimetype, encoding);
-	var writeStream = gfs.createWriteStream({
-	    _id: fileId,
-	    filename: filename,
-	    mode: 'w',
-	    content_type: mimetype,
-	});
-	console.log("filename: " + filename);
-	file.pipe(writeStream);
-    }).on('finish', function() {
-	res.writeHead(200, {'content-type': 'text/html'});
-	console.log("fileID: " + fileId);
-	res.end(JSON.stringify(fileId));
-    });
-
-    req.pipe(busboy);
-*/
  
 };
  
