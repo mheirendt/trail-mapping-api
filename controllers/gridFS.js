@@ -6,22 +6,44 @@ var Busboy = require('busboy');
 var fs = require("fs");
 var multer = require("multer");
 var upload = multer({dest: "./uploads"});
+var formidable = require("formidable");
 
 Grid.mongo = mongoose.mongo;
 var gfs = new Grid(mongoose.connection.db);
+//var conn = mongoose.connection;
  
 exports.create = function(req, res) {
     console.log(JSON.stringify(req.file));
     console.log("body: " + JSON.stringify(req.body));
-  var tmp_path = req.file.path;
+
+    var form = new formidable.IncomingForm();
+    form.uploadDir = "./Uploads";
+    form.keepExtensions = true;
+    form.parse(req, function (err, fields, files) {
+        if (!err) {
+            console.log('Files Uploaded: ' + files.file)
+            grid.mongo = mongoose.mongo;
+            //var gfs = grid(conn.db);
+            var writestream = gfs.createWriteStream({
+                filename: files.file.name
+            });
+            fs.createReadStream(files.file.path).pipe(writestream);
+        }
+    });
+    form.on('end', function () {
+        res.send('Completed ... go check fs.files & fs.chunks in mongodb');
+    });
+    
+  //var tmp_path = req.file.path;
   /** The original name of the uploaded file
       stored in the variable "originalname". **/
+    /*
   var target_path = 'uploads/' + req.file.originalname;
   var src = fs.createReadStream(tmp_path);
   var dest = fs.createWriteStream(target_path);
   src.pipe(dest);
   src.on('end', function() { res.status('400'); });
-    src.on('error', function(err) { res.status('200').end('upload complete')});
+    src.on('error', function(err) { res.status('200').end('upload complete')});*/
  
 };
  
