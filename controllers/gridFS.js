@@ -25,6 +25,7 @@ exports.create = function(req, res) {
     form.on('end', function () {
         res.send('Completed ... go check fs.files & fs.chunks in mongodb');
     });
+    console.log(JSON.stringify(form));
     form.parse(req, function (err, fields, files) {
 	console.log("parsed");
         if (!err) {
