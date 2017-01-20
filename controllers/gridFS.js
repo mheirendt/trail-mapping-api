@@ -37,7 +37,7 @@ exports.read = function(req, res) {
     var pic_id = req.param('id');
     //var gfs = req.gfs;
     Grid.mongo = mongoose.mongo;
-    var gfs = new Grid(mongoose.connection.db),
+    var gfs = new Grid(mongoose.connection.db);
  
     gfs.files.find({filename: pic_id}).toArray(function (err, files) {
         if (err)
