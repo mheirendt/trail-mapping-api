@@ -20,6 +20,11 @@ exports.create = function(req, res) {
     form.uploadDir = "./Uploads";
     form.keepExtensions = true;
     console.log("about to start");
+    form.on('error', function(err) { console.log(err); });
+    form.on('aborted', function() { console.log('Aborted'); })
+    form.on('end', function () {
+        res.send('Completed ... go check fs.files & fs.chunks in mongodb');
+    });
     form.parse(req, function (err, fields, files) {
 	console.log("parsed");
         if (!err) {
@@ -36,11 +41,6 @@ exports.create = function(req, res) {
 	    res.status(400).end('unable to parse form');
 	}
 	
-    });
-    form.on('error', function(err) { console.log(err); });
-    form.on('aborted', function() { console.log('Aborted'); })
-    form.on('end', function () {
-        res.send('Completed ... go check fs.files & fs.chunks in mongodb');
     });
     
   //var tmp_path = req.file.path;
