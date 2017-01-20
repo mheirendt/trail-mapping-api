@@ -33,8 +33,18 @@ exports.create = function(req, res) {
         filename: filename
     });
     read_stream.pipe(writestream);
-    writestream.on('end', function() {
-	res.status(200).end('File succesfully uploaded');
+
+    read_stream.on('open', function () {
+        console.log('*** stream opened');
+        readstream.pipe(writestream);
+    });
+    read_stream.on('end', function () {
+        console.log('*** file upload finished');
+        doCSUpdate();
+    });
+    read_stream.on('error', function() {
+        console.log('*** error occured');
+        doCSUpdate();
     });
  
 };
