@@ -8,7 +8,7 @@ var express = require('express'),
     flash = require('connect-flash'),
     socketio = require('socket.io'),
     //morgan = require('morgan'),
-    //bodyParser = require('body-parser'),
+    bodyParser = require('body-parser'),
     session = require('express-session'),
     redisStore = require('connect-redis')(session),
     url = require('url'),
@@ -30,8 +30,6 @@ db.once('open', function(){
 app.use(bodyParser.json());
 //app.use(busboyBodyParser());
 app.use(bodyParser.urlencoded({ extended: true }));
-//app.use(express.json());
-//app.use(express.urlencoded());
 
 redis.auth(redisAuth[1]);
 
