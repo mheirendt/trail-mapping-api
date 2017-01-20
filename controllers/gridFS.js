@@ -15,7 +15,7 @@ var conn = mongoose.connection;
 exports.create = function(req, res) {
     console.log(JSON.stringify(req.file));
     console.log("body: " + JSON.stringify(req.body));
-
+    delete app.use(express.bodyParser());
     var form = new formidable.IncomingForm();
     form.uploadDir = "./Uploads";
     form.keepExtensions = true;
