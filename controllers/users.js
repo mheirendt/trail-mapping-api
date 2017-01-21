@@ -45,13 +45,19 @@ module.exports.login = function(req, res, next) {
     console.log("logging in");
     console.log("login: " + req.body.username);
         passport.authenticate('local', function(err, user, info) {
-            if (err)
+            if (err) {
+		console.log("error Logging in at user: " + JSON.stringify(err));
                 return next(err);
-            if(!user)
+	    }
+            if(!user) {
+		console.log("User not found");
                 return res.status(400).json({SERVER_RESPONSE: 0, SERVER_MESSAGE: "Wrong Credentials"});
+	    }
             req.logIn(user, function(err) {
-                if (err)
+                if (err) {
+		    console.log("error Logging in at user #2: " + JSON.stringify(err));
                     return next(err);
+		}
                 else{
 		    console.log("Username: " + req.body.username);
 		    req.session.key = req.body.username;
