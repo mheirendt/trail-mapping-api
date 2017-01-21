@@ -29,7 +29,7 @@ exports.create = function(req, res) {
 	console.log(writestream._id);
 	console.log(writestream.id);
 		    
-        res.status(200).end(writestream.id);
+        res.status(200).end({'id' : writestream.id});
     });
     read_stream.on('error', function(err) {
 	res.status(400).end(err);
