@@ -7,7 +7,7 @@ var express = require('express'),
     passport = require('passport'),
     flash = require('connect-flash'),
     socketio = require('socket.io'),
-    //morgan = require('morgan'),
+    morgan = require('morgan'),
     bodyParser = require('body-parser'),
     session = require('express-session'),
     redisStore = require('connect-redis')(session),
@@ -25,7 +25,7 @@ db.once('open', function(){
     console.log('MongoDB connection successful.');
 });
 
-//app.use(morgan('dev'));
+app.use(morgan('dev'));
 //app.use(cookieParser());
 app.use(bodyParser.json());
 //app.use(busboyBodyParser());

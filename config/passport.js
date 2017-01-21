@@ -6,11 +6,13 @@ var auth = require('../config/auth');
 module.exports = function(passport) {
 
     passport.serializeUser(function(user, done) {
+	console.log("serializing User: " + user.id);
 	done(null, user.id);
     });
 
     passport.deserializeUser(function(id, done) {
         User.findById(id, function(err, user){
+	    console.log("deserializing User: " + user.id);
             done(err, user);
         });
     
@@ -18,7 +20,7 @@ module.exports = function(passport) {
 
     //===============LOCAL STRATEGIES================
     passport.use(new LocalStrategy(function(username, password, done) {
-	
+	console.log("localStrategy");
         User.findOne({ 'username': username }, function (err, user) {
             if (err) { return done(err); }
             if (!user) {
@@ -27,6 +29,7 @@ module.exports = function(passport) {
             if (!user.validPassword(password)) {
                 return done(null, false, { message: 'Incorrect password.' });
             }
+	    console.log("local success");
             return done(null, user);
         });
     }));
