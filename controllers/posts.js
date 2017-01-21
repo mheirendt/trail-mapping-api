@@ -27,6 +27,8 @@ module.exports.getUserPosts = function (req, res) {
 }
 
 module.exports.getPosts = function (req, res) {
+    console.log("posts: " + req.user.username);
+    console.log("posts: " + req.session.key);
         User.findOne({ username : req.user.username}, function(error, user) {
 	if (error)
 	    res.status(401).end("User not signed in.");
