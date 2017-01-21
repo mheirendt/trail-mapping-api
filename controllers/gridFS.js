@@ -31,7 +31,7 @@ exports.create = function(req, res) {
 	    if (error)
 		return res.status(400).end('User not signed in');
 	    console.log("File: " + JSON.stringify(file));
-	    user.avartar = file.id;
+	    user.avartar = user;
 	    user.save();
             res.status(200).end('Upload Successful');
 	//});
