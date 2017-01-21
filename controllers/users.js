@@ -210,6 +210,7 @@ module.exports.update = function(req, res) {
 		    });
 		}
                 user.save();
+		console.log("User: " + JSON.stringify(user));
 
                 res.writeHead(200, {"Content-Type": "application/json"});
                 user = user.toObject();
