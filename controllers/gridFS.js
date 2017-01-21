@@ -3,12 +3,9 @@
 var mongoose = require('mongoose');
 var Grid = require('gridfs-stream');
 var fs = require('fs');
-var User = require('../models/user');
 
 exports.create = function(req, res) {
-    console.log(JSON.stringify(req.file));
-    console.log("Body: " + JSON.stringify(req.body));
-    console.log("User: " + JSON.stringify(req.user));
+    //console.log(JSON.stringify(req.file));
 
     var dirname = "./",
 	filename = req.file.name,
@@ -26,15 +23,8 @@ exports.create = function(req, res) {
     read_stream.pipe(writestream);
 
     //Error - Success handling
-    read_stream.on('end', function (file) {
-	User.findOne({ _id : req.body.ver}, function(error, user) {
-	    if (error)
-		return res.status(400).end('User not signed in');
-	    console.log("File: " + JSON.stringify(file));
-	    user.avartar = user;
-	    user.save();
-            res.status(200).end('Upload Successful');
-	});
+    read_stream.on('end', function () {
+        res.status(200).end('Upload Successful');
     });
     read_stream.on('error', function(err) {
 	res.status(400).end(err);
