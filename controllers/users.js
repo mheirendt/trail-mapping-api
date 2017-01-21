@@ -93,6 +93,7 @@ module.exports.readByUsername = function(req, res) {
 
 module.exports.findUsers = function(req, res) {
     User.find({username : new RegExp(req.params.usernames, "i")})
+    .populate('avatar')
     .populate('following')
     .populate('followers')
     .limit(10)
@@ -129,6 +130,7 @@ module.exports.follow = function(req, res) {
 	    });
 	});
 	User.findOne({ username: req.body.username })
+            .populate('avatar')
 	    .populate('following')
 	    .populate('followers')
 	    .exec(function(e, finalUser) {
@@ -154,6 +156,7 @@ module.exports.unfollow = function(req, res) {
 	    user.save();
 	});
 	User.findOne({ username: req.body.username })
+            .populate('avatar')
 	    .populate('following')
 	    .populate('followers')
 	    .exec(function(e, finalUser) {

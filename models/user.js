@@ -1,6 +1,8 @@
 
 var mongoose = require('mongoose');
 var bcrypt   = require('bcrypt-nodejs');
+var GFS = mongoose.model("GFS", new Schema({}, {strict: false}), "fs.files" );
+
 //var md5 = require('MD5');
 
 var userSchema = mongoose.Schema({
@@ -8,7 +10,10 @@ var userSchema = mongoose.Schema({
 	    type: String,
 	    index: true
     },
-    avatar: String,
+    avatar: {
+	type: Schema.Types.Object,
+	ref: 'GFS'
+    },
     email: String,
     score: Number,
     created: Date,
