@@ -21,7 +21,7 @@ exports.create = function(req, res) {
 
     //Error - Success handling
     read_stream.on('end', function (file) {
-        res.status(200).end(new String(writestream.id););
+        res.status(200).end(new String(writestream.id));
     });
     read_stream.on('error', function(err) {
 	res.status(400).end(err);
