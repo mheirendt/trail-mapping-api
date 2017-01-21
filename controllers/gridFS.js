@@ -21,11 +21,13 @@ exports.create = function(req, res) {
 
     //Error - Success handling
     read_stream.on('end', function (file) {
-        res.status(200).end(new String(writestream.id));
+	var fileJSON = {'id' : writestream.id};
+        res.status(200).end(JSON.stringify(fileJSON));
     });
     read_stream.on('error', function(err) {
 	res.status(400).end(err);
     });
+ 
 };
  
 exports.read = function(req, res) {
