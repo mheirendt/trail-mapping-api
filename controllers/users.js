@@ -1,7 +1,5 @@
 var User = require('../models/user');
 var passport = require('passport');
-var mongoose = require('mongoose');
-var Grid = require('gridfs-stream');
 
 module.exports = {};
 
@@ -17,6 +15,7 @@ module.exports.create = function(req, res) {
 	    //Create a new user from mongoose schema
             var newUser = new User();
             newUser.username = req.body.username;
+	    newUser.avatar = req.body.avatar
             newUser.local.password = newUser.generateHash(req.body.password);
             newUser.email = req.body.email;
             newUser.score = 0;

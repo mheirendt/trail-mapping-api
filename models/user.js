@@ -1,9 +1,6 @@
 
 var mongoose = require('mongoose');
 var bcrypt   = require('bcrypt-nodejs');
-var GFS = mongoose.model("GFS", new mongoose.Schema({}, {strict: false}), "fs.files" );
-
-//var md5 = require('MD5');
 
 var userSchema = mongoose.Schema({
     username: {
