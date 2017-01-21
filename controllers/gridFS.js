@@ -5,7 +5,7 @@ var Grid = require('gridfs-stream');
 var fs = require('fs');
 
 exports.create = function(req, res) {
-    /*
+    
     var dirname = "./",
 	filename = req.file.name,
 	path = req.file.path,
@@ -28,7 +28,7 @@ exports.create = function(req, res) {
     read_stream.on('error', function(err) {
 	res.status(400).end(err);
     });
-*/
+
  
 };
  
