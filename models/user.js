@@ -10,10 +10,7 @@ var userSchema = mongoose.Schema({
 	    type: String,
 	    index: true
     },
-    avatar: {
-	type: mongoose.Schema.Types.Object,
-	ref: 'GFS'
-    },
+    avatar: String,
     email: String,
     score: Number,
     created: Date,
