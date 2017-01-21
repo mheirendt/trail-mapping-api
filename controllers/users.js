@@ -52,6 +52,7 @@ module.exports.login = function(req, res, next) {
                 if (err)
                     return next(err);
                 else{
+		    console.log("Username: " + req.body.username);
 		    req.session.key = req.body.username;
                     return res.json({ SERVER_RESPONSE: 1, SERVER_MESSAGE: "Logged in!" });
 		}
