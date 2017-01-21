@@ -11,7 +11,7 @@ var userSchema = mongoose.Schema({
 	    index: true
     },
     avatar: {
-	type: Schema.Types.Object,
+	type: mongooseSchema.Types.Object,
 	ref: 'GFS'
     },
     email: String,
