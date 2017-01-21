@@ -6,7 +6,9 @@ var fs = require('fs');
 var User = require('../models/user');
 
 exports.create = function(req, res) {
-    //console.log(JSON.stringify(req.file));
+    console.log(JSON.stringify(req.file));
+    console.log("Body: " + JSON.stringify(req.body));
+    console.log("User: " + JSON.stringify(req.user));
 
     var dirname = "./",
 	filename = req.file.name,
@@ -25,14 +27,14 @@ exports.create = function(req, res) {
 
     //Error - Success handling
     read_stream.on('end', function (file) {
-	User.findOne({ username : req.user.username}, function(error, user) {
-	    if (error)
-		return res.status(400).end('User not signed in');
+	//User.findOne({ username : req.user.username}, function(error, user) {
+	    //if (error)
+		//return res.status(400).end('User not signed in');
 	    console.log("File: " + JSON.stringify(file));
 	    user.avartar = file.id;
 	    user.save();
             res.status(200).end('Upload Successful');
-	});
+	//});
     });
     read_stream.on('error', function(err) {
 	res.status(400).end(err);
