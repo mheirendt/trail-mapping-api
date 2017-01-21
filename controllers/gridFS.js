@@ -5,6 +5,7 @@ var Grid = require('gridfs-stream');
 var fs = require('fs');
 
 exports.create = function(req, res) {
+    /*
     var dirname = "./",
 	filename = req.file.name,
 	path = req.file.path,
@@ -27,10 +28,12 @@ exports.create = function(req, res) {
     read_stream.on('error', function(err) {
 	res.status(400).end(err);
     });
+*/
  
 };
  
 exports.read = function(req, res) {
+    /*
     Grid.mongo = mongoose.mongo;
     var pic_id = req.params.id,
 	gfs = new Grid(mongoose.connection.db);
@@ -43,4 +46,5 @@ exports.read = function(req, res) {
         res.set('Content-Type', mime);
         readStream.pipe(res);
     });
+*/
 };

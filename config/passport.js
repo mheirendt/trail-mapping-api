@@ -11,7 +11,7 @@ module.exports = function(passport) {
     });
 
     passport.deserializeUser(function(id, done) {
-        User.findOne({_id: id}, function(err, user){
+        User.findById(id, function(err, user){
 	    console.log("deserializing User: " + user.id);
             done(err, user);
         });
@@ -30,8 +30,7 @@ module.exports = function(passport) {
 		console.log("Incorrect username");
                 return done(null, false, { message: 'Incorrect username.' });
             }
-            if (!user.authenticate(password)) {
-		console.log("Invalid Password: " + password);
+            if (!user.validPassword(password)) {
                 return done(null, false, { message: 'Incorrect password.' });
             }
 	    console.log("local success");
