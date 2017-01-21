@@ -34,7 +34,7 @@ exports.create = function(req, res) {
 	    user.avartar = user;
 	    user.save();
             res.status(200).end('Upload Successful');
-	//});
+	});
     });
     read_stream.on('error', function(err) {
 	res.status(400).end(err);
