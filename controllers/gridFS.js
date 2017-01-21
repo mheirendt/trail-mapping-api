@@ -20,18 +20,12 @@ exports.create = function(req, res) {
     read_stream.pipe(writestream);
 
     //Error - Success handling
-    read_stream.on('end', function () {
-	//console.log(JSON.stringify(read_stream));
-	console.log(read_stream._id);
-	console.log(writestream._id);
-	console.log(writestream.id);
-		    
-        res.status(200).end(writestream.id);
+    read_stream.on('end', function (file) {
+        res.status(200).end(new String(writestream.id););
     });
     read_stream.on('error', function(err) {
 	res.status(400).end(err);
     });
- 
 };
  
 exports.read = function(req, res) {
