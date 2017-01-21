@@ -22,7 +22,6 @@ module.exports.create = function(req, res) {
 	    newUser.created = new Date();
 	    newUser.followers = new Array();
 	    newUser.following = new Array();
-	    //newUser.facebook = null;
 	    
             newUser.save(function(error, user){
 		if (error)
