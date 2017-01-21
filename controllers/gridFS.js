@@ -26,6 +26,8 @@ exports.create = function(req, res) {
     read_stream.on('end', function () {
 	//console.log(JSON.stringify(read_stream));
 	console.log(read_stream._id);
+	console.log(writestream._id);
+	console.log(writestream.id);
 		    
         res.status(200).end(read_stream._id);
     });
