@@ -1,10 +1,8 @@
 var users  = require('./controllers/users');
 var trails  = require('./controllers/trails');
 var posts = require('./controllers/posts');
-var express = require('express');
 var passport = require('./config/passport');
 var gridFs = require('./controllers/gridFS');
-var multiparty = require('connect-multiparty')();
 var multer = require("multer");
 var upload = multer({dest: "./uploads"});
 
