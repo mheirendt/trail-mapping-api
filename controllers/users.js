@@ -1,5 +1,7 @@
 var User = require('../models/user');
 var passport = require('passport');
+var mongoose = require('mongoose');
+var Grid = require('gridfs-stream');
 
 module.exports = {};
 
