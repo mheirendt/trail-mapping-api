@@ -24,10 +24,10 @@ exports.create = function(req, res) {
 
     //Error - Success handling
     read_stream.on('end', function () {
-	console.log(JSON.stringify(read_stream));
+	//console.log(JSON.stringify(read_stream));
 	console.log(read_stream.id);
 		    
-        res.status(200).end({'id': read_stream.id});
+        res.status(200).end(read_stream.id);
     });
     read_stream.on('error', function(err) {
 	res.status(400).end(err);
