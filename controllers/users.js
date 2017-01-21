@@ -207,8 +207,9 @@ module.exports.update = function(req, res) {
 		    gfs.files.findOne({ _id: pic_id }, function (err, file) {
 			if (err)
 			    res.status(400).end('File not found');
-			console.log("found the file");
+			console.log(JSON.stringify(file));
 			user.avatar = file;
+			console.log(JSON.stringify(user));
 		    });
 		}
                 user.save();
