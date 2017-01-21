@@ -33,12 +33,10 @@ exports.create = function(req, res) {
 };
  
 exports.read = function(req, res) {
-    /*
-    Grid.mongo = mongoose.mongo;
+    //Grid.mongo = mongoose.mongo;
     var pic_id = req.params.id,
 	gfs = new Grid(mongoose.connection.db);
     gfs.files.find({ _id: pic_id }, function (err, files) {
-	//console.log(file);
 	if (err)
 	    res.status(400).end('File not found');
         var mime = 'image/jpeg',
@@ -46,5 +44,5 @@ exports.read = function(req, res) {
         res.set('Content-Type', mime);
         readStream.pipe(res);
     });
-*/
+
 };
