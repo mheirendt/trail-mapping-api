@@ -196,18 +196,18 @@ module.exports.update = function(req, res) {
             if (user.username != req.user.username) {
                 return res.status(401).end('Modifying other user');
             } else {
-		//
-		console.log(JSON.stringify(req.body));
                 user.username = req.body.username ? req.body.username : user.username;
                 user.local.password = req.body.password ? user.generateHash(req.body.password) : user.password;
                 user.email = req.body.email ? req.body.email : user.email;
 		if (req.body.avatar) {
+		    console.log("In the loop");
 		    Grid.mongo = mongoose.mongo;
 		    var pic_id = req.body.avatar,
 			gfs = new Grid(mongoose.connection.db);
 		    gfs.files.findOne({ _id: pic_id }, function (err, file) {
 			if (err)
 			    res.status(400).end('File not found');
+			console.log("found the file");
 			user.avatar = file;
 		    });
 		}
