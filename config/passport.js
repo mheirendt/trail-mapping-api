@@ -20,7 +20,7 @@ module.exports = function(passport) {
 
     //===============LOCAL STRATEGIES================
     passport.use(new LocalStrategy(function(username, password, done) {
-	console.log("localStrategy");
+	console.log("localStrategy: " + username);
         User.findOne({ 'username': username }, function (err, user) {
             if (err) { return done(err); }
             if (!user) {

@@ -43,7 +43,6 @@ module.exports.create = function(req, res) {
 
 module.exports.login = function(req, res, next) {
     console.log("logging in");
-    console.log("login: " + req.session.key);
     console.log("login: " + req.body.username);
         passport.authenticate('local', function(err, user, info) {
             if (err)
