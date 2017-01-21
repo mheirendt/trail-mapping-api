@@ -20,7 +20,6 @@ exports.create = function(req, res) {
 	writestream = gfs.createWriteStream({
             filename: filename
 	});
-    console.log("ID: " + id);
     read_stream.pipe(writestream);
 
     //Error - Success handling
