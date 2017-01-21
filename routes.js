@@ -60,7 +60,7 @@ module.exports = function(app, passport) {
     app.get('/upload/:filename', gridFs.read);
 
     // Create a new filestream [x]
-    app.post('/upload', upload.single("recfile"), gridFs.create);
+    app.post('/upload', isLoggedIn, upload.single("recfile"), gridFs.create);
 
 //==========Trail Mapping Routes============
     // Create a new trail [x]
