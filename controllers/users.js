@@ -102,15 +102,15 @@ module.exports.findUsers = function(req, res) {
     .exec(function(err, results) {
 	if (err)
 	    return res.status(400).end('User not found');
-	var users = [];
-	results.forEach(function(user) {
-            user = user.toObject();
-            delete user.local.password;
-            delete user.__v;
-	    if (user.username != req.user.username)
-		users.push(user);
-	});
-	return res.status(200).end(JSON.stringify(users));
+	//var users = [];
+	//results.forEach(function(user) {
+            //user = user.toObject();
+            //delete user.local.password;
+            //delete user.__v;
+	    //if (user.username != req.user.username)
+		//users.push(user);
+	//});
+	return res.status(200).end(JSON.stringify(results));
 	});
     };
     //return res.end(users);
