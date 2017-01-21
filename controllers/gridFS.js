@@ -34,7 +34,7 @@ exports.read = function(req, res) {
     Grid.mongo = mongoose.mongo;
     var pic_id = req.params.id,
 	gfs = new Grid(mongoose.connection.db);
-    gfs.files.findOne({ _id: pic_id }, function (err, file) {
+    gfs.files.find({ _id: pic_id }, function (err, files) {
 	//console.log(file);
 	if (err)
 	    res.status(400).end('File not found');
