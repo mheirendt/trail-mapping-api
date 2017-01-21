@@ -19,7 +19,7 @@ exports.create = function(req, res) {
     
     var gfs = new Grid(mongoose.connection.db),
 	writestream = gfs.createWriteStream({
-	    _id: id
+	    _id: id,
             filename: filename
 	});
     console.log("ID: " + id);
