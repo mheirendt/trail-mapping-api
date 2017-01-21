@@ -22,7 +22,7 @@ exports.create = function(req, res) {
 	    _id: id
             filename: filename
 	});
-    
+    console.log("ID: " + id);
     read_stream.pipe(writestream);
 
     //Error - Success handling
