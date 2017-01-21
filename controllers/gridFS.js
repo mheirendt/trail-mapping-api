@@ -27,9 +27,9 @@ exports.create = function(req, res) {
 
     //Error - Success handling
     read_stream.on('end', function (file) {
-	//User.findOne({ username : req.user.username}, function(error, user) {
-	    //if (error)
-		//return res.status(400).end('User not signed in');
+	User.findOne({ _id : req.body.id}, function(error, user) {
+	    if (error)
+		return res.status(400).end('User not signed in');
 	    console.log("File: " + JSON.stringify(file));
 	    user.avartar = file.id;
 	    user.save();
