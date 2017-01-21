@@ -12,14 +12,12 @@ exports.create = function(req, res) {
 	filename = req.file.name,
 	path = req.file.path,
 	type = req.file.mimetype,
-	read_stream =  fs.createReadStream(dirname + '/' + path),
-	id = mongoose.Types.ObjectId();
+	read_stream =  fs.createReadStream(dirname + '/' + path);
     
     Grid.mongo = mongoose.mongo;
     
     var gfs = new Grid(mongoose.connection.db),
 	writestream = gfs.createWriteStream({
-	    _id: id,
             filename: filename
 	});
     console.log("ID: " + id);
@@ -27,7 +25,7 @@ exports.create = function(req, res) {
 
     //Error - Success handling
     read_stream.on('end', function () {
-        res.status(200).end('Upload Successful');
+        res.status(200).end(read_stream.id);
     });
     read_stream.on('error', function(err) {
 	res.status(400).end(err);
