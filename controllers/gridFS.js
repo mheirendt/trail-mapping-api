@@ -21,7 +21,7 @@ exports.create = function(req, res) {
 
     //Error - Success handling
     read_stream.on('end', function (file) {
-	var fileJSON = {'id' : writestream.id};
+	var fileJSON = {'avatar' : writestream.id};
         res.status(200).end(JSON.stringify(fileJSON));
     });
     read_stream.on('error', function(err) {
