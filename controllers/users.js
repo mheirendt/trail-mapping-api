@@ -197,28 +197,32 @@ module.exports.me = function(req, res) {
 
 
 module.exports.update = function(req, res) {
-    /*
-    User.findById(req.user.id, function(err, user) {
+    User.findOne({ _id : req.user.id }, function(err, user) {
+	if (err)
+	    return res.status(400).end("Error finding user");
         if (user) {
             if (user.username != req.user.username) {
-                return res.status(401).end('Modifying other user');
+                return res.status(401).end('Cannot update user other than yourself');
             } else {
                 user.username = req.body.username ? req.body.username : user.username;
                 user.local.password = req.body.password ? user.generateHash(req.body.password) : user.password;
                 user.email = req.body.email ? req.body.email : user.email;
 		user.avatar = req.body.avatar ? req.body.avatar : user.avatar;
-                user.save();
-
-                res.writeHead(200, {"Content-Type": "application/json"});
-                user = user.toObject();
-                delete user.password;
-                res.end(JSON.stringify(user));
+                user.save(function(error) {
+		    if (error)
+			return res.status(400).end("Error saving user");
+		    else {
+			res.writeHead(200, {"Content-Type": "application/json"});
+			user = user.toObject();
+			delete user.password;
+			res.end(JSON.stringify(user));
+		    } 
+		});
             }
         } else {
             return res.status(400).end('User not found');
         }
     });
-*/
 };
 
 module.exports.delete = function(req, res) {
