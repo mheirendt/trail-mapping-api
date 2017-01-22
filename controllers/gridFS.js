@@ -24,10 +24,10 @@ exports.create = function(req, res) {
     //read_stream.on('end', function (file) {
     writestream.on('close', function(file) {
 	var fileJSON = {'avatar' : writestream.id};
-        //res.status(200).end(JSON.stringify(fileJSON));
+        res.status(200).end(JSON.stringify(fileJSON));
     });
     writestream.on('error', function(err) {
-	//res.status(400).end(err);
+	res.status(400).end(err);
     });
 
  
