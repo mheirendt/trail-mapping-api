@@ -27,15 +27,15 @@ exports.create = function(req, res) {
 		name: "Kenny Erasmuson"
 	    }
 	});
-    read_stream.pipe(writestream);
+    read_stream.pipe(writeStream);
 
     //Error - Success handling
     //read_stream.on('end', function (file) {
-    writestream.on('close', function(file) {
-	var fileJSON = {'avatar' : writestream.id};
+    writeStream.on('close', function(file) {
+	var fileJSON = {'avatar' : writeStream.id};
         res.status(200).end(JSON.stringify(fileJSON));
     });
-    writestream.on('error', function(err) {
+    writeStream.on('error', function(err) {
 	res.status(400).end(err);
     });
  
