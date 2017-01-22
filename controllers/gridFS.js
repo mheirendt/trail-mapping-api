@@ -43,7 +43,7 @@ exports.create = function(req, res) {
  
 exports.read = function(req, res) {
     Grid.mongo = mongoose.mongo;
-    var pic_id = req.params.id,
+    var pic_id = req.params.filename,
 	gfs = new Grid(mongoose.connection.db);
     console.log(pic_id);
     gfs.exist({ _id: pic_id }, function(err, found) {
