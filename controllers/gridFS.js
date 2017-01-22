@@ -42,10 +42,23 @@ exports.create = function(req, res) {
 };
  
 exports.read = function(req, res) {
-    
     Grid.mongo = mongoose.mongo;
     var pic_id = req.params.id,
 	gfs = new Grid(mongoose.connection.db);
+    console.log(pic_id);
+    gfs.exist({ _id: pic_id }, function(err, found) {
+    if (err)
+	return res.status(400).end("error finding file");
+    if (!found) {
+      res.send('Error on the database looking for the file.')
+      return;
+    }
+	// We only get here if the file actually exists, so pipe it to the response
+	var mime = 'image/jpeg';
+	res.set('Content-Type', mime);
+	gfs.createReadStream({ _id: pic_id }).pipe(res);
+});
+    /*
     gfs.files.find({ _id: pic_id }, function (err, files) {
 	if (err)
 	    res.status(400).end('File not found');
@@ -53,7 +66,7 @@ exports.read = function(req, res) {
 	    readStream = gfs.createReadStream({filename: pic_id});
         res.set('Content-Type', mime);
         readStream.pipe(res);
-    });
+    });*/
 
 
 };
