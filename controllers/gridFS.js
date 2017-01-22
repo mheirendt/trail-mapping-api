@@ -5,7 +5,8 @@ var Grid = require('gridfs-stream');
 var fs = require('fs');
 
 exports.create = function(req, res) {
-    
+    console.log("req: " + req.session.key);
+    console.log("user: " + JSON.stringify(req.user));
     var dirname = "./",
 	filename = req.file.name,
 	path = req.file.path,
