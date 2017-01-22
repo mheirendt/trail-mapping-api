@@ -28,9 +28,9 @@ db.once('open', function(){
 
 app.use(morgan('dev'));
 //app.use(cookieParser());
-//app.use(bodyParser.json());
+app.use(bodyParser.json());
 app.use(busboyBodyParser());
-//app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.urlencoded({ extended: true }));
 
 redis.auth(redisAuth[1]);
 
