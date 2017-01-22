@@ -198,7 +198,7 @@ module.exports.me = function(req, res) {
 
 module.exports.update = function(req, res, next) {
     
-    User.findById(req.user.id, function(error, user) {
+    User.findOne({ _id : req.user.id }, function(err, user) {
 	if (error)
 	    return next(error);
 	if(!user) {
