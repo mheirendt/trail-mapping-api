@@ -20,7 +20,7 @@ exports.create = function(req, res) {
 	    _id: fileId,
 	    filename: filename,
 	    mode: 'w',
-	    content_type: file.mimetype,
+	    content_type: type,
 	    metadata: {
 		id: '123',
 		number: '2',
