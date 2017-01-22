@@ -18,7 +18,7 @@ exports.create = function(req, res) {
 	fileId = new mongo.ObjectId(),
 	writeStream = gfs.createWriteStream({
 	    _id: fileId,
-	    filename: file.originalname,
+	    filename: filename,
 	    mode: 'w',
 	    content_type: file.mimetype,
 	    metadata: {
