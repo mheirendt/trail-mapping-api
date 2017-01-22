@@ -197,7 +197,8 @@ module.exports.me = function(req, res) {
 
 
 module.exports.update = function(req, res, next) {
-    
+    consoel.log("session: " + req.session.key);
+    console.log("ID: " + req.user.id + "USER: " + JSON.stringify(req.user));
     User.findOne({ _id : req.user.id }, function(err, user) {
 	if (error)
 	    return next(error);
