@@ -36,6 +36,7 @@ exports.create = function(req, res) {
 };
  
 exports.read = function(req, res) {
+    /*
     Grid.mongo = mongoose.mongo;
     var pic_id = req.params.id,
 	gfs = new Grid(mongoose.connection.db);
@@ -47,5 +48,6 @@ exports.read = function(req, res) {
         res.set('Content-Type', mime);
         readStream.pipe(res);
     });
+*/
 
 };
