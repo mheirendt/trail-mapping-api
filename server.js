@@ -9,6 +9,7 @@ var express = require('express'),
     socketio = require('socket.io'),
     morgan = require('morgan'),
     bodyParser = require('body-parser'),
+    //busboyBodyParser = require('busboy-body-parser'),
     session = require('express-session'),
     redisStore = require('connect-redis')(session),
     url = require('url'),
@@ -27,8 +28,9 @@ db.once('open', function(){
 
 app.use(morgan('dev'));
 //app.use(cookieParser());
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+//app.use(bodyParser.json());
+app.use(busboyBodyParser());
+//app.use(bodyParser.urlencoded({ extended: true }));
 
 redis.auth(redisAuth[1]);
 

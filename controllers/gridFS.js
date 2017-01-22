@@ -1,10 +1,29 @@
 'use strict';
- 
+
+var Busboy = require('busboy');
 var mongoose = require('mongoose');
 var Grid = require('gridfs-stream');
 var fs = require('fs');
 
 exports.create = function(req, res) {
+    var busboy = new Busboy({ headers: req.headers });
+    var fileId = new mongo.ObjectId();
+    busboy.on('file', function(fieldname, file, filename, encoding, mimetype) {
+	console.log('got file', filename, mimetype, encoding);
+	var writeStream = gfs.createWriteStream({
+	    _id: fileId,
+	    filename:filename,
+	    mode:'w',
+	    content_type:mimetype });
+	file.pipe(writeStream);
+    }).on('finish',
+	  function()
+	  { // show a link to the uploaded file
+	      res.writeHead(200, {'content-type':'text/html'});
+	      res.end('<a href="/file/'+ fileId.toString() + '">download file</a>');
+	  });
+    req.pipe(busboy);
+    
     /*
     console.log("req: " + req.session.key);
     console.log("user: " + JSON.stringify(req.user));
