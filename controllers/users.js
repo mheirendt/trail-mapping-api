@@ -206,7 +206,7 @@ module.exports.update = function(req, res, next) {
 		message: 'User id: ' + req.user.id + ' could not be found.'
 	    });
 	}
-	user.update(body, function(err, updatedUser) {
+	user.update(req.body, function(err, updatedUser) {
 	    if(error)
 		return next(err);
 	    res.json(updatedUser);
