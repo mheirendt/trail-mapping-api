@@ -15,7 +15,7 @@ exports.create = function(req, res) {
     Grid.mongo = mongoose.mongo;
     
     var gfs = new Grid(mongoose.connection.db),
-	fileId = new ObjectId(),
+	fileId = new mongo.ObjectId(),
 	writeStream = gfs.createWriteStream({
 	    _id: fileId,
 	    filename: file.originalname,
