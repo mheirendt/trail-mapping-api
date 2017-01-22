@@ -5,6 +5,7 @@ var Grid = require('gridfs-stream');
 var fs = require('fs');
 
 exports.create = function(req, res) {
+    /*
     console.log("req: " + req.session.key);
     console.log("user: " + JSON.stringify(req.user));
     var dirname = "./",
@@ -30,7 +31,7 @@ exports.create = function(req, res) {
     writestream.on('error', function(err) {
 	res.status(400).end(err);
     });
-
+*/
  
 };
  
