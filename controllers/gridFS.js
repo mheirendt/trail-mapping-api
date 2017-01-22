@@ -22,11 +22,11 @@ exports.create = function(req, res) {
 
     //Error - Success handling
     //read_stream.on('end', function (file) {
-    writeStream.on('close', function(file) {
+    writestream.on('close', function(file) {
 	var fileJSON = {'avatar' : writestream.id};
         //res.status(200).end(JSON.stringify(fileJSON));
     });
-    writeStream.on('error', function(err) {
+    writestream.on('error', function(err) {
 	//res.status(400).end(err);
     });
 
