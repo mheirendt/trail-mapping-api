@@ -3,8 +3,8 @@ var trails  = require('./controllers/trails');
 var posts = require('./controllers/posts');
 var passport = require('./config/passport');
 var gridFs = require('./controllers/gridFS');
-//var multer = require("multer");
-//var upload = multer({dest: "./uploads"});
+var multer = require("multer");
+var upload = multer({dest: "./uploads"});
 
 module.exports = function(app, passport) {
 
@@ -58,7 +58,7 @@ module.exports = function(app, passport) {
     app.get('/upload/:filename', gridFs.read);
 
     // Create a new filestream [x]
-    app.post('/upload',/* upload.single("recfile"),*/ gridFs.create);
+    app.post('/upload', upload.single("recfile"), gridFs.create);
 
 //==========Trail Mapping Routes============
     // Create a new trail [x]

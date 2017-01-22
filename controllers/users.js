@@ -197,6 +197,7 @@ module.exports.me = function(req, res) {
 
 
 module.exports.update = function(req, res) {
+    /*
     User.findById(req.user.id, function(err, user) {
         if (user) {
             if (user.username != req.user.username) {
@@ -217,6 +218,7 @@ module.exports.update = function(req, res) {
             return res.status(400).end('User not found');
         }
     });
+*/
 };
 
 module.exports.delete = function(req, res) {
