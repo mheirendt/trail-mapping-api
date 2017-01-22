@@ -201,7 +201,7 @@ module.exports.update = function(req, res, next) {
     User.findById(req.user.id, function(error, user) {
 	if (error)
 	    return next(error);
-	if(!course) {
+	if(!user) {
 	    return res.status(404).json({
 		message: 'User id: ' + req.user.id + ' could not be found.'
 	    });
