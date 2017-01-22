@@ -196,7 +196,24 @@ module.exports.me = function(req, res) {
 };
 
 
-module.exports.update = function(req, res) {
+module.exports.update = function(req, res, next) {
+    
+    User.findById(req.user.id, function(error, user) {
+	if (error)
+	    return next(error);
+	if(!course) {
+	    return res.status(404).json({
+		message: 'User id: ' + req.user.id + ' could not be found.'
+	    });
+	}
+	user.update(body, function(err, updatedUser) {
+	    if(error)
+		return next(err);
+	    res.json(updatedUser);
+	});
+    });
+	
+    /*
     User.findOne({ _id : req.user.id }, function(err, user) {
 	if (err)
 	    return res.status(400).end("Error finding user");
@@ -223,6 +240,7 @@ module.exports.update = function(req, res) {
             return res.status(400).end('User not found');
         }
     });
+*/
 };
 
 module.exports.delete = function(req, res) {
