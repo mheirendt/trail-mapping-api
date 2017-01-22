@@ -1,6 +1,6 @@
 'use strict';
 
-var Busboy = require('busboy');
+var Busboy = require('busboy-body-parser');
 var mongoose = require('mongoose');
 var Grid = require('gridfs-stream');
 var fs = require('fs');

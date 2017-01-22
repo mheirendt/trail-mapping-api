@@ -24,6 +24,7 @@
       "fs": "0.0.2",
       //"multer": "*",
       "busboy-body-parser":"*",
+      //"busboy":"*",
       "md5": "^2.0.0",
       "method-override": "~1.0.0",
       "mongoose": "*",
