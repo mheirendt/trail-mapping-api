@@ -1,5 +1,6 @@
 'use strict';
 
+var mongo = require('mongodb');
 var Busboy = require('busboy-body-parser');
 var mongoose = require('mongoose');
 var Grid = require('gridfs-stream');
