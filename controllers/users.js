@@ -101,7 +101,6 @@ module.exports.readByUsername = function(req, res) {
 
 module.exports.findUsers = function(req, res) {
     User.find({username : new RegExp(req.params.usernames, "i")})
-    .populate('avatar')
     .populate('following')
     .populate('followers')
     .limit(10)
@@ -109,13 +108,15 @@ module.exports.findUsers = function(req, res) {
 	if (err)
 	    return res.status(400).end('User not found');
 	//var users = [];
-	//results.forEach(function(user) {
+	results.forEach(function(user) {
             //user = user.toObject();
             //delete user.local.password;
             //delete user.__v;
 	    //if (user.username != req.user.username)
-		//users.push(user);
-	//});
+	    //users.push(user);
+	    console.log(JSON.stringify(user));
+	});
+	
 	return res.status(200).end(JSON.stringify(results));
 	});
     };
@@ -138,7 +139,6 @@ module.exports.follow = function(req, res) {
 	    });
 	});
 	User.findOne({ username: req.body.username })
-            .populate('avatar')
 	    .populate('following')
 	    .populate('followers')
 	    .exec(function(e, finalUser) {
@@ -164,7 +164,6 @@ module.exports.unfollow = function(req, res) {
 	    user.save();
 	});
 	User.findOne({ username: req.body.username })
-            .populate('avatar')
 	    .populate('following')
 	    .populate('followers')
 	    .exec(function(e, finalUser) {
