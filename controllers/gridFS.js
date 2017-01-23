@@ -57,16 +57,5 @@ exports.read = function(req, res) {
 	var mime = 'image/jpeg';
 	res.set('Content-Type', mime);
 	gfs.createReadStream({ _id: pic_id }).pipe(res);
-});
-    /*
-    gfs.files.find({ _id: pic_id }, function (err, files) {
-	if (err)
-	    res.status(400).end('File not found');
-        var mime = 'image/jpeg',
-	    readStream = gfs.createReadStream({filename: pic_id});
-        res.set('Content-Type', mime);
-        readStream.pipe(res);
-    });*/
-
-
+    });
 };
