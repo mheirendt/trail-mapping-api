@@ -6,13 +6,13 @@ var auth = require('../config/auth');
 module.exports = function(passport) {
 
     passport.serializeUser(function(user, done) {
-	console.log("serializing User: " + user.id);
+	//console.log("serializing User: " + user.id);
 	done(null, user.id);
     });
 
     passport.deserializeUser(function(id, done) {
         User.findById(id, function(err, user){
-	    console.log("deserializing User: " + user.id);
+	    //console.log("deserializing User: " + user.id);
             done(err, user);
         });
     
