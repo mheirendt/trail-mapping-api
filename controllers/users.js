@@ -69,7 +69,7 @@ module.exports.login = function(req, res, next) {
 };
 
 module.exports.read = function(req, res) {
-    User.findById(req.params.id)//, function(err, user) {
+    User.findOne({ _id : req.params.id })//, function(err, user) {
     .populate('following')
     .populate('followers')
     .exec(function(err, user) {
