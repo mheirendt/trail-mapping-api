@@ -178,7 +178,10 @@ module.exports.unfollow = function(req, res) {
 
 module.exports.me = function(req, res) {
 
-    User.findOne({ username: req.user.username }, function(err, user) {
+    User.findOne({ username: req.user.username })//, function(err, user) {
+    .populate('following')
+    .populate('followers')
+    .exec(function(err, user) {
         if (user) {
             res.writeHead(200, {"Content-Type": "application/json"});
             user = user.toObject();
