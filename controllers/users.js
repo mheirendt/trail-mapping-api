@@ -69,7 +69,10 @@ module.exports.login = function(req, res, next) {
 };
 
 module.exports.read = function(req, res) {
-    User.findById(req.params.id, function(err, user) {
+    User.findById(req.params.id)//, function(err, user) {
+    .populate('following')
+    .populate('followers')
+    .exec(function(err, user) {
         if (user) {
             res.writeHead(200, {"Content-Type": "application/json"});
             user = user.toObject();
@@ -108,14 +111,13 @@ module.exports.findUsers = function(req, res) {
 	if (err)
 	    return res.status(400).end('User not found');
 	//var users = [];
-	results.forEach(function(user) {
+	//results.forEach(function(user) {
             //user = user.toObject();
             //delete user.local.password;
             //delete user.__v;
 	    //if (user.username != req.user.username)
 	    //users.push(user);
-	    console.log(JSON.stringify(user));
-	});
+	//});
 	
 	return res.status(200).end(JSON.stringify(results));
 	});
