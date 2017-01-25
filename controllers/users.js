@@ -138,9 +138,10 @@ module.exports.follow = function(req, res) {
 		user.followers.push(currentUser._id);
 		currentUser.save();
 		user.save();
+		res.status(200).end(JSON.stringify(currentUser));
 	    });
 	});
-	User.findOne({ username: req.body.username })
+	/*User.findOne({ username: req.body.username })
 	    .populate('following')
 	    .populate('followers')
 	    .exec(function(e, finalUser) {
@@ -151,7 +152,7 @@ module.exports.follow = function(req, res) {
 	    });
     } else {
 	return res.status(400).end("no username ");
-    }
+    }*/
 };
 
 module.exports.unfollow = function(req, res) {
