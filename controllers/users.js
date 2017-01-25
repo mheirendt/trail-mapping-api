@@ -146,10 +146,11 @@ module.exports.follow = function(req, res) {
 	    .exec(function(e, finalUser) {
 		if (e)
 		    res.status(400).end(JSON.stringify(user));
-		res.status(200).end(JSON.stringify(finalUser));
+		//res.status(200).end(JSON.stringify(finalUser));
+		res.status(200).end(JSON.stringify(currentUser));
 	    });
     } else {
-	return res.status(400).end("no username provided");
+	return res.status(400).end("no username ");
     }
 };
 
