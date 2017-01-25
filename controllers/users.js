@@ -141,6 +141,7 @@ module.exports.follow = function(req, res) {
 		res.status(200).end(JSON.stringify(currentUser));
 	    });
 	});
+    }
 	/*User.findOne({ username: req.body.username })
 	    .populate('following')
 	    .populate('followers')
