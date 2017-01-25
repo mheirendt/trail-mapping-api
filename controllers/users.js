@@ -61,7 +61,7 @@ module.exports.login = function(req, res, next) {
                 else{
 		    console.log("Username: " + req.body.username);
 		    req.session.key = req.body.username;
-                    return res.json({ SERVER_RESPONSE: 1, SERVER_MESSAGE: "Logged in!" });
+                    return res.end(JSON.stringify(user));
 		}
                 
             });
