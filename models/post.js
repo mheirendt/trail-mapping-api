@@ -10,7 +10,10 @@ var postSchema = mongoose.Schema({
 	type: mongoose.Schema.Types.ObjectId,
 	ref: 'User'
     },
-    likes: Number,
+    likes: [{
+	type : mongoose.Schema.Types.ObjectId,
+	ref: 'User'
+    }],
     comments: Array,
     created: Date
 });

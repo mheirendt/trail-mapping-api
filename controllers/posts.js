@@ -10,7 +10,7 @@ module.exports.create = function(req, res) {
     var newPost = new Post();
     newPost.body = req.body.body;
     newPost.submittedUser = req.user;
-    newPost.likes = 0;
+    newPost.likes = new Array();
     newPost.comments = new Array();
     newPost.created = new Date();
     newPost.save(function(error, post) {
@@ -46,7 +46,22 @@ module.exports.getPosts = function (req, res) {
 }
 
 module.exports.like = function (req, res) {
-
+    var id = req.body.post;
+    var user = req.user.username;
+    Post.findOne({ _id : id }, function (error, post) {
+	if (error)
+	    return res.status(400).end(JSON.stringify(error));
+	User.findOne({ username : user }, function (err, user) {
+	    if (err)
+		return  res.status(400).end(JSON.stringify(err));
+	    post.likes.push(user._id);
+	    post.save(function(e, saved){
+		if (e)
+		    return  res.status(400).end("Unable to update post: " + JSON.stringify(err));
+		return  res.status(200).end(JSON.stringify(saved));
+	    });
+	});
+    });
 }
 
 module.exports.comment = function (req, res) {

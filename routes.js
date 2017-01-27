@@ -80,7 +80,7 @@ module.exports = function(app, passport) {
     app.get('/posts/user', isLoggedIn, posts.getUserPosts);
 
     //A post is liked
-    app.post('/posts/liked', isLoggedIn, posts.like);
+    app.post('/posts/like', isLoggedIn, posts.like);
 
     //A post is commented on
     app.post('/posts/comment', isLoggedIn, posts.comment);
