@@ -49,6 +49,7 @@ module.exports.like = function (req, res) {
     var id = req.body.post;
     var user = req.user.username;
     Post.findOne({ _id : id })//, function (error, post) {
+	.populate('reference')
 	.populate('submittedUser')
 	.populate('likes')
 	.exec(function(error, post) {
