@@ -58,7 +58,7 @@ module.exports.like = function (req, res) {
 	    post.save(function(e, saved){
 		if (e)
 		    return  res.status(400).end("Unable to update post: " + JSON.stringify(err));
-		return  res.status(200).end(JSON.stringify(saved));
+		return  res.status(200).end(JSON.stringify(post));
 	    });
 	});
     });
