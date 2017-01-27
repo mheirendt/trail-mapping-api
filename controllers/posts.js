@@ -48,7 +48,10 @@ module.exports.getPosts = function (req, res) {
 module.exports.like = function (req, res) {
     var id = req.body.post;
     var user = req.user.username;
-    Post.findOne({ _id : id }, function (error, post) {
+    Post.findOne({ _id : id })//, function (error, post) {
+	.populate('submittedUser')
+	.populate('likes')
+	.exec(function(error, post) {
 	if (error)
 	    return res.status(400).end(JSON.stringify(error));
 	User.findOne({ username : user }, function (err, user) {
