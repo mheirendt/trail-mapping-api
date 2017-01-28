@@ -52,6 +52,7 @@ module.exports.like = function (req, res) {
 	.populate('reference')
 	.populate('submittedUser')
 	.populate('likes')
+	.populate('comments')
 	.exec(function(error, post) {
 	if (error)
 	    return res.status(400).end(JSON.stringify(error));
@@ -69,7 +70,33 @@ module.exports.like = function (req, res) {
 }
 
 module.exports.comment = function (req, res) {
-
+    var id = req.body.post,
+	body = req.body.body,
+        user = req.user.username;
+    Post.findOne({ _id : id })
+    	.populate('reference')
+	.populate('submittedUser')
+	.populate('likes')
+	.populate('comments')
+	.exec(function(error, post) {
+	    if (error)
+		return res.status(400).end(JSON.stringify(error));
+	    User.findOne({ username : user }, function (err, user) {
+		if (err)
+		    return  res.status(400).end(JSON.stringify(err));
+		var comment = {
+		    body: body;
+		    submittedUser: user._id;
+		    created: new Date();
+		};
+		post.comments.push(comment);
+		post.save(function(e, saved){
+		    if (e)
+			return  res.status(400).end("Unable to update post: " + JSON.stringify(err));
+		    return  res.status(200).end(JSON.stringify(post));
+		});
+	    });
+	});
 }
 
 module.exports.deletePost = function (req, res) {
