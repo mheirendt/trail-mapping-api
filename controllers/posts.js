@@ -85,9 +85,9 @@ module.exports.comment = function (req, res) {
 		if (err)
 		    return  res.status(400).end(JSON.stringify(err));
 		var comment = {
-		    body: body;
-		    submittedUser: user._id;
-		    created: new Date();
+		    body: body,
+		    submittedUser: user._id,
+		    created: new Date()
 		};
 		post.comments.push(comment);
 		post.save(function(e, saved){

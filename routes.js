@@ -79,10 +79,10 @@ module.exports = function(app, passport) {
     //Get all the posts of only the current user 
     app.get('/posts/user', isLoggedIn, posts.getUserPosts);
 
-    //A post is liked
+    //A post is liked [x]
     app.post('/posts/like', isLoggedIn, posts.like);
 
-    //A post is commented on
+    //A post is commented on [x]
     app.post('/posts/comment', isLoggedIn, posts.comment);
 
     //Delete a post by ID [x]
