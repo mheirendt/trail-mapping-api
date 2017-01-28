@@ -33,8 +33,10 @@ module.exports.getPosts = function (req, res) {
 	if (error)
 	    res.status(401).end("User not signed in.");
 	    Post.find({$or: [{ submittedUser : {$in: user.following }}, {submittedUser : user._id}]})
-    	    .populate('reference')
-	    .populate('submittedUser')
+    		.populate('reference')
+		.populate('submittedUser')
+		.populate('likes')
+		.populate('comments.submittedUser')
 	    .exec(function(err, posts) {
 		if (!err) {
 		    res.send(posts);
