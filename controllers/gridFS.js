@@ -59,3 +59,22 @@ exports.read = function(req, res) {
 	gfs.createReadStream({ _id: pic_id }).pipe(res);
     });
 };
+
+exports.delete = function(req, res) {
+    Grid.mongo = mongoose.mongo;
+    var pic_id = req.body.id,
+	gfs = new Grid(mongoose.connection.db);
+    gfs.exist({ _id: pic_id }, function(err, found) {
+	if (err)
+	    return res.status(400).end("error finding file");
+	if (!found) {
+	    res.send('Error on the database looking for the file.')
+	    return;
+	}
+        gfs.remove({_id : pic_id }, function (err, success) {
+            if (err)
+		return res.status(400).end("Could not remove GFS file: " + JSON.stringify(err));
+            return res.status(200).end("Successfully deleted GFS file: " + JSON.stringify(success)); 
+        });
+    });
+}

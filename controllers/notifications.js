@@ -21,6 +21,20 @@ module.exports.create = function(req, res) {
     });
 }
 
+module.exports.markAsRead = function(req, res) {
+    var notificationId = req.body.notificationId;
+    Notification.findOne({_id : notificationId }, function (error, notification) {
+	if (error)
+	    return res.status(400).end("Could not find notification: " + notificationId + "\n Error: " + JSON.stringify(error));
+	notification.read = true;
+	notification.save(function(err, saved) {
+	    if (err)
+		return res.status(400).end("Could not save notification: " + notificationId + "\n Error: " + JSON.stringify(err));
+	    return res.status(200).end(JSON.stringify(notification));
+	});
+    });
+}
+
 module.exports.delete = function(req, res) {
     var notificationId = req.body.id;
     Notification.remove({_id: notificationId}, function(err) {
