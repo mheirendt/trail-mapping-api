@@ -6,13 +6,11 @@ var auth = require('../config/auth');
 module.exports = function(passport) {
 
     passport.serializeUser(function(user, done) {
-	//console.log("serializing User: " + user.id);
 	done(null, user.id);
     });
 
     passport.deserializeUser(function(id, done) {
         User.findById(id, function(err, user){
-	    //console.log("deserializing User: " + user.id);
             done(err, user);
         });
     
@@ -23,17 +21,14 @@ module.exports = function(passport) {
 	console.log("localStrategy: " + username);
         User.findOne({ 'username': username }, function (err, user) {
             if (err) {
-		console.log("Error finding user: " + JSON.stringify(err));
 		return done(err);
 	    }
             if (!user) {
-		console.log("Incorrect username");
                 return done(null, false, { message: 'Incorrect username.' });
             }
             if (!user.validPassword(password)) {
                 return done(null, false, { message: 'Incorrect password.' });
             }
-	    console.log("local success");
             return done(null, user);
         });
     }));
@@ -72,7 +67,6 @@ module.exports = function(passport) {
 			    newUser.created = new Date();
 			    newUser.followers = new Array();
 			    newUser.following = new Array();
-			    //newUser.local = null;
                             newUser.save(function(err) {
 				if (err)
                                     throw err;
@@ -98,7 +92,7 @@ module.exports = function(passport) {
 			    localUser.following = new Array();
 			    localUser.save(function(err) {
 				if (err){
-				   return done(err);
+				    return done(err);
 				} else {
 				    req.logIn(localUser, function(err) {
 					if (err)

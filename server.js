@@ -22,7 +22,7 @@ mongoose.connect( process.env.MONGOLAB_URI, function(err) {
 });
 var db = mongoose.connection;
 db.once('open', function(){
-    console.log('MongoDB connection successful.');
+
 });
 
 app.use(morgan('dev'));

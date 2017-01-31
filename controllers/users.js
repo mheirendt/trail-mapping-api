@@ -10,7 +10,7 @@ module.exports.create = function(req, res) {
     }
     User.findOne({ username:  req.body.username }, function(err, user) {
         if (user) {
-            return res.status(400).end('User already exists');
+            return res.status(400).end(req.body.username + ' already exists, please pick another.');
         } else {
 	    //Create a new user from mongoose schema
             var newUser = new User();
@@ -30,7 +30,8 @@ module.exports.create = function(req, res) {
                     if (err) 
 			res.status(500).end('Failed to login');
                     else {
-			req.session.key = newUser.username;
+			//req.session.key = newUser.username;
+			req.session.key = newUser._id;
 			newUser = newUser.toObject();
 			delete newUser.local.password;
 			res.end(JSON.stringify(newUser));
@@ -42,25 +43,20 @@ module.exports.create = function(req, res) {
 };
 
 module.exports.login = function(req, res, next) {
-    console.log("logging in");
-    console.log("login: " + req.body.username);
         passport.authenticate('local', function(err, user, info) {
             if (err) {
-		console.log("error Logging in at user: " + JSON.stringify(err));
                 return next(err);
 	    }
             if(!user) {
-		console.log("User not found");
                 return res.status(400).json({SERVER_RESPONSE: 0, SERVER_MESSAGE: "Wrong Credentials"});
 	    }
             req.logIn(user, function(err) {
                 if (err) {
-		    console.log("error Logging in at user #2: " + JSON.stringify(err));
                     return next(err);
 		}
                 else{
-		    console.log("Username: " + req.body.username);
-		    req.session.key = req.body.username;
+		    //req.session.key = req.body.username;
+		    req.session.key = user._id;
                     return res.end(JSON.stringify(user));
 		}
                 
@@ -161,10 +157,10 @@ module.exports.follow = function(req, res) {
 module.exports.unfollow = function(req, res) {
     User.findOne({ username: req.body.username }, function(err, user) {
 	if (err)
-	    res.end('user not found');
+	    return res.end('user not found');
 	User.findOne({ username: req.user.username }, function(error, currentUser) {
 	    if (error)
-		res.end('User not signed in');
+		return res.end('User not signed in');
 	    currentUser.following.remove(user._id);
 	    user.followers.remove(currentUser._id);
 	    currentUser.save();
@@ -175,8 +171,8 @@ module.exports.unfollow = function(req, res) {
 	    .populate('followers')
 	    .exec(function(e, finalUser) {
 		if (e)
-		    res.status(400).end(JSON.stringify(user));
-		res.status(200).end(JSON.stringify(finalUser));
+		    return res.status(400).end("Error saving user: " + JSON.stringify(e));
+		return res.status(200).end(JSON.stringify(finalUser));
 	    });
     });
 };
@@ -195,7 +191,7 @@ module.exports.me = function(req, res) {
 		//delete user.__v;
 		res.end(JSON.stringify(user));
 	    } else {
-		res.status(400).end('An internal server error has occurred');
+		return res.status(400).end('An internal server error has occurred');
 	    }
         } else {
             return res.status(400).end('User not found');
