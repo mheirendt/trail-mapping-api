@@ -92,6 +92,8 @@ module.exports.readByUsername = function(req, res) {
     .exec(function(err, user) {
         if (user) {
             res.writeHead(200, {"Content-Type": "application/json"});
+	    if (!user)
+		return res.status(400).end("user not found");
             user = user.toObject();
             delete user.local.password;
             delete user.__v;

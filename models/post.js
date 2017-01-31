@@ -16,6 +16,14 @@ var postSchema = mongoose.Schema({
     }],
     comments: [{
 	body: String,
+	replies : [{
+	    body: String,
+	    submittedUser: {
+		type: mongoose.Schema.Types.ObjectId,
+		ref: 'User'
+	    },
+	    created: Date
+	}],
 	submittedUser: {
 	    type : mongoose.Schema.Types.ObjectId,
 	    ref: 'User'
