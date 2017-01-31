@@ -46,7 +46,7 @@ module.exports.getPosts = function (req, res) {
 			if (!err) {
 			    lastSeen = posts.slice(-1)[0].created;//._id;//.created;
 			    //var lastSeen = lastSeen.created;
-			    console.log(JSON.stringify(lastSeen));
+			    //console.log(JSON.stringify(lastSeen));
 			    var message = {
 				'posts': posts,
 				'lastSeen': lastSeen
@@ -68,13 +68,16 @@ module.exports.getPosts = function (req, res) {
 		    .limit(2)
 		    .exec(function(err, posts) {
 			if (!err) {
-			    console.log("second half: " + JSON.stringify( posts.slice(-1)[0]));
-			    lastSeen = posts.slice(-1)[0].created;//._id;//.created;
-			    var message = {
-				'posts': posts,
-				'lastSeen': lastSeen
-			    };
-			    res.json(message);
+			    if ( posts.slice(-1)[0]) {
+				lastSeen = posts.slice(-1)[0].created;//._id;//.created;
+				var message = {
+				    'posts': posts,
+				    'lastSeen': lastSeen
+				};
+				res.json(message);
+			    } else {
+				res.status(200).end('no more posts');
+			    }
 			}
 			else
 			    res.status(400).end('Could not fetch posts');
