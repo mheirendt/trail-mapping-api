@@ -68,8 +68,8 @@ module.exports.getPosts = function (req, res) {
 		    .limit(2)
 		    .exec(function(err, posts) {
 			if (!err) {
-			    console.log("second half: " + JSON.stringify( posts.slice(-1)));
-			    lastSeen = posts.slice(-1).created;//._id;//.created;
+			    console.log("second half: " + JSON.stringify( posts.slice(-1)[0]));
+			    lastSeen = posts.slice(-1)[0].created;//._id;//.created;
 			    var message = {
 				'posts': posts,
 				'lastSeen': lastSeen
