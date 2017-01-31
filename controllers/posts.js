@@ -31,57 +31,57 @@ module.exports.getPosts = function (req, res) {
     //User.findOne({ username : req.user.username}, function(error, user) {
     User.findOne({ _id : req.user._id}, function(error, user) {
 	if (error)
-	    res.status(401).end("User not signed in.");
-	    if (lastSeen == '0' || lastSeen == 0) {
-		Post.find({$or: [{ submittedUser : {$in: user.following }}, {submittedUser : user._id}]})
-    		    .populate('reference')
-		    .populate('submittedUser')
-		    .populate('likes')
-		    .populate('comments.submittedUser')
-	       	    .populate('comments.replies.submittedUser')
-		    .sort({ "created": -1 })
-		    .limit(2)
-		    .exec(function(err, posts) {
-			if (!err) {
+	    return res.status(401).end("User not signed in.");
+	if (lastSeen == '0' || lastSeen == 0) {
+	    Post.find({$or: [{ submittedUser : {$in: user.following }}, {submittedUser : user._id}]})
+    		.populate('reference')
+		.populate('submittedUser')
+		.populate('likes')
+		.populate('comments.submittedUser')
+	       	.populate('comments.replies.submittedUser')
+		.sort({ "created": -1 })
+		.limit(2)
+		.exec(function(err, posts) {
+		    if (!err) {
+			lastSeen = posts.slice(-1)[0].created;//._id;//.created;
+			//var lastSeen = lastSeen.created;
+			//console.log(JSON.stringify(lastSeen));
+			var message = {
+			    'posts': posts,
+			    'lastSeen': lastSeen
+			};
+			return res.json(message);
+		    }
+		    else
+			return res.status(400).end('Could not fetch posts');
+		});
+	} else {
+	    //Pick up the query where it was left off
+	    Post.find({$or: [{ submittedUser : {$in: user.following }}, {submittedUser : user._id}], "created": { "$lt": lastSeen }})
+    		.populate('reference')
+		.populate('submittedUser')
+		.populate('likes')
+		.populate('comments.submittedUser')
+		.populate('comments.replies.submittedUser')
+		.sort({ "created": -1 })
+		.limit(2)
+		.exec(function(err, posts) {
+		    if (!err) {
+			if ( posts.slice(-1)[0]) {
 			    lastSeen = posts.slice(-1)[0].created;//._id;//.created;
-			    //var lastSeen = lastSeen.created;
-			    //console.log(JSON.stringify(lastSeen));
 			    var message = {
 				'posts': posts,
 				'lastSeen': lastSeen
 			    };
-			    res.json(message);
+			    return res.json(message);
+			} else {
+			    return res.status(200).end('no more posts');
 			}
-			else
-			    res.status(400).end('Could not fetch posts');
-		    });
-	    } else {
-		//Pick up the query where it was left off
-		Post.find({$or: [{ submittedUser : {$in: user.following }}, {submittedUser : user._id}], "created": { "$lt": lastSeen }})
-    		    .populate('reference')
-		    .populate('submittedUser')
-		    .populate('likes')
-		    .populate('comments.submittedUser')
-		    .populate('comments.replies.submittedUser')
-		    .sort({ "created": -1 })
-		    .limit(2)
-		    .exec(function(err, posts) {
-			if (!err) {
-			    if ( posts.slice(-1)[0]) {
-				lastSeen = posts.slice(-1)[0].created;//._id;//.created;
-				var message = {
-				    'posts': posts,
-				    'lastSeen': lastSeen
-				};
-				res.json(message);
-			    } else {
-				res.status(200).end('no more posts');
-			    }
-			}
-			else
-			    res.status(400).end('Could not fetch posts');
-		    });
-	    }
+		    }
+		    else
+			return res.status(400).end('Could not fetch posts');
+		});
+	}
     });
 }
 

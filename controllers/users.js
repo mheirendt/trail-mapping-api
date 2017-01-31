@@ -129,7 +129,8 @@ module.exports.follow = function(req, res) {
 	User.findOne({ username: req.body.username }, function(err, user) {
 	    if (err)
 		res.end('User not found');
-	    User.findOne({ username: req.user.username }, function(error, currentUser) {
+	    //User.findOne({ username: req.user.username }, function(error, currentUser) {
+	     User.findOne({ _id: req.user._id }, function(error, currentUser) {
 		if (error)
 		    res.end('User not signed in');
 		currentUser.following.push(user._id);
@@ -158,7 +159,8 @@ module.exports.unfollow = function(req, res) {
     User.findOne({ username: req.body.username }, function(err, user) {
 	if (err)
 	    return res.end('user not found');
-	User.findOne({ username: req.user.username }, function(error, currentUser) {
+	//User.findOne({ username: req.user.username }, function(error, currentUser) {
+	 User.findOne({ _id: req.user._id }, function(error, currentUser) {
 	    if (error)
 		return res.end('User not signed in');
 	    currentUser.following.remove(user._id);
@@ -179,35 +181,36 @@ module.exports.unfollow = function(req, res) {
 
 module.exports.me = function(req, res) {
 
-    User.findOne({ username: req.user.username })//, function(err, user) {
-    .populate('following')
-    .populate('followers')
-    .exec(function(err, user) {
-        if (user) {
-            res.writeHead(200, {"Content-Type": "application/json"});
-            user = user.toObject();
-	    if (user){
-		//delete user.local.password;
-		//delete user.__v;
-		res.end(JSON.stringify(user));
-	    } else {
-		return res.status(400).end('An internal server error has occurred');
-	    }
-        } else {
-            return res.status(400).end('User not found');
-        }
-    });
+    //User.findOne({ username: req.user.username })//, function(err, user) {
+    User.findOne({ _id: req.user._id })
+	.populate('following')
+	.populate('followers')
+	.exec(function(err, user) {
+            if (user) {
+		res.writeHead(200, {"Content-Type": "application/json"});
+		user = user.toObject();
+		if (user){
+		    //delete user.local.password;
+		    //delete user.__v;
+		    res.end(JSON.stringify(user));
+		} else {
+		    return res.status(400).end('An internal server error has occurred');
+		}
+            } else {
+		return res.status(400).end('User not found');
+            }
+	});
     
 };
 
 
 module.exports.update = function(req, res, next) {
-    User.findOne({ _id : req.user.id }, function(error, user) {
+    User.findOne({ _id : req.user._id }, function(error, user) {
 	if (error)
 	    return next(error);
 	if(!user) {
 	    return res.status(404).json({
-		message: 'User id: ' + req.user.id + ' could not be found.'
+		message: 'User id: ' + req.user._id + ' could not be found.'
 	    });
 	}
 	user.update(req.body, function(err, updatedUser) {
@@ -219,7 +222,7 @@ module.exports.update = function(req, res, next) {
 };
 
 module.exports.delete = function(req, res) {
-    User.remove({_id: req.user.id}, function(err) {
+    User.remove({_id: req.user._id}, function(err) {
         res.end('Deleted')
     });
 };

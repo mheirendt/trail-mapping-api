@@ -48,18 +48,19 @@ module.exports.create = function(req, res) {
 };
 
 module.exports.getTrails = function(req, res){
-    User.findOne({ username : req.user.username}, function(error, user) {
+    //User.findOne({ username : req.user.username}, function(error, user) {
+    User.findOne({ _id : req.user._id}, function(error, user) {
 	if (error)
-	    res.status(401).end("User not signed in.");
+	    return res.status(401).end("User not signed in.");
 	Trail.find({$or: [{ submittedUser : {$in: user.following }}, {submittedUser : user._id}]})
     	    .populate('reference')
 	    .populate('submittedUser')
 	    .exec(function(err, trails) {
 		if (!err) {
-		    res.send(trails);
+		   return res.send(trails);
 		}
 		else
-		    res.status(400).end('Could not fetch trails');
+		    return res.status(400).end('Could not fetch trails');
 	    });
     });
 };
