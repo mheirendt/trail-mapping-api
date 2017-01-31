@@ -25,8 +25,9 @@ module.exports.create = function(req, res) {
 module.exports.getUserPosts = function (req, res) {
 
 }
-var lastSeen = null;
+
 module.exports.getPosts = function (req, res) {
+    var lastSeen = req.body.lastSeen;
     console.log("posts: " + req.user.username);
     console.log("posts: " + req.session.key);
         User.findOne({ username : req.user.username}, function(error, user) {
@@ -44,7 +45,11 @@ module.exports.getPosts = function (req, res) {
 		    .exec(function(err, posts) {
 			if (!err) {
 			    lastSeen = posts.slice(-1).created;
-			    res.send(posts);
+			    var message = {
+				posts: posts,
+				lastSeen: lastSeen
+			    };
+			    res.send(message);
 			}
 			else
 			    res.status(400).end('Could not fetch posts');
@@ -62,7 +67,11 @@ module.exports.getPosts = function (req, res) {
 		    .exec(function(err, posts) {
 			if (!err) {
 			    lastSeen = posts.slice(-1).created;
-			    res.send(posts);
+			    var message = {
+				posts: posts,
+				lastSeen: lastSeen
+			    };
+			    res.send(message);
 			}
 			else
 			    res.status(400).end('Could not fetch posts');
