@@ -55,10 +55,13 @@ module.exports = function(app, passport) {
 
     //==========File Store Routes============
     // Read an existing filestream [x]
-    app.get('/upload/:filename', gridFs.read);
+    app.get('/upload/:fileId', isLoggedIn, gridFs.read);
 
     // Create a new filestream [x]
     app.post('/upload', upload.single("recfile"), gridFs.create);
+
+    // Delete an existing filestream [x]
+    app.delete('/upload:fileId', isLoggedIn, gridFs.delete);
 
 //==========Trail Mapping Routes============
     // Create a new trail [x]

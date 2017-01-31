@@ -1,12 +1,14 @@
 var Post = require('../models/post');
 var User = require('../models/user');
+var Notification = require('../models/notification');
 
 module.exports = {};
 
 module.exports.create = function(req, res) {
-    if (!req.user) {
+    if (!req.user)
 	return res.status(401).end('User not logged in')
-    }
+
+    //Post
     var newPost = new Post();
     newPost.body = req.body.body;
     newPost.submittedUser = req.user;
@@ -43,9 +45,7 @@ module.exports.getPosts = function (req, res) {
 		.limit(2)
 		.exec(function(err, posts) {
 		    if (!err) {
-			lastSeen = posts.slice(-1)[0].created;//._id;//.created;
-			//var lastSeen = lastSeen.created;
-			//console.log(JSON.stringify(lastSeen));
+			lastSeen = posts.slice(-1)[0].created;
 			var message = {
 			    'posts': posts,
 			    'lastSeen': lastSeen
@@ -67,8 +67,9 @@ module.exports.getPosts = function (req, res) {
 		.limit(2)
 		.exec(function(err, posts) {
 		    if (!err) {
-			if ( posts.slice(-1)[0]) {
-			    lastSeen = posts.slice(-1)[0].created;//._id;//.created;
+			var nextPost = posts.slice(-1)[0];
+			if (nextPost) {
+			    lastSeen = nextPost.created;
 			    var message = {
 				'posts': posts,
 				'lastSeen': lastSeen
@@ -96,7 +97,8 @@ module.exports.like = function (req, res) {
 	type = req.body.type,
 	typeId = req.body.typeId,
 	// user = req.user.username;
-	userId = req.user._id;
+	userId = req.user._id,
+	notification = new Notification();
     
     Post.findOne({ _id : id })//, function (error, post) {
 	.populate('reference')
@@ -113,21 +115,35 @@ module.exports.like = function (req, res) {
 		if (type == 1) {
 		    //The post itself was liked
 		    post.likes.push(user._id);
+		    notification.action = "liked your post";
 		} else if (type == 2) {
 		    //A comment of the post was liked
 		    post.comments.forEach(function(comment) {
-			if (comment._id == typeId)
+			if (comment._id == typeId) {
 			    comment.likes.push(user._id);
+			    notification.action = "liked your comment";
+			    notification.toUser = comment.submittedUser;
+			}
 		    });
 		} else {
 		    //A reply to a comment of the post was liked
 		    post.comments.forEach(function(comment) {
 			comment.replies.forEach(function(reply) {
-			    if (reply._id == typeId)
+			    if (reply._id == typeId) {
 				reply.likes.push(user._id);
+				notification.action = "liked your reply";
+				notification.toUser = reply.submittedUser;
+			    }
 			});
 		    });
 		}
+		
+		// Notification
+		notification.seen = false;
+		notification.reference = post._id;
+		notification.submittedUser = userId;
+		notification.created = new Date();
+		notification.save();
 		post.save(function(e, saved){
 		    if (e)
 			return res.status(400).end("Unable to update post: " + JSON.stringify(err));
@@ -150,7 +166,9 @@ module.exports.comment = function (req, res) {
 	type = req.body.type,
 	typeId = req.body.typeId,
         //user = req.user.username;
-	userId = req.user._id;
+	userId = req.user._id,
+	notification = new Notification();
+    
     Post.findOne({ _id : id })
     	.populate('reference')
 	.populate('submittedUser')
@@ -171,6 +189,8 @@ module.exports.comment = function (req, res) {
 			created: new Date()
 		    };
 		    post.comments.push(comment);
+		    notification.action = "commented on your post";
+		    notification.toUser = post.submittedUser;
 		} else {
 		    post.comments.forEach(function(comment) {
 			if (comment._id == typeId) {
@@ -181,9 +201,18 @@ module.exports.comment = function (req, res) {
 				created: new Date()
 			    };
 			    comment.push(reply);
+			    notification.action = "replied to your comment";
+			    notification.toUser = comment.submittedUser;
 			}
 		    });
 		}
+
+		// Notification
+		notification.seen = false;
+		notification.reference = post._id;
+		notification.submittedUser = req.user;
+		notification.created = new Date();
+		notification.save();
 		post.save(function(e, saved){
 		    if (e)
 			return  res.status(400).end("Unable to update post: " + JSON.stringify(err));
@@ -194,16 +223,17 @@ module.exports.comment = function (req, res) {
 }
 
 module.exports.deletePost = function (req, res) {
-    if (!req.user) {
+    if (!req.user)
 	return res.status(401).end('User not logged in')
-    }
-    Post.find({ '_ID' : req.body.post }, function (err, post) {
+    var postId = req.body.post;
+
+    Post.findOne({ _id : postId }, function (err, post) {
 	if (err)
 	    return res.status(400).end('Could not find post');
 	post.remove(function(error, result) {
 	    if (error)
 		return res.status(400).end('Unable to delete post');
-	    res.status(200).end('Successfully deleted post');
+	    return res.status(200).end('Successfully deleted post');
 	});
     });
 }

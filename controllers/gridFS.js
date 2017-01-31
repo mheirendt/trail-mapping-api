@@ -43,35 +43,33 @@ exports.create = function(req, res) {
  
 exports.read = function(req, res) {
     Grid.mongo = mongoose.mongo;
-    var pic_id = req.params.filename,
+    var photoId = req.params.fileId,
 	gfs = new Grid(mongoose.connection.db);
-    console.log(pic_id);
-    gfs.exist({ _id: pic_id }, function(err, found) {
+    gfs.exist({ _id: photoId }, function(err, found) {
     if (err)
 	return res.status(400).end("error finding file");
-    if (!found) {
-      res.send('Error on the database looking for the file.')
-      return;
-    }
+    if (!found) 
+	return res.send('Error on the database looking for the file.')
+
 	// We only get here if the file actually exists, so pipe it to the response
 	var mime = 'image/jpeg';
 	res.set('Content-Type', mime);
-	gfs.createReadStream({ _id: pic_id }).pipe(res);
+	gfs.createReadStream({ _id: photoId }).pipe(res);
     });
 };
 
 exports.delete = function(req, res) {
     Grid.mongo = mongoose.mongo;
-    var pic_id = req.body.id,
+    var photoId = req.params.fileId,
 	gfs = new Grid(mongoose.connection.db);
-    gfs.exist({ _id: pic_id }, function(err, found) {
+    gfs.exist({ _id: photoId }, function(err, found) {
 	if (err)
 	    return res.status(400).end("error finding file");
 	if (!found) {
 	    res.send('Error on the database looking for the file.')
 	    return;
 	}
-        gfs.remove({_id : pic_id }, function (err, success) {
+        gfs.remove({_id : photoId }, function (err, success) {
             if (err)
 		return res.status(400).end("Could not remove GFS file: " + JSON.stringify(err));
             return res.status(200).end("Successfully deleted GFS file: " + JSON.stringify(success)); 

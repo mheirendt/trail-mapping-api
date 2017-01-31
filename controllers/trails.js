@@ -6,9 +6,9 @@ var Post = require('../models/post');
 module.exports = {};
 
 module.exports.create = function(req, res) {
-    if (!req.body.categories || !req.body.tags || !req.body.geometry){
+    if (!req.body.categories || !req.body.tags || !req.body.geometry)
         return res.status(400).end('Invalid input');
-    }
+    
     //trail
     var newTrail = new Trail();
     newTrail.categories = req.body.categories;
@@ -20,31 +20,21 @@ module.exports.create = function(req, res) {
     //post
     var newPost = new Post();
     newPost.submittedUser = req.user;
-    newPost.body = "Created a new trail";// + "\n" + trail.categories + "\n" + trail.tags;
+    newPost.body = "Created a new trail.";
     newPost.created = new Date();
-
     newTrail.reference = newPost;
     newPost.reference = newTrail;
-
     newTrail.save(function(error, trail){
 	if (error)
-	    res.status(400).end('Could not save trail');
+	    return res.status(400).end('Could not save trail: ' + JSON.stringify(error));
     });
-
     newPost.save(function(error, post) {
 	if (error)
-	    res.status(400).end('Could not save post');
-	//trail.reference = post;
-	//trail.save(function(error, trail) {
-	    //if (error)
-		//res.status(400).end('Could not save post');
-	//});
+	    return res.status(400).end('Could not save post');
     });
-
-    
     res.writeHead(200, {"Content-Type": "application/json"});
     newTrail = newTrail.toObject();
-    res.end(JSON.stringify(newTrail));
+    return res.end(JSON.stringify(newTrail));
 };
 
 module.exports.getTrails = function(req, res){
@@ -60,7 +50,7 @@ module.exports.getTrails = function(req, res){
 		   return res.send(trails);
 		}
 		else
-		    return res.status(400).end('Could not fetch trails');
+		    return res.status(400).end('Could not fetch trails: ' + JSON.stringify(err));
 	    });
     });
 };

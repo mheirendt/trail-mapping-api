@@ -11,15 +11,12 @@ module.exports = {};
  *   avatar: (optional) _id of the GFS image for profile picture
  */
 module.exports.create = function(req, res) {
-    console.log(JSON.stringify(req.body));
-    if (!req.body.username || !req.body.password || !req.body.email){
+    if (!req.body.username || !req.body.password || !req.body.email)
         return res.status(400).end('Invalid input');
-    }
     User.findOne({ username:  req.body.username }, function(err, user) {
-        if (user) {
+        if (user)
             return res.status(400).end(req.body.username + ' already exists, please pick another.');
-        } else {
-	    //Create a new user from mongoose schema
+        else {
             var newUser = new User();
             newUser.username = req.body.username;
 	    newUser.avatar = req.body.avatar
@@ -29,19 +26,18 @@ module.exports.create = function(req, res) {
 	    newUser.created = new Date();
 	    newUser.followers = new Array();
 	    newUser.following = new Array();
-	    
             newUser.save(function(error, user){
 		if (error)
-		    return res.status(500).end('an internal error occurred');
+		    return res.status(400).end('an internal error occurred: ' + JSON.stringify(error));
 		req.login(newUser, function(err) {
                     if (err) 
-			res.status(500).end('Failed to login');
+			return res.status(400).end('Failed to login: ' + JSON.stringify(err));
                     else {
 			//req.session.key = newUser.username;
 			req.session.key = newUser._id;
 			newUser = newUser.toObject();
 			delete newUser.local.password;
-			res.end(JSON.stringify(newUser));
+			return res.end(JSON.stringify(newUser));
 		    }
 		});
 	    });
@@ -51,22 +47,18 @@ module.exports.create = function(req, res) {
 
 module.exports.login = function(req, res, next) {
         passport.authenticate('local', function(err, user, info) {
-            if (err) {
+            if (err)
                 return next(err);
-	    }
-            if(!user) {
+            if(!user)
                 return res.status(400).json({SERVER_RESPONSE: 0, SERVER_MESSAGE: "Wrong Credentials"});
-	    }
             req.logIn(user, function(err) {
-                if (err) {
+                if (err)
                     return next(err);
-		}
                 else{
 		    //req.session.key = req.body.username;
 		    req.session.key = user._id;
                     return res.end(JSON.stringify(user));
 		}
-                
             });
         })(req, res, next);
 };
@@ -207,14 +199,14 @@ module.exports.update = function(req, res, next) {
 	user.update(req.body, function(err, updatedUser) {
 	    if(err)
 		return next(err);
-	    res.json(updatedUser);
+	    return res.json(updatedUser);
 	});
     });
 };
 
 module.exports.delete = function(req, res) {
     User.remove({_id: req.user._id}, function(err) {
-        res.end('Deleted')
+        return res.end('Deleted')
     });
 };
 
