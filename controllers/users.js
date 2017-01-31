@@ -81,7 +81,7 @@ module.exports.read = function(req, res) {
             //user = user.toObject();
             //delete user.local.password;
             //delete user.__v;
-            res.end(JSON.stringify(user));
+            return res.end(JSON.stringify(user));
         } else {
             return res.status(400).end('User not found');
         }
@@ -100,7 +100,7 @@ module.exports.readByUsername = function(req, res) {
             user = user.toObject();
             delete user.local.password;
             delete user.__v;
-            res.end(JSON.stringify(user));
+            return res.end(JSON.stringify(user));
         } else {
             return res.status(400).end('User not found');
         }
@@ -130,10 +130,12 @@ module.exports.findUsers = function(req, res) {
     //return res.end(users);
 //};
 
-//TODO refactor user schema and test
 module.exports.follow = function(req, res) {
-    if (req.body.username) {
-	User.findOne({ username: req.body.username }, function(err, user) {
+    //if (req.body.username) {
+    //User.findOne({ username: req.body.username }, function(err, user) {
+    var userId = req.body.userId;
+     if (userId) {
+	User.findOne({ _id: userId }, function(err, user) {
 	    if (err)
 		res.end('User not found');
 	    //User.findOne({ username: req.user.username }, function(error, currentUser) {

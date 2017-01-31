@@ -97,7 +97,7 @@ module.exports = function(passport) {
 					if (err)
 					    return done(err);
 					else{
-					    req.session.key=token;
+					    req.session.key = token;
 					    return done(null, localUser);
 					}
 				    });

@@ -29,10 +29,10 @@ module.exports = function(app, passport) {
     app.get('/user/search/usernames/:usernames', isLoggedIn, users.findUsers);
 
     // Follow User by Username [x]
-    app.post('/user/follow/username', isLoggedIn, users.follow);
+    app.post('/user/follow/userId', isLoggedIn, users.follow);
     
     // Unfollow User by Username [x]
-    app.post('/user/unfollow/username', isLoggedIn, users.unfollow);
+    app.post('/user/unfollow/userId', isLoggedIn, users.unfollow);
     
     // My Profile for Currently Logged in User [x]
     app.get('/user/profile', isLoggedIn, users.me);

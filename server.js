@@ -43,7 +43,6 @@ app.use(session({
     saveUninitialized: false,
     cookie: {
 	httpOnly: false,
-	resave: false,
 	path    : '/',
 	maxAge: new Date() + 180000,
 	rolling: true
