@@ -45,11 +45,12 @@ module.exports.getPosts = function (req, res) {
 		    .exec(function(err, posts) {
 			if (!err) {
 			    lastSeen = posts.slice(-1).created;
+			    console.log('last seen: ' + JSON.stringify(lastSeen));
 			    var message = {
-				posts: posts,
-				lastSeen: lastSeen
+				'posts': posts,
+				'lastSeen': lastSeen
 			    };
-			    res.send(message);
+			    res.json(message);
 			}
 			else
 			    res.status(400).end('Could not fetch posts');
@@ -68,10 +69,10 @@ module.exports.getPosts = function (req, res) {
 			if (!err) {
 			    lastSeen = posts.slice(-1).created;
 			    var message = {
-				posts: posts,
-				lastSeen: lastSeen
+				'posts': posts,
+				'lastSeen': lastSeen
 			    };
-			    res.send(message);
+			    res.json(message);
 			}
 			else
 			    res.status(400).end('Could not fetch posts');
