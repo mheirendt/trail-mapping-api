@@ -192,19 +192,21 @@ module.exports.comment = function (req, res) {
 		    notification.action = "commented on your post";
 		    notification.toUser = post.submittedUser;
 		} else {
-		    post.comments.forEach(function(comment) {
-			if (comment._id == typeId) {
-			    var reply = {
-				body: body,
-				likes: new Array(),
-				submittedUser: user._id,
-				created: new Date()
-			    };
-			    comment.push(reply);
-			    notification.action = "replied to your comment";
-			    notification.toUser = comment.submittedUser;
-			}
-		    });
+		    if (post.comments) {
+			post.comments.forEach(function(comment) {
+			    if (comment._id == typeId) {
+				var reply = {
+				    body: body,
+				    likes: new Array(),
+				    submittedUser: user._id,
+				    created: new Date()
+				};
+				comment.push(reply);
+				notification.action = "replied to your comment";
+				notification.toUser = comment.submittedUser;
+			    }
+			});
+		    }
 		}
 
 		// Notification
