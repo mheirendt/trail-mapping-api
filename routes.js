@@ -1,10 +1,10 @@
-var users  = require('./controllers/users');
-var trails  = require('./controllers/trails');
-var posts = require('./controllers/posts');
-var passport = require('./config/passport');
-var gridFs = require('./controllers/gridFS');
-var multer = require("multer");
-var upload = multer({dest: "./uploads"});
+var users  = require('./controllers/users'),
+    trails  = require('./controllers/trails'),
+    posts = require('./controllers/posts'),
+    passport = require('./config/passport'),
+    gridFs = require('./controllers/gridFS'),
+    multer = require("multer"),
+    upload = multer({dest: "./uploads"});
 
 module.exports = function(app, passport) {
 

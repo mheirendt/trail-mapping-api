@@ -1,9 +1,9 @@
 'use strict';
 
-var mongo = require('mongodb');
-var mongoose = require('mongoose');
-var Grid = require('gridfs-stream');
-var fs = require('fs');
+var mongo = require('mongodb'),
+    mongoose = require('mongoose'),
+    Grid = require('gridfs-stream'),
+    fs = require('fs');
 
 exports.create = function(req, res) {
     var dirname = "./",
@@ -23,20 +23,18 @@ exports.create = function(req, res) {
 	    content_type: type,
 	    metadata: {
 		id: '123',
-		number: '2',
-		name: "Kenny Erasmuson"
+		number: '1',
+		name: "name"
 	    }
 	});
     read_stream.pipe(writeStream);
 
-    //Error - Success handling
-    //read_stream.on('end', function (file) {
     writeStream.on('close', function(file) {
 	var fileJSON = {'avatar' : writeStream.id};
-        res.status(200).end(JSON.stringify(fileJSON));
+        return res.status(200).end(JSON.stringify(fileJSON));
     });
     writeStream.on('error', function(err) {
-	res.status(400).end(err);
+	return res.status(400).end(err);
     });
  
 };
