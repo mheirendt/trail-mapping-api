@@ -28,9 +28,8 @@ module.exports.getUserPosts = function (req, res) {
 
 module.exports.getPosts = function (req, res) {
     var lastSeen = req.params.lastSeen;
-    console.log("posts: " + req.user.username);
-    console.log("posts: " + req.session.key);
-        User.findOne({ username : req.user.username}, function(error, user) {
+    //User.findOne({ username : req.user.username}, function(error, user) {
+    User.findOne({ _id : req.user._id}, function(error, user) {
 	if (error)
 	    res.status(401).end("User not signed in.");
 	    if (lastSeen == '0' || lastSeen == 0) {
@@ -96,7 +95,9 @@ module.exports.like = function (req, res) {
     var id = req.body.post,
 	type = req.body.type,
 	typeId = req.body.typeId,
-        user = req.user.username;
+	// user = req.user.username;
+	userId = req.user._id;
+    
     Post.findOne({ _id : id })//, function (error, post) {
 	.populate('reference')
 	.populate('submittedUser')
@@ -105,7 +106,8 @@ module.exports.like = function (req, res) {
 	.exec(function(error, post) {
 	if (error)
 	    return res.status(400).end(JSON.stringify(error));
-	User.findOne({ username : user }, function (err, user) {
+	    //User.findOne({ username : user }, function (err, user) {
+	    User.findOne({ _id : userId }, function (err, user) {
 	    if (err)
 		return  res.status(400).end(JSON.stringify(err));
 	    if (type == 1) {
@@ -147,7 +149,8 @@ module.exports.comment = function (req, res) {
 	body = req.body.body,
 	type = req.body.type,
 	typeId = req.body.typeId,
-        user = req.user.username;
+        //user = req.user.username;
+	userId = req.user._id;
     Post.findOne({ _id : id })
     	.populate('reference')
 	.populate('submittedUser')
@@ -156,7 +159,7 @@ module.exports.comment = function (req, res) {
 	.exec(function(error, post) {
 	    if (error)
 		return res.status(400).end(JSON.stringify(error));
-	    User.findOne({ username : user }, function (err, user) {
+	    User.findOne({ _id : userId }, function (err, user) {
 		if (err)
 		    return  res.status(400).end(JSON.stringify(err));
 		if (type == 1) {
