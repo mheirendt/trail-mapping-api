@@ -38,8 +38,11 @@ var postSchema = mongoose.Schema({
 	},
 	created: Date
     }],
-    created: Date
+    created: {
+	type: Date,
+	index: true
+    }
 });
-
+postSchema.index({ name: 1, type: -1 });
 module.exports = mongoose.model('Post', postSchema);
     

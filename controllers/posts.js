@@ -39,11 +39,11 @@ module.exports.getPosts = function (req, res) {
 		    .populate('likes')
 		    .populate('comments.submittedUser')
 	       	    .populate('comments.replies.submittedUser')
-		    .sort({ "_id": -1 })
+		    .sort({ "created": -1 })
 		    .limit(10)
 		    .exec(function(err, posts) {
 			if (!err) {
-			    lastSeen = posts.slice(-1).id;
+			    lastSeen = posts.slice(-1).created;
 			    res.send(posts);
 			}
 			else
@@ -51,17 +51,17 @@ module.exports.getPosts = function (req, res) {
 		    });
 	    } else {
 		//Pick up the query where it was left off
-		Post.find({$or: [{ submittedUser : {$in: user.following }}, {submittedUser : user._id}], "_id": { "$lt": lastSeen }})
+		Post.find({$or: [{ submittedUser : {$in: user.following }}, {submittedUser : user._id}], "created": { "$lt": lastSeen }})
     		    .populate('reference')
 		    .populate('submittedUser')
 		    .populate('likes')
 		    .populate('comments.submittedUser')
 		    .populate('comments.replies.submittedUser')
-		    .sort({ "_id": -1 })
+		    .sort({ "created": -1 })
 		    .limit(10)
 		    .exec(function(err, posts) {
 			if (!err) {
-			    lastSeen = posts.slice(-1).id;
+			    lastSeen = posts.slice(-1).created;
 			    res.send(posts);
 			}
 			else
