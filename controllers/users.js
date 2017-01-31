@@ -3,6 +3,13 @@ var passport = require('passport');
 
 module.exports = {};
 
+/*
+ * Params:
+ *   username: proposed new user's username
+ *   password: password of the new user
+ *   email:    email of the new user
+ *   avatar: (optional) _id of the GFS image for profile picture
+ */
 module.exports.create = function(req, res) {
     console.log(JSON.stringify(req.body));
     if (!req.body.username || !req.body.password || !req.body.email){

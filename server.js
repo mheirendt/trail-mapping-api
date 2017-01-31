@@ -33,7 +33,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 redis.auth(redisAuth[1]);
 
 redis.keys("sess:*", function(error, keys){
-    console.log("Number of active sessions: ", keys.length);
+    //console.log("Number of active sessions: ", keys.length);
 });
 
 app.use(session({
@@ -45,10 +45,13 @@ app.use(session({
 	httpOnly: false,
 	resave: false,
 	path    : '/',
-	expires: new Date(253402300000000),
-	maxAge: new Date(253402300000000)
+	maxAge: new Date() + 180000,
+	rolling: true
     }
 }));
+//	expires: new Date(253402300000000),
+//	maxAge: new Date(253402300000000)
+
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(flash());

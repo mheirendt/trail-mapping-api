@@ -15,11 +15,11 @@ module.exports.create = function(req, res) {
     newPost.created = new Date();
     newPost.save(function(error, post) {
 	if (error)
-	    res.status(400).end('Could not save post');
+	    return res.status(400).end('Could not save post: ' + JSON.stringify(error));
     });
     res.writeHead(200, {"Content-Type": "application/json"});
     newPost = newPost.toObject();
-    res.end(JSON.stringify(newPost));
+    return res.end(JSON.stringify(newPost));
 };
 
 module.exports.getUserPosts = function (req, res) {
@@ -104,37 +104,37 @@ module.exports.like = function (req, res) {
 	.populate('likes')
 	.populate('comments')
 	.exec(function(error, post) {
-	if (error)
-	    return res.status(400).end(JSON.stringify(error));
+	    if (error)
+		return res.status(400).end(JSON.stringify(error));
 	    //User.findOne({ username : user }, function (err, user) {
 	    User.findOne({ _id : userId }, function (err, user) {
-	    if (err)
-		return  res.status(400).end(JSON.stringify(err));
-	    if (type == 1) {
-		//The post itself was liked
-		post.likes.push(user._id);
-	    } else if (type == 2) {
-		//A comment of the post was liked
-		post.comments.forEach(function(comment) {
-		    if (comment._id == typeId)
-			comment.likes.push(user._id);
-		});
-	    } else {
-		//A reply to a comment of the post was liked
-		post.comments.forEach(function(comment) {
-		    comment.replies.forEach(function(reply) {
-			if (reply._id == typeId)
-			    reply.likes.push(user._id);
+		if (err)
+		    return  res.status(400).end(JSON.stringify(err));
+		if (type == 1) {
+		    //The post itself was liked
+		    post.likes.push(user._id);
+		} else if (type == 2) {
+		    //A comment of the post was liked
+		    post.comments.forEach(function(comment) {
+			if (comment._id == typeId)
+			    comment.likes.push(user._id);
 		    });
+		} else {
+		    //A reply to a comment of the post was liked
+		    post.comments.forEach(function(comment) {
+			comment.replies.forEach(function(reply) {
+			    if (reply._id == typeId)
+				reply.likes.push(user._id);
+			});
+		    });
+		}
+		post.save(function(e, saved){
+		    if (e)
+			return res.status(400).end("Unable to update post: " + JSON.stringify(err));
+		    return res.status(200).end(JSON.stringify(post));
 		});
-	    }
-	    post.save(function(e, saved){
-		if (e)
-		    return  res.status(400).end("Unable to update post: " + JSON.stringify(err));
-		return  res.status(200).end(JSON.stringify(post));
 	    });
 	});
-    });
 }
 
 /*
