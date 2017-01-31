@@ -137,54 +137,36 @@ module.exports.follow = function(req, res) {
      if (userId) {
 	User.findOne({ _id: userId }, function(err, user) {
 	    if (err)
-		res.end('User not found');
+		return res.status(400).end('Specified user not found: ' + JSON.stringify(err));
 	    //User.findOne({ username: req.user.username }, function(error, currentUser) {
 	     User.findOne({ _id: req.user._id }, function(error, currentUser) {
 		if (error)
-		    res.end('User not signed in');
+		    return res.status(400).end('Could not find current user: ' + JSON.stringify(error));
 		currentUser.following.push(user._id);
 		user.followers.push(currentUser._id);
 		currentUser.save();
 		user.save();
-		res.status(200).end(JSON.stringify(currentUser));
+		return res.status(200).end(JSON.stringify(currentUser));
 	    });
 	});
     }
-	/*User.findOne({ username: req.body.username })
-	    .populate('following')
-	    .populate('followers')
-	    .exec(function(e, finalUser) {
-		if (e)
-		    res.status(400).end(JSON.stringify(user));
-		//res.status(200).end(JSON.stringify(finalUser));
-		res.status(200).end(JSON.stringify(currentUser));
-	    });
-    } else {
-	return res.status(400).end("no username ");
-    }*/
 };
 
 module.exports.unfollow = function(req, res) {
-    User.findOne({ username: req.body.username }, function(err, user) {
+    var userId = req.body.userId;
+    User.findOne({ _id: userId }, function(err, user) {
 	if (err)
-	    return res.end('user not found');
+	    return res.status(400).end('Specified user not found: ' + JSON.stringify(err));
 	//User.findOne({ username: req.user.username }, function(error, currentUser) {
-	 User.findOne({ _id: req.user._id }, function(error, currentUser) {
-	    if (error)
-		return res.end('User not signed in');
-	    currentUser.following.remove(user._id);
-	    user.followers.remove(currentUser._id);
-	    currentUser.save();
-	    user.save();
-	});
-	User.findOne({ username: req.body.username })
-	    .populate('following')
-	    .populate('followers')
-	    .exec(function(e, finalUser) {
-		if (e)
-		    return res.status(400).end("Error saving user: " + JSON.stringify(e));
-		return res.status(200).end(JSON.stringify(finalUser));
-	    });
+	User.findOne({ _id: req.user._id }, function(error, currentUser) {
+	     if (error)
+		 return res.status(400).end('Could not find current user: ' + JSON.stringify(error));
+	     currentUser.following.remove(user._id);
+	     user.followers.remove(currentUser._id);
+	     currentUser.save();
+	     user.save();
+	     return res.status(200).end(JSON.stringify(currentUser));
+	 });
     });
 };
 
@@ -201,7 +183,7 @@ module.exports.me = function(req, res) {
 		if (user){
 		    //delete user.local.password;
 		    //delete user.__v;
-		    res.end(JSON.stringify(user));
+		    return res.end(JSON.stringify(user));
 		} else {
 		    return res.status(400).end('An internal server error has occurred');
 		}
