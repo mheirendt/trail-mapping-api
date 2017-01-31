@@ -74,7 +74,7 @@ module.exports = function(app, passport) {
     app.post('/posts', isLoggedIn, posts.create);
 
     //Get all posts of current user and following 
-    app.get('/posts', isLoggedIn, posts.getPosts);
+    app.get('/posts/:lastSeen', isLoggedIn, posts.getPosts);
 
     //Get all the posts of only the current user 
     app.get('/posts/user', isLoggedIn, posts.getUserPosts);

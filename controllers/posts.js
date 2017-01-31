@@ -27,7 +27,7 @@ module.exports.getUserPosts = function (req, res) {
 }
 
 module.exports.getPosts = function (req, res) {
-    var lastSeen = req.body.lastSeen;
+    var lastSeen = req.params.lastSeen;
     console.log("posts: " + req.user.username);
     console.log("posts: " + req.session.key);
         User.findOne({ username : req.user.username}, function(error, user) {
