@@ -33,7 +33,7 @@ module.exports.getPosts = function (req, res) {
         User.findOne({ username : req.user.username}, function(error, user) {
 	if (error)
 	    res.status(401).end("User not signed in.");
-	    if (!lastSeen) {
+	    if (lastSeen == '0' || lastSeen == 0) {
 		Post.find({$or: [{ submittedUser : {$in: user.following }}, {submittedUser : user._id}]})
     		    .populate('reference')
 		    .populate('submittedUser')
