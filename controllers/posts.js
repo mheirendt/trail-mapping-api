@@ -42,7 +42,7 @@ module.exports.getPosts = function (req, res) {
 		.populate('comments.submittedUser')
 	       	.populate('comments.replies.submittedUser')
 		.sort({ "created": -1 })
-		.limit(2)
+		.limit(5)
 		.exec(function(err, posts) {
 		    if (!err) {
 			lastSeen = posts.slice(-1)[0].created;
@@ -64,7 +64,7 @@ module.exports.getPosts = function (req, res) {
 		.populate('comments.submittedUser')
 		.populate('comments.replies.submittedUser')
 		.sort({ "created": -1 })
-		.limit(2)
+		.limit(5)
 		.exec(function(err, posts) {
 		    if (!err) {
 			var nextPost = posts.slice(-1)[0];
