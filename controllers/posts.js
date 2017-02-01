@@ -121,6 +121,7 @@ module.exports.like = function (req, res) {
 		    post.comments.forEach(function(comment) {
 			if (comment._id == typeId) {
 			    comment.likes.push(user._id);
+			    console.log("User has liked a comment");
 			    notification.action = "liked your comment";
 			    notification.toUser = comment.submittedUser;
 			}
