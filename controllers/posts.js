@@ -201,7 +201,7 @@ module.exports.comment = function (req, res) {
 				    submittedUser: user._id,
 				    created: new Date()
 				};
-				comment.push(reply);
+				comment.replies.push(reply);
 				notification.action = "replied to your comment";
 				notification.toUser = comment.submittedUser;
 			    }
