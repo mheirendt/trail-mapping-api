@@ -45,12 +45,16 @@ app.use(session({
 	httpOnly: false,
 	path    : '/',
 	expires: new Date(253402300000000),
-	maxAge: new Date() + 180000,
-	rolling: true
+	maxAge: new Date(253402300000000)
     }
 }));
 //	expires: new Date(253402300000000),
 //	maxAge: new Date(253402300000000)
+/*
+	expires: new Date(253402300000000),
+	maxAge: new Date() + 180000,
+	rolling: true
+*/
 
 app.use(passport.initialize());
 app.use(passport.session());
