@@ -48,16 +48,16 @@ module.exports.create = function(req, res) {
 module.exports.login = function(req, res, next) {
         passport.authenticate('local', function(err, user, info) {
             if (err)
-                return next(err);
+                next(err);
             if(!user)
-                return res.status(400).json({SERVER_RESPONSE: 0, SERVER_MESSAGE: "Wrong Credentials"});
+                res.status(400).json({SERVER_RESPONSE: 0, SERVER_MESSAGE: "Wrong Credentials"});
             req.logIn(user, function(err) {
                 if (err)
                     return next(err);
                 else{
 		    //req.session.key = req.body.username;
 		    req.session.key = user._id;
-                    return res.end(JSON.stringify(user));
+                    res.end(JSON.stringify(user));
 		}
             });
         })(req, res, next);
