@@ -45,12 +45,16 @@ module.exports.getPosts = function (req, res) {
 		.limit(5)
 		.exec(function(err, posts) {
 		    if (!err) {
-			lastSeen = posts.slice(-1)[0].created;
-			var message = {
-			    'posts': posts,
-			    'lastSeen': lastSeen
-			};
-			return res.json(message);
+			if (posts.slice(-1)[0]) {
+			    lastSeen = posts.slice(-1)[0].created;
+			    var message = {
+				'posts': posts,
+				'lastSeen': lastSeen
+			    };
+			    return res.json(message);
+			} else {
+			    return res.status(200).end("No posts to fetch");
+			}
 		    }
 		    else
 			return res.status(400).end('Could not fetch posts');
