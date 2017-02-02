@@ -53,7 +53,7 @@ module.exports.getPosts = function (req, res) {
 			    };
 			    return res.json(message);
 			} else {
-			    return res.status(200).end(posts);
+			    return res.status(200).end(JSON.stringify(posts));
 			}
 		    }
 		    else
