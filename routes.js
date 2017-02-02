@@ -84,6 +84,9 @@ module.exports = function(app, passport) {
 
     //A post is liked [x]
     app.post('/posts/like', isLoggedIn, posts.like);
+    
+    //A post is unliked 
+    app.post('/posts/unlike', isLoggedIn, posts.unlike);
 
     //A post is commented on [x]
     app.post('/posts/comment', isLoggedIn, posts.comment);

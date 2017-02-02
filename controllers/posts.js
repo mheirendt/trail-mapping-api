@@ -154,6 +154,30 @@ module.exports.like = function (req, res) {
 	});
 }
 
+module.exports.unlike = function (req, res) {
+    var id = req.body.post,
+	type = req.body.type,
+	typeId = req.body.typeId,
+	userId = req.user._id;
+    
+    Post.findOne({ _id : id })//, function (error, post) {
+	.populate('reference')
+	.populate('submittedUser')
+	.populate('likes')
+	.populate('comments')
+	.exec(function(error, post) {
+	    if (error)
+		return res.status(400).end(JSON.stringify(error));
+	    post.likes.forEach(function(like, index, object) {
+		if (like._id == userId) {
+		    object.splice(index, 1);
+		}
+	    });
+	    post.save();
+	    res.status(200).end(JSON.stringify(post);
+	});
+}
+
 /*
  *  Params:
  *   id: _id of the post being commented on
