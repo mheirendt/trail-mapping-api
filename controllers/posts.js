@@ -53,7 +53,7 @@ module.exports.getPosts = function (req, res) {
 			    };
 			    return res.json(message);
 			} else {
-			    return res.status(200).end("No posts to fetch");
+			    return res.status(200).end(posts);
 			}
 		    }
 		    else
