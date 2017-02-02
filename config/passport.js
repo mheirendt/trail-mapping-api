@@ -41,15 +41,15 @@ module.exports = function(passport) {
     }, function(req, accessToken, refreshToken, profile, done) {
                 User.findOne({ 'facebook.id' : profile.id }, function(err, user) {
                     if (err)
-                        return done(err);
+                        done(err);
                     if (user) {
 			//user already has a token, log them in
 			req.logIn(user, function(err) {
 			    if (err)
-				return done(err);
+				done(err);
 			    else{
 				req.session.key = user.facebook.token;
-				return done(null, user);
+				done(null, user);
 			    }
 			});
                     } else {
@@ -61,7 +61,8 @@ module.exports = function(passport) {
                             newUser.facebook.id = profile.id;
                             newUser.facebook.token = accessToken;
                             newUser.facebook.name = profile.name.givenName + ' ' + profile.name.familyName;
-                            newUser.email = profile.emails[0].value;
+                            //newUser.email = profile.emails[0].value;
+			    newUser.email = req.body.email;
 			    newUser.score = 0;
 			    newUser.created = new Date();
 			    newUser.followers = new Array();
@@ -71,34 +72,34 @@ module.exports = function(passport) {
                                     throw err;
 				req.logIn(newUser, function(err) {
 				    if (err)
-					return done(err);
+					done(err);
 				    else{
 					req.session.key = accessToken;
-					return done(null, newUser);
+					done(null, newUser);
 				    }
 				});
                             });
 			} else {
 			    //user exists locally, we must link accounts
 			    var localUser = req.user;
-			    localUser.username = req.body.username;
-			    localUser.avatar = req.body.avatar;
+			    //localUser.username = req.body.username;
+			    //localUser.avatar = req.body.avatar;
 			    localUser.facebook.id    = profile.id;
 			    localUser.facebook.token = token;
 			    localUser.facebook.name  = profile.name.givenName + ' ' + profile.name.familyName;
-			    localUser.email = profile.emails[0].value;
-			    localUser.followers = new Array();
-			    localUser.following = new Array();
+			    //localUser.email = profile.emails[0].value;
+			    //localUser.followers = new Array();
+			    //localUser.following = new Array();
 			    localUser.save(function(err) {
 				if (err){
-				    return done(err);
+				    done(err);
 				} else {
 				    req.logIn(localUser, function(err) {
 					if (err)
-					    return done(err);
+					    done(err);
 					else{
 					    req.session.key = token;
-					    return done(null, localUser);
+					    done(null, localUser);
 					}
 				    });
 				}
