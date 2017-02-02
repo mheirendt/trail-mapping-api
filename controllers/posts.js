@@ -20,7 +20,7 @@ module.exports.create = function(req, res) {
 	    return res.status(400).end('Could not save post: ' + JSON.stringify(error));
     });
     res.writeHead(200, {"Content-Type": "application/json"});
-    newPost = newPost.toObject();
+    //newPost = newPost.toObject();
     return res.end(JSON.stringify(newPost));
 };
 
