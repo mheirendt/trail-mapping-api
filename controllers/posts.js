@@ -174,7 +174,7 @@ module.exports.unlike = function (req, res) {
 		}
 	    });
 	    post.save();
-	    res.status(200).end(JSON.stringify(post);
+	    res.status(200).end(JSON.stringify(post));
 	});
 }
 
