@@ -44,7 +44,7 @@ app.use(session({
     cookie: {
 	httpOnly: false,
 	path    : '/',
-	expires: false,
+	expires: new Date(253402300000000),
 	maxAge: new Date() + 180000,
 	rolling: true
     }
