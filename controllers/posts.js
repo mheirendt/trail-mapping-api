@@ -44,6 +44,8 @@ module.exports.getPosts = function (req, res) {
 		.sort({ "created": -1 })
 		.limit(5)
 		.exec(function(err, posts) {
+		    if (!posts)
+			return res.status(201).end("No data");
 		    if (!err) {
 			if (posts.slice(-1)[0]) {
 			    lastSeen = posts.slice(-1)[0].created;
