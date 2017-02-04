@@ -224,9 +224,26 @@ module.exports.comment = function (req, res) {
 	typeId = req.body.typeId,
         //user = req.user.username;
 	userId = req.user._id,
-	notification = new Notification();
+	notification = new Notification(),
+	comment = {
+	    body: body,
+	    likes: new Array(),
+	    replies: new Array(),
+	    submittedUser: user._id,
+	    created: new Date()
+	};
     
-    Post.findOne({ _id : id })
+     Post.findByIdAndUpdate(
+	 id,
+	 {$push: {"comments": comment}},
+	 {safe: true, upsert: false},
+	 function(err, post) {
+             if (err)
+		 return res.status(500).end("Could not update post: " + JSON.stringify(err));
+	     return res.end(JSON.stringify(post));
+	 });
+    
+    /*Post.findOne({ _id : id })
     	.populate('reference')
 	.populate('submittedUser')
 	.populate('likes')
@@ -278,7 +295,7 @@ module.exports.comment = function (req, res) {
 		    return  res.status(200).end(JSON.stringify(post));
 		});
 	    });
-	});
+	});*/
 }
 
 module.exports.deletePost = function (req, res) {
