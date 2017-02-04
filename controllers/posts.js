@@ -181,7 +181,17 @@ module.exports.unlike = function (req, res) {
 	type = req.body.type,
 	typeId = req.body.typeId,
 	userId = req.user._id;
-    
+
+        Post.findByIdAndUpdate(
+	id,
+	{$pull: {"likes": userId}},
+	{safe: true, upsert: false},
+	function(err, post) {
+            if (err)
+		return res.status(500).end("Could not update post: " + JSON.stringify(err));
+	    return res.end(JSON.stringify(post));
+	});
+    /*
     Post.findOne({ _id : id })//, function (error, post) {
 	.populate('reference')
 	.populate('submittedUser')
@@ -197,7 +207,7 @@ module.exports.unlike = function (req, res) {
 	    });
 	    post.save();
 	    res.status(200).end(JSON.stringify(post));
-	});
+	});*/
 }
 
 /*
