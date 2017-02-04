@@ -119,6 +119,7 @@ module.exports.like = function (req, res) {
 		.populate('submittedUser')
 		.populate('likes')
 		.populate('comments')
+		.populate('comments.submittedUser')
 		.exec(function(error, finalPost) {
 		    if (error)
 			return res.status(400).end(JSON.stringify(error));
@@ -205,6 +206,7 @@ module.exports.unlike = function (req, res) {
 		.populate('submittedUser')
 		.populate('likes')
 		.populate('comments')
+		.populate('comments.submittedUser')
 		.exec(function(error, finalPost) {
 		    if (error)
 			return res.status(400).end(JSON.stringify(error));
