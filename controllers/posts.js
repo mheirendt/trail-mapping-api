@@ -103,6 +103,18 @@ module.exports.like = function (req, res) {
 	// user = req.user.username;
 	userId = req.user._id,
 	notification = new Notification();
+
+    Post.findByIdAndUpdate(
+	id,
+	{$push: {"likes": userId}},
+	{safe: true, upsert: false},
+	function(err, post) {
+            if (err)
+		return res.status(500).end("Could not update post: " + JSON.stringify(err));
+	    return res.end(JSON.stringify(post));
+	});
+    
+    /*
     
     Post.findOne({ _id : id })//, function (error, post) {
 	.populate('reference')
@@ -142,6 +154,7 @@ module.exports.like = function (req, res) {
 			});
 		    });
 		}
+
 		
 		// Notification
 		notification.seen = false;
@@ -156,6 +169,9 @@ module.exports.like = function (req, res) {
 		});
 	    });
 	});
+    */
+
+    
 }
 
 module.exports.unlike = function (req, res) {
