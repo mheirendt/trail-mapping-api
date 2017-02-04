@@ -149,8 +149,7 @@ module.exports.follow = function(req, res) {
 				return res.end(user.toString());
 			    });
 		    });
-	    }
-	});
+	    });
 	/*User.findOne({ _id: userId }, function(err, user) {
 	    if (err)
 		return res.status(400).end('Specified user not found: ' + JSON.stringify(err));
@@ -195,8 +194,7 @@ module.exports.unfollow = function(req, res) {
 				return res.end(JSON.stringify(user));
 			    });
 		    });
-	    }
-	});
+	    });
     /*
     var userId = req.body.userId;
     User.findOne({ _id: userId }, function(err, user) {
