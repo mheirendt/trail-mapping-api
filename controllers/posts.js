@@ -183,8 +183,9 @@ module.exports.unlike = function (req, res) {
 	userId = req.user._id;
 
         Post.findByIdAndUpdate(
-	id,
-	{$pull: {"likes": userId}},
+	    id,
+	    {$pull: {likes: {_id: userId}}},//}, function(err, data){
+	//{$pullAll: {"likes": userId}},
 	{safe: true, upsert: false},
 	function(err, post) {
             if (err)
