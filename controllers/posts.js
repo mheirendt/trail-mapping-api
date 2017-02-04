@@ -254,15 +254,15 @@ module.exports.comment = function (req, res) {
 	    created: new Date()
 	};
     
-     Post.findByIdAndUpdate(
-	 id,
-	 {$push: {"comments": comment}},
-	 {safe: true, upsert: false},
-	 function(err, post) {
-             if (err)
-		 return res.status(500).end("Could not update post: " + JSON.stringify(err));
-	     //return res.end(JSON.stringify(post));
-	     Post.findOne({ _id : id })
+    Post.findByIdAndUpdate(
+	id,
+	{$push: {"comments": comment}},
+	{safe: true, upsert: false},
+	function(err, post) {
+            if (err)
+		return res.status(500).end("Could not update post: " + JSON.stringify(err));
+	    //return res.end(JSON.stringify(post));
+	    Post.findOne({ _id : id })
 		.populate('reference')
 		.populate('submittedUser')
 		.populate('likes')

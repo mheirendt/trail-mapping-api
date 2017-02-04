@@ -123,11 +123,34 @@ module.exports.findUsers = function(req, res) {
 //};
 
 module.exports.follow = function(req, res) {
-    //if (req.body.username) {
-    //User.findOne({ username: req.body.username }, function(err, user) {
-    var userId = req.body.userId;
-     if (userId) {
-	User.findOne({ _id: userId }, function(err, user) {
+    var id = req.user.id,
+	userId = req.body.userId;
+    if (userId) {
+	User.findByIdAndUpdate(
+	    userId,
+	    {$push: {"followers": id}},
+	    {safe: true, upsert: false},
+	    function(err, otherUser) {
+		if (err)
+		    return res.status(500).end("Could not update user: " + JSON.stringify(err));;
+		User.findByIdAndUpdate(
+		    id,
+		    {$push: {"following": userId}},
+		    {safe: true, upsert: false},
+		    function(err, updatedUser) {
+			if (err)
+			    return res.status(500).end("Could not update user: " + JSON.stringify(err));
+			User.findOne({ _id :  userId})
+			    .populate('following')
+			    .populate('followers')
+			    .exec(function(error, user) {
+				if (error)
+				    return res.status(500).end("Could not update user: " + JSON.stringify(error));
+				return res.end(JSON.stringify(user));
+			    });
+		    });
+	    });
+	/*User.findOne({ _id: userId }, function(err, user) {
 	    if (err)
 		return res.status(400).end('Specified user not found: ' + JSON.stringify(err));
 	    //User.findOne({ username: req.user.username }, function(error, currentUser) {
@@ -140,11 +163,39 @@ module.exports.follow = function(req, res) {
 		user.save();
 		return res.status(200).end(JSON.stringify(currentUser));
 	    });
-	});
+	});*/
     }
 };
 
 module.exports.unfollow = function(req, res) {
+        var id = req.user.id,
+	userId = req.body.userId;
+    if (userId) {
+	User.findByIdAndUpdate(
+	    userId,
+	    {$pull: {"followers": id}},
+	    {safe: true, upsert: false},
+	    function(err, otherUser) {
+		if (err)
+		    return res.status(500).end("Could not update user: " + JSON.stringify(err));;
+		User.findByIdAndUpdate(
+		    id,
+		    {$pull: {"following": userId}},
+		    {safe: true, upsert: false},
+		    function(err, updatedUser) {
+			if (err)
+			    return res.status(500).end("Could not update user: " + JSON.stringify(err));
+			User.findOne({ _id :  userId})
+			    .populate('following')
+			    .populate('followers')
+			    .exec(function(error, user) {
+				if (error)
+				    return res.status(500).end("Could not update user: " + JSON.stringify(error));
+				return res.end(JSON.stringify(user));
+			    });
+		    });
+	    });
+    /*
     var userId = req.body.userId;
     User.findOne({ _id: userId }, function(err, user) {
 	if (err)
@@ -159,7 +210,7 @@ module.exports.unfollow = function(req, res) {
 	     user.save();
 	     return res.status(200).end(JSON.stringify(currentUser));
 	 });
-    });
+    });*/
 };
 
 module.exports.me = function(req, res) {
