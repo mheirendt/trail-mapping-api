@@ -229,7 +229,7 @@ module.exports.comment = function (req, res) {
 	    body: body,
 	    likes: new Array(),
 	    replies: new Array(),
-	    submittedUser: user._id,
+	    submittedUser: userId,
 	    created: new Date()
 	};
     
