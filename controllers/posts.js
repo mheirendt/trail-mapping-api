@@ -199,7 +199,17 @@ module.exports.unlike = function (req, res) {
 	function(err, post) {
             if (err)
 		return res.status(500).end("Could not update post: " + JSON.stringify(err));
-	    return res.end(JSON.stringify(post));
+	    //return res.end(JSON.stringify(post));
+	    Post.findOne({ _id : id })
+		.populate('reference')
+		.populate('submittedUser')
+		.populate('likes')
+		.populate('comments')
+		.exec(function(error, finalPost) {
+		    if (error)
+			return res.status(400).end(JSON.stringify(error));
+		    return res.end(JSON.stringify(finalPost));
+		});
 	});
     /*
     Post.findOne({ _id : id })//, function (error, post) {
