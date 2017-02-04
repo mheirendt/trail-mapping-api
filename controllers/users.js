@@ -145,11 +145,11 @@ module.exports.follow = function(req, res) {
 			    .populate('followers')
 			    .exec(function(error, user) {
 				if (error)
-				    return res.status(500).end("Could not update user: " + JSON.stringify(error));
-				return res.end(JSON.stringify(user));
+				    return res.status(500).end("Could not update user: " + error.toString());
+				return res.end(user.toString());
 			    });
-		    });
-	    });
+		    }
+		});
 	/*User.findOne({ _id: userId }, function(err, user) {
 	    if (err)
 		return res.status(400).end('Specified user not found: ' + JSON.stringify(err));
@@ -194,7 +194,7 @@ module.exports.unfollow = function(req, res) {
 				return res.end(JSON.stringify(user));
 			    });
 		    });
-	    });
+	    }
     /*
     var userId = req.body.userId;
     User.findOne({ _id: userId }, function(err, user) {
