@@ -17,18 +17,21 @@ module.exports = function(passport) {
 
     //===============LOCAL STRATEGIES================
     passport.use(new LocalStrategy(function(username, password, done) {
-        User.findOne({ 'username': username }, function (err, user) {
-            if (err) {
-		done(err);
-	    }
-            if (!user) {
-                done(null, false, { message: 'Incorrect username.' });
-            }
-            if (!user.validPassword(password)) {
-                done(null, false, { message: 'Incorrect password.' });
-            }
-            done(null, user);
-        });
+        User.findOne({ 'username': username })//, function (err, user) {
+	    .populate('followers')
+	    .populate('following')
+	    .exec(function(err, user) {
+		if (err) {
+		    done(err);
+		}
+		if (!user) {
+                    done(null, false, { message: 'Incorrect username.' });
+		}
+		if (!user.validPassword(password)) {
+                    done(null, false, { message: 'Incorrect password.' });
+		}
+		done(null, user);
+            });
     }));
 
     //===============FACEBOOK================
@@ -38,7 +41,10 @@ module.exports = function(passport) {
 	clientSecret: auth.facebookAuth.clientSecret,
 	passReqToCallback: true
     }, function(req, accessToken, refreshToken, profile, done) {
-                User.findOne({ 'facebook.id' : profile.id }, function(err, user) {
+        User.findOne({ 'facebook.id' : profile.id })//, function(err, user) {
+	    .populate('following')
+	    .populate('followers')
+	    .exec(function(err, user) {
                     if (err)
                         done(err);
                     if (user) {
