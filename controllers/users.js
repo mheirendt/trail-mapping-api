@@ -90,8 +90,9 @@ module.exports.readByUsername = function(req, res) {
 	    if (!user)
 		return res.status(400).end("user not found");
             user = user.toObject();
-            delete user.local.password;
-            delete user.__v;
+	    if (user.local)
+		user.local.password ? delete user.local.password : null;
+	    delete user.__v;
             return res.end(JSON.stringify(user));
         } else {
             return res.status(400).end('User not found');
