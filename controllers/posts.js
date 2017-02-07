@@ -230,7 +230,7 @@ module.exports.comment = function (req, res) {
     comment.body = body;
     comment.postId = id;
     comment.likes = new Array();
-    comment.replies: new Array();
+    comment.replies = new Array();
     comment.submittedUser = userId
     comment.created = new Date();
     comment.save();
