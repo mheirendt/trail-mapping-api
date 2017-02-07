@@ -1,4 +1,5 @@
 var Post = require('../models/post');
+var Comment = require('../models/comment');
 var User = require('../models/user');
 var Notification = require('../models/notification');
 
@@ -13,7 +14,7 @@ module.exports.create = function(req, res) {
     newPost.body = req.body.body;
     newPost.submittedUser = req.user;
     newPost.likes = new Array();
-    newPost.comments = new Array();
+    newPost.comments = 0;
     newPost.created = new Date();
     newPost.save(function(error, post) {
 	if (error)
@@ -39,8 +40,6 @@ module.exports.getPosts = function (req, res) {
     		.populate('reference')
 		.populate('submittedUser')
 		.populate('likes')
-		.populate('comments.submittedUser')
-	       	.populate('comments.replies.submittedUser')
 		.sort({ "created": -1 })
 		.limit(5)
 		.exec(function(err, posts) {
@@ -67,8 +66,6 @@ module.exports.getPosts = function (req, res) {
     		.populate('reference')
 		.populate('submittedUser')
 		.populate('likes')
-		.populate('comments.submittedUser')
-		.populate('comments.replies.submittedUser')
 		.sort({ "created": -1 })
 		.limit(5)
 		.exec(function(err, posts) {
@@ -96,238 +93,187 @@ module.exports.getPosts = function (req, res) {
  *  Params:
  *   id: _id of the post being liked
  *   type: type of post, 1 being main, 2 being comment, 3 beign reply
- *   typeId: _id of the comment / reply being liked
  */
 module.exports.like = function (req, res) {
     var id = req.body.post,
 	type = req.body.type,
-	typeId = req.body.typeId,
-	// user = req.user.username;
 	userId = req.user._id,
 	notification = new Notification();
-
-    Post.findByIdAndUpdate(
-	id,
-	{$push: {"likes": userId}},
-	{safe: true, upsert: false},
-	function(err, post) {
-            if (err)
-		return res.status(500).end("Could not update post: " + JSON.stringify(err));
-	    Post.findOne({ _id : id })
-		.populate('reference')
-		.populate('submittedUser')
-		.populate('likes')
-		.populate('comments')
-		.populate('comments.submittedUser')
-		.exec(function(error, finalPost) {
-		    if (error)
-			return res.status(400).end(JSON.stringify(error));
-		    return res.end(JSON.stringify(finalPost));
-		});
-	});
     
-    /*
-    
-    Post.findOne({ _id : id })//, function (error, post) {
-	.populate('reference')
-	.populate('submittedUser')
-	.populate('likes')
-	.populate('comments')
-	.exec(function(error, post) {
-	    if (error)
-		return res.status(400).end(JSON.stringify(error));
-	    //User.findOne({ username : user }, function (err, user) {
-	    User.findOne({ _id : userId }, function (err, user) {
+    if (type == 1) {
+	Post.findByIdAndUpdate(
+	    id,
+	    {$push: {"likes": userId}},
+	    {safe: true, upsert: false},
+	    function(err, post) {
 		if (err)
-		    return  res.status(400).end(JSON.stringify(err));
-		if (type == 1) {
-		    //The post itself was liked
-		    post.likes.push(user._id);
-		    notification.action = "liked your post";
-		} else if (type == 2) {
-		    //A comment of the post was liked
-		    post.comments.forEach(function(comment) {
-			if (comment._id == typeId) {
-			    comment.likes.push(user._id);
-			    console.log("User has liked a comment");
-			    notification.action = "liked your comment";
-			    notification.toUser = comment.submittedUser;
-			}
+		    return res.status(500).end("Could not update post: " + JSON.stringify(err));
+		Post.findOne({ _id : id })
+		    .populate('reference')
+		    .populate('submittedUser')
+		    .populate('likes')
+		    .exec(function(error, finalPost) {
+			if (error)
+			    return res.status(400).end(JSON.stringify(error));
+			return res.end(JSON.stringify(finalPost));
 		    });
-		} else {
-		    //A reply to a comment of the post was liked
-		    post.comments.forEach(function(comment) {
-			comment.replies.forEach(function(reply) {
-			    if (reply._id == typeId) {
-				reply.likes.push(user._id);
-				notification.action = "liked your reply";
-				notification.toUser = reply.submittedUser;
-			    }
-			});
+	    });  
+    } else if (type== 2) {
+	Comment.findByIdAndUpdate(
+	    id,
+	    {$push: {"likes": userId}},
+	    {safe: true, upsert: false},
+	    function(err, post) {
+		if (err)
+		    return res.status(500).end("Could not update post: " + JSON.stringify(err));
+		Comment.findOne({ _id : id })
+		    .populate('submittedUser')
+		    .populate('likes')
+		    .poputlate('replies')
+		    .exec(function(error, finalComment) {
+			if (error)
+			    return res.status(400).end(JSON.stringify(error));
+			return res.end(JSON.stringify(finalComment));
 		    });
-		}
-
-		
-		// Notification
-		notification.seen = false;
-		notification.reference = post._id;
-		notification.submittedUser = userId;
-		notification.created = new Date();
-		notification.save();
-		post.save(function(e, saved){
-		    if (e)
-			return res.status(400).end("Unable to update post: " + JSON.stringify(err));
-		    return res.status(200).end(JSON.stringify(post));
-		});
-	    });
-	});
-    */
-
-    
+	    });  
+    } else {
+	Comment.replies.findByIdAndUpdate(
+	    id,
+	    {$push: {"likes": userId}},
+	    {safe: true, upsert: false},
+	    function(err, reply) {
+		if (err)
+		    return res.status(500).end("Could not update reply: " + JSON.stringify(err));
+		Comment.findOne({ _id : id })
+		    .populate('submittedUser')
+		    .populate('likes')
+		    .exec(function(error, finalReply) {
+			if (error)
+			    return res.status(400).end(JSON.stringify(error));
+			return res.end(JSON.stringify(finalReply));
+		    });
+	    }); 
+    }
 }
 
 module.exports.unlike = function (req, res) {
     var id = req.body.post,
 	type = req.body.type,
-	typeId = req.body.typeId,
 	userId = req.user._id;
-
-        Post.findByIdAndUpdate(
-	id,
-	{$pull: {"likes": userId}},
-	{safe: true, upsert: false},
-	function(err, post) {
-            if (err)
-		return res.status(500).end("Could not update post: " + JSON.stringify(err));
-	    //return res.end(JSON.stringify(post));
-	    Post.findOne({ _id : id })
-		.populate('reference')
-		.populate('submittedUser')
-		.populate('likes')
-		.populate('comments')
-		.populate('comments.submittedUser')
-		.exec(function(error, finalPost) {
-		    if (error)
-			return res.status(400).end(JSON.stringify(error));
+    if (type == 1) {
+	Post.findByIdAndUpdate(
+	    id,
+	    {$pull: {"likes": userId}},
+	    {safe: true, upsert: false},
+	    function(err, post) {
+		if (err)
+		    return res.status(500).end("Could not update post: " + JSON.stringify(err));
+		Post.findOne({ _id : id })
+		    .populate('reference')
+		    .populate('submittedUser')
+		    .populate('likes')
+		    .exec(function(error, finalPost) {
+			if (error)
+			    return res.status(400).end(JSON.stringify(error));
 		    return res.end(JSON.stringify(finalPost));
-		});
-	});
-    /*
-    Post.findOne({ _id : id })//, function (error, post) {
-	.populate('reference')
-	.populate('submittedUser')
-	.populate('likes')
-	.populate('comments')
-	.exec(function(error, post) {
-	    if (error)
-		return res.status(400).end(JSON.stringify(error));
-	    post.likes.forEach(function(like, index, object) {
-		if (like._id == userId) {
-		    object.splice(index, 1);
-		}
+		    });
 	    });
-	    post.save();
-	    res.status(200).end(JSON.stringify(post));
-	});*/
+    } else if (type == 2) {
+	Comment.findByIdAndUpdate(
+	    id,
+	    {$pull: {"likes": userId}},
+	    {safe: true, upsert: false},
+	    function(err, comment) {
+		if (err)
+		    return res.status(500).end("Could not update comment: " + JSON.stringify(err));
+		Comment.findOne({ _id : id })
+		    .populate('submittedUser')
+		    .populate('likes')
+		    .populate('replies')
+		    .exec(function(error, finalComment) {
+			if (error)
+			    return res.status(400).end(JSON.stringify(error));
+		    return res.end(JSON.stringify(finalComment));
+		    });
+	    });
+    } else {
+	Comment.replies.findByIdAndUpdate(
+	    id,
+	    {$pull: {"likes": userId}},
+	    {safe: true, upsert: false},
+	    function(err, reply) {
+		if (err)
+		    return res.status(500).end("Could not update reply: " + JSON.stringify(err));
+		Comment.findOne({ _id : id })
+		    .populate('submittedUser')
+		    .populate('likes')
+		    .populate('replies')
+		    .exec(function(error, finalReply) {
+			if (error)
+			    return res.status(400).end(JSON.stringify(error));
+		    return res.end(JSON.stringify(finalReply));
+		    });
+	    });
+    }
 }
 
 /*
  *  Params:
  *   id: _id of the post being commented on
  *   body: body of the comment to be posted
- *   type: type of post, 1 being main, 2 being reply
- *   typeId: _id of the post / comment being commented on
  */
 module.exports.comment = function (req, res) {
     var id = req.body.post,
 	body = req.body.body,
-	type = req.body.type,
-	typeId = req.body.typeId,
-        //user = req.user.username;
 	userId = req.user._id,
-	notification = new Notification(),
-	comment = {
-	    body: body,
-	    likes: new Array(),
-	    replies: new Array(),
-	    submittedUser: userId,
-	    created: new Date()
-	};
+	comment new Comment();
+    comment.body = body;
+    comment.postId = id;
+    comment.likes = new Array();
+    comment.replies: new Array();
+    comment.submittedUser = userId
+    comment.created = new Date();
+    comment.save();
     
     Post.findByIdAndUpdate(
 	id,
-	{$push: {"comments": comment}},
+	{$inc: {comments: 1}},
 	{safe: true, upsert: false},
 	function(err, post) {
             if (err)
 		return res.status(500).end("Could not update post: " + JSON.stringify(err));
-	    //return res.end(JSON.stringify(post));
-	    Post.findOne({ _id : id })
-		.populate('reference')
+	    return res.end(JSON.stringify(comment));
+	 });
+}
+
+module.exports.reply = function (req, res) {
+    var id = req.body.comment,
+	body = req.body.body,
+	userId = req.user._id,
+	reply = {
+	    body: body,
+	    likes: new Array(),
+	    submittedUser: userId,
+	    created: new Date()
+	};
+    
+    Comment.findByIdAndUpdate(
+	id,
+	{$push: {"replies": reply}},
+	{safe: true, upsert: false},
+	function(err, post) {
+            if (err)
+		return res.status(500).end("Could not update comment: " + JSON.stringify(err));
+	    Comment.findOne({ _id : id })
 		.populate('submittedUser')
 		.populate('likes')
-		.populate('comments')
-		.populate('comments.submittedUser')
-		.exec(function(error, finalPost) {
+		.populate('replies')
+		.exec(function(error, finalComment) {
 		    if (error)
 			return res.status(400).end(JSON.stringify(error));
-		    return res.end(JSON.stringify(finalPost));
+		    return res.end(JSON.stringify(finalComment));
 		});
-	 });
-    
-    /*Post.findOne({ _id : id })
-    	.populate('reference')
-	.populate('submittedUser')
-	.populate('likes')
-	.populate('comments')
-	.exec(function(error, post) {
-	    if (error)
-		return res.status(400).end(JSON.stringify(error));
-	    User.findOne({ _id : userId }, function (err, user) {
-		if (err)
-		    return  res.status(400).end(JSON.stringify(err));
-		if (type == 1) {
-		    var comment = {
-			body: body,
-			likes: new Array(),
-			replies: new Array(),
-			submittedUser: user._id,
-			created: new Date()
-		    };
-		    post.comments.push(comment);
-		    notification.action = "commented on your post";
-		    notification.toUser = post.submittedUser;
-		} else {
-		    if (post.comments) {
-			post.comments.forEach(function(comment) {
-			    if (comment._id == typeId) {
-				var reply = {
-				    body: body,
-				    likes: new Array(),
-				    submittedUser: user._id,
-				    created: new Date()
-				};
-				comment.replies.push(reply);
-				notification.action = "replied to your comment";
-				notification.toUser = comment.submittedUser;
-			    }
-			});
-		    }
-		}
-
-		// Notification
-		notification.seen = false;
-		notification.reference = post._id;
-		notification.submittedUser = req.user;
-		notification.created = new Date();
-		notification.save();
-		post.save(function(e, saved){
-		    if (e)
-			return  res.status(400).end("Unable to update post: " + JSON.stringify(err));
-		    return  res.status(200).end(JSON.stringify(post));
-		});
-	    });
-	});*/
+	});
 }
 
 module.exports.deletePost = function (req, res) {

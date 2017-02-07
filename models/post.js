@@ -14,6 +14,7 @@ var postSchema = mongoose.Schema({
 	type : mongoose.Schema.Types.ObjectId,
 	ref: 'User'
     }],
+    comments: Number,/*
     comments: [{
 	body: String,
 	likes : [{
@@ -37,7 +38,7 @@ var postSchema = mongoose.Schema({
 	    ref: 'User'
 	},
 	created: Date
-    }],
+    }],*/
     created: {
 	type: Date,
 	index: true
