@@ -226,7 +226,7 @@ module.exports.comment = function (req, res) {
     var id = req.body.post,
 	body = req.body.body,
 	userId = req.user._id,
-	comment new Comment();
+	comment = new Comment();
     comment.body = body;
     comment.postId = id;
     comment.likes = new Array();
