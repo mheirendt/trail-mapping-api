@@ -14,7 +14,7 @@ module.exports.create = function(req, res) {
     newPost.body = req.body.body;
     newPost.submittedUser = req.user;
     newPost.likes = new Array();
-    newPost.comments = 0;
+    newPost.comments = new Number();
     newPost.created = new Date();
     newPost.save(function(error, post) {
 	if (error)
