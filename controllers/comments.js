@@ -37,7 +37,7 @@ module.exports.getComments = function(req, res) {
     User.findOne({ _id : req.user._id}, function(error, user) {
 	if (error)
 	    return res.status(401).end("User not signed in.");
-	if (lastSeen == '0' || lastSeen == 0) {
+	if (!lastSeen) {
 	    Comment.find({ postId : id })
 	    //Comment.find({$or: [{ submittedUser : {$in: user.following }}, {submittedUser : user._id}]})
 		.populate('submittedUser')
