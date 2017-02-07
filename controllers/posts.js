@@ -237,7 +237,7 @@ module.exports.comment = function (req, res) {
     
     Post.findByIdAndUpdate(
 	id,
-	{$inc: {comments: 1}},
+	{$inc: {'comments': 1}},
 	{safe: true, upsert: false},
 	function(err, post) {
             if (err)
