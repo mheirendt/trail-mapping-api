@@ -32,12 +32,14 @@ module.exports.create = function(req, res) {
 }
 
 module.exports.getComments = function(req, res) {
-    var lastSeen = req.params.lastSeen;
+    var lastSeen = req.body.lastSeen;
+    var id = req.body.postId;
     User.findOne({ _id : req.user._id}, function(error, user) {
 	if (error)
 	    return res.status(401).end("User not signed in.");
 	if (lastSeen == '0' || lastSeen == 0) {
-	    Comment.find({$or: [{ submittedUser : {$in: user.following }}, {submittedUser : user._id}]})
+	    Comment.find({ postId : id })
+	    //Comment.find({$or: [{ submittedUser : {$in: user.following }}, {submittedUser : user._id}]})
 		.populate('submittedUser')
 		.populate('likes')
 		.populate('replies')
@@ -63,7 +65,8 @@ module.exports.getComments = function(req, res) {
 		});
 	} else {
 	    //Pick up the query where it was left off
-	    Comment.find({$or: [{ submittedUser : {$in: user.following }}, {submittedUser : user._id}], "created": { "$lt": lastSeen }})
+	    //Comment.find({$or: [{ submittedUser : {$in: user.following }}, {submittedUser : user._id}], "created": { "$lt": lastSeen }})
+	    Comment.find({ postId : id }, created: { "$lt": lastSeen })
 		.populate('submittedUser')
 		.populate('likes')
 		.populate('replies')

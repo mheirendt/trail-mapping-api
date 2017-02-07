@@ -92,7 +92,7 @@ module.exports = function(app, passport) {
     //A post is commented on [x]
     app.post('/posts/comment', isLoggedIn, comments.create);
 
-    app.get('/posts/comment/:lastSeen', isLoggedIn, comments.getComments);
+    app.post('/comments/comment', isLoggedIn, comments.getComments);
 
     //Delete a post by ID [x]
     app.delete('/posts/search/id/:id', isLoggedIn, posts.deletePost);
