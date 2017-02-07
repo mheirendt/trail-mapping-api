@@ -34,9 +34,7 @@ module.exports.create = function(req, res) {
 module.exports.getComments = function(req, res) {
     var lastSeen = req.body.lastSeen;
     var id = req.body.postId;
-    User.findOne({ _id : req.user._id}, function(error, user) {
-	if (error)
-	    return res.status(401).end("User not signed in.");
+	
 	if (!lastSeen) {
 	    Comment.find({ postId : id })
 	    //Comment.find({$or: [{ submittedUser : {$in: user.following }}, {submittedUser : user._id}]})
@@ -55,8 +53,10 @@ module.exports.getComments = function(req, res) {
 				'comments': comments,
 				'lastSeen': lastSeen
 			    };
+			    console.log(JSON.stringify(message));
 			    return res.json(message);
 			} else {
+			    console.log(JSON.stringify(comments));
 			    return res.status(200).end(JSON.stringify(comments));
 			}
 		    }
@@ -90,7 +90,6 @@ module.exports.getComments = function(req, res) {
 			return res.status(400).end('Could not fetch comments');
 		});
 	}
-    });
 }
 
 
