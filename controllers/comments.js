@@ -63,7 +63,7 @@ module.exports.getComments = function(req, res) {
 		});
 	} else {
 	    //Pick up the query where it was left off
-	    Comments.find({$or: [{ submittedUser : {$in: user.following }}, {submittedUser : user._id}], "created": { "$lt": lastSeen }})
+	    Comment.find({$or: [{ submittedUser : {$in: user.following }}, {submittedUser : user._id}], "created": { "$lt": lastSeen }})
 		.populate('submittedUser')
 		.populate('likes')
 		.populate('replies')
