@@ -1,6 +1,7 @@
 var users  = require('./controllers/users'),
     trails  = require('./controllers/trails'),
     posts = require('./controllers/posts'),
+    comments = require('./controllers/comments'),
     passport = require('./config/passport'),
     gridFs = require('./controllers/gridFS'),
     multer = require("multer"),
@@ -89,7 +90,9 @@ module.exports = function(app, passport) {
     app.post('/posts/unlike', isLoggedIn, posts.unlike);
 
     //A post is commented on [x]
-    app.post('/posts/comment', isLoggedIn, posts.comment);
+    app.post('/posts/comment', isLoggedIn, comments.create);
+
+    app.get('/posts/comment/:lastSeen', isLoggedIn, comments.getComments);
 
     //Delete a post by ID [x]
     app.delete('/posts/search/id/:id', isLoggedIn, posts.deletePost);

@@ -217,64 +217,6 @@ module.exports.unlike = function (req, res) {
     }
 }
 
-/*
- *  Params:
- *   id: _id of the post being commented on
- *   body: body of the comment to be posted
- */
-module.exports.comment = function (req, res) {
-    var id = req.body.post,
-	body = req.body.body,
-	userId = req.user._id,
-	comment = new Comment();
-    comment.body = body;
-    comment.postId = id;
-    comment.likes = new Array();
-    comment.replies = new Array();
-    comment.submittedUser = userId
-    comment.created = new Date();
-    comment.save();
-    
-    Post.findByIdAndUpdate(
-	id,
-	{$inc: {'comments': 1}},
-	{safe: true, upsert: false},
-	function(err, post) {
-            if (err)
-		return res.status(500).end("Could not update post: " + JSON.stringify(err));
-	    return res.end(JSON.stringify(comment));
-	 });
-}
-
-module.exports.reply = function (req, res) {
-    var id = req.body.comment,
-	body = req.body.body,
-	userId = req.user._id,
-	reply = {
-	    body: body,
-	    likes: new Array(),
-	    submittedUser: userId,
-	    created: new Date()
-	};
-    
-    Comment.findByIdAndUpdate(
-	id,
-	{$push: {"replies": reply}},
-	{safe: true, upsert: false},
-	function(err, post) {
-            if (err)
-		return res.status(500).end("Could not update comment: " + JSON.stringify(err));
-	    Comment.findOne({ _id : id })
-		.populate('submittedUser')
-		.populate('likes')
-		.populate('replies')
-		.exec(function(error, finalComment) {
-		    if (error)
-			return res.status(400).end(JSON.stringify(error));
-		    return res.end(JSON.stringify(finalComment));
-		});
-	});
-}
 
 module.exports.deletePost = function (req, res) {
     if (!req.user)
