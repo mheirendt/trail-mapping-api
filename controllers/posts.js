@@ -229,7 +229,11 @@ module.exports.deletePost = function (req, res) {
 	post.remove(function(error, result) {
 	    if (error)
 		return res.status(400).end('Unable to delete post');
-	    return res.status(200).end('Successfully deleted post');
+	    Comment.find({postId : postId}).remove(function(error, success) {
+		if (error)
+		    return res.status(500).end("Unable to remove post");
+		return res.status(200).end('Successfully deleted post');
+	    })
 	});
     });
 }

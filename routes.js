@@ -94,8 +94,11 @@ module.exports = function(app, passport) {
 
     app.post('/comments/comment', isLoggedIn, comments.getComments);
 
+    //A comment is deleted [x]
+    app.delete('/comments/search/id/:id', isLoggedIn, comments.deleteComment);
+
     //Delete a post by ID [x]
-    app.delete('/posts/search/id/:id', isLoggedIn, posts.deletePost);
+    app.delete('/posts/search/id/:id', isLoggedIn, posts.deleteComment);
     
 
     //======Facebook Authentication Routes=======

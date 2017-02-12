@@ -122,3 +122,10 @@ module.exports.reply = function (req, res) {
 		});
 	});
 }
+
+module.exports.deleteComment = function (req, res) {
+    Comment.remove({_id: req.params.id}, function(err) {
+        return res.end('Deleted');
+    });
+}
+
