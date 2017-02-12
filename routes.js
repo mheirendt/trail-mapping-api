@@ -92,7 +92,7 @@ module.exports = function(app, passport) {
     //A post is commented on [x]
     app.post('/posts/comment', isLoggedIn, comments.create);
 
-    app.post('/comments/comment', isLoggedIn, comments.getComments);
+    app.get('/posts/comments/:postId/:lastSeen', isLoggedIn, comments.getComments);
 
     //A comment is deleted [x]
     app.delete('/comments/search/id/:id', isLoggedIn, comments.deleteComment);
@@ -101,7 +101,7 @@ module.exports = function(app, passport) {
     app.delete('/comments/search/id/:id/replies/:replyId', isLoggedIn, comments.deleteReply);
 
     //Delete a post by ID [x]
-    app.delete('/posts/search/id/:id', isLoggedIn, posts.deleteComment);
+    app.delete('/posts/search/id/:id', isLoggedIn, posts.deletePost);
     
 
     //======Facebook Authentication Routes=======

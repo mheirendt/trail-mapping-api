@@ -32,8 +32,8 @@ module.exports.create = function(req, res) {
 }
 
 module.exports.getComments = function(req, res) {
-    var lastSeen = req.body.lastSeen;
-    var id = req.body.postId;
+    var lastSeen = req.params.lastSeen;
+    var id = req.params.postId;
 	
 	if (!lastSeen) {
 	    Comment.find({ postId : id })
