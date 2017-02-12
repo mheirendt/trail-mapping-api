@@ -259,6 +259,8 @@ module.exports.update = function(req, res, next) {
 };
 
 module.exports.delete = function(req, res) {
+    if (req.user._id != req.params.id)
+	return res.status(401).end("You cannot delete another user");
     User.remove({_id: req.user._id}, function(err) {
         return res.end('Deleted')
     });

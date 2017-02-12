@@ -219,8 +219,8 @@ module.exports.unlike = function (req, res) {
 
 
 module.exports.deletePost = function (req, res) {
-    if (!req.user)
-	return res.status(401).end('User not logged in')
+    if (!req.user || req.user._id != req.params.id)
+	return res.status(401).end('User not authenticated to delete post')
     var postId = req.body.post;
 
     Post.findOne({ _id : postId }, function (err, post) {

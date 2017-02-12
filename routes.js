@@ -42,7 +42,7 @@ module.exports = function(app, passport) {
     app.put('/user/update', isLoggedIn, users.update);
 
     // Delete Currently Logged in User [x]
-    app.delete('/user/delete', isLoggedIn, users.delete);
+    app.delete('/users/search/id/:id', isLoggedIn, users.delete);
 
     // [x]
     app.post('/logout', isLoggedIn, function(req, res) {
@@ -96,6 +96,9 @@ module.exports = function(app, passport) {
 
     //A comment is deleted [x]
     app.delete('/comments/search/id/:id', isLoggedIn, comments.deleteComment);
+
+    //A reply is deleted [x]
+    app.delete('/comments/search/id/:id/replies/:replyId', isLoggedIn, comments.deleteReply);
 
     //Delete a post by ID [x]
     app.delete('/posts/search/id/:id', isLoggedIn, posts.deleteComment);
