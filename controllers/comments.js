@@ -126,10 +126,10 @@ module.exports.reply = function (req, res) {
 module.exports.deleteComment = function (req, res) {
     if (!req.user || req.user._id != req.params.id)
 	return res.status(401).end('User not authenticated to delete comment');
-    Comment.remove({_id: req.params.id}, function(err) {
-	if (err)
+    Comment.remove({_id: req.params.commentId}, function(error, comment) {
+	if (error)
 	    return res.status(500).end("Unable to delete comment");
-        return res.end('Deleted');
+        return res.json(comment);
     });
 }
 
@@ -137,13 +137,13 @@ module.exports.deleteReply = function (req, res) {
     if (!req.user || req.user._id != req.params.id)
 	return res.status(401).end('User not authenticated to delete comment');
     Comment.findByIdAndUpdate(
-	id,
+	commentId,
 	{$pull: { replies : { _id : replyId }}},
 		  {safe: true, upsert: false},
-		  function(err, post) {
+		  function(err, comment) {
 		      if (err)
 			  return res.status(500).end("Unable to delete comment");
-		      return res.end('Deleted');
+		      return res.json(comment);
 	    });
 }
 

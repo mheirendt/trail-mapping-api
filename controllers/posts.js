@@ -31,6 +31,8 @@ module.exports.getUserPosts = function (req, res) {
 
 module.exports.getPosts = function (req, res) {
     var lastSeen = req.params.lastSeen;
+    if (!req.user)
+	return res.status(401).end("User not authenticated");
     //User.findOne({ username : req.user.username}, function(error, user) {
     User.findOne({ _id : req.user._id}, function(error, user) {
 	if (error)
@@ -217,24 +219,27 @@ module.exports.unlike = function (req, res) {
     }
 }
 
-
 module.exports.deletePost = function (req, res) {
     if (!req.user || req.user._id != req.params.id)
 	return res.status(401).end('User not authenticated to delete post')
-    var postId = req.body.post;
-
-    Post.findOne({ _id : postId }, function (err, post) {
+    
+    //Delete Post
+    Post.remove({ _id : req.params.postId }, function (error) {
+	if (error)
+	    return res.status(400).end('Unable to delete post');
+    });
+    
+    //Delete Trail
+    Trail.remove({reference : req.params.postId}, function(error) {
 	if (err)
-	    return res.status(400).end('Could not find post');
-	post.remove(function(error, result) {
-	    if (error)
-		return res.status(400).end('Unable to delete post');
-	    Comment.find({postId : postId}).remove(function(error, success) {
-		if (error)
-		    return res.status(500).end("Unable to remove post");
-		return res.status(200).end('Successfully deleted post');
-	    })
-	});
+	    return res.status(500).end("Unable to delete trail");
+    });
+
+    //Delete all comments for Post
+    Comment.find({postId : postId}).remove(function(error) {
+	if (error)
+	    return res.status(500).end("Unable to remove post");
+	return res.status(200).end('Successfully deleted post');
     });
 }
 						

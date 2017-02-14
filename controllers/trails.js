@@ -54,3 +54,27 @@ module.exports.getTrails = function(req, res){
 	    });
     });
 };
+
+module.exports.deleteTrail = function (req, res) {
+    if (!req.user || req.user._id != req.params.id)
+	return res.status(401).end('User not authenticated to delete trail');
+    
+    //Delete trail
+    Trail.remove({_id: req.params.trailId}, function(error) {
+	if (error)
+	    return res.status(500).end("Unable to delete trail");
+    });
+    
+    //Delete post
+    Post.remove({ reference._id : req.params.trailId }, function(error) {
+	if (error)
+	    return res.status(500).end("Unable to delete post association");
+    });
+    
+    //Delete comments
+    Comment.remove({postId: req.params.id}, function(error) {
+	if (error)
+	    return res.status(500).end("Unable to delete comment associations");
+        return res.end('Deleted');
+    });
+}

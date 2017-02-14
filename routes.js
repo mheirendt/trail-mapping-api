@@ -71,6 +71,9 @@ module.exports = function(app, passport) {
     // Get all trails [x]
     app.get('/trails', isLoggedIn, trails.getTrails);
 
+    // delete trail by id [x]
+    app.get('/users/id/:id/trails/search/id/:trailId', isLoggedIn, trails.deleteTrail);
+
 //==========Trail Event Routes============
 
 //==========Post Routes============
@@ -95,13 +98,12 @@ module.exports = function(app, passport) {
     app.get('/posts/comments/:postId/:lastSeen', isLoggedIn, comments.getComments);
 
     //A comment is deleted [x]
-    app.delete('/comments/search/id/:id', isLoggedIn, comments.deleteComment);
+    app.delete('users/id/:id/comments/search/id/:commentId', isLoggedIn, comments.deleteComment);
 
     //A reply is deleted [x]
-    app.delete('/comments/search/id/:id/replies/:replyId', isLoggedIn, comments.deleteReply);
-
+    app.delete('users/id/:id/comments/search/id/:commentId/replies/:replyId', isLoggedIn, comments.deleteReply);
     //Delete a post by ID [x]
-    app.delete('/posts/search/id/:id', isLoggedIn, posts.deletePost);
+    app.delete('users/id/:id/posts/search/id/:postId', isLoggedIn, posts.deletePost);
     
 
     //======Facebook Authentication Routes=======
