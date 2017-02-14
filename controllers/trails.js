@@ -60,10 +60,10 @@ module.exports.deleteTrail = function (req, res) {
 	return res.status(401).end('User not authenticated to delete trail');
     
     //Delete trail
-    Trail.remove({_id: req.params.trailId}, function(error) {
-	if (error)
-	    return res.status(500).end("Unable to delete trail");
-    });
+    //Trail.remove({_id: req.params.trailId}, function(error) {
+//	if (error)
+//	    return res.status(500).end("Unable to delete trail");
+  //  });
     
     //Delete post
     Post.remove({ reference._id : req.params.trailId }, function(error) {
