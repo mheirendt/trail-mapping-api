@@ -66,10 +66,10 @@ module.exports.deleteTrail = function (req, res) {
   //  });
     
     //Delete post
-    Post.remove({ reference._id : req.params.trailId }, function(error) {
+    /*Post.remove({ reference._id : req.params.trailId }, function(error) {
 	if (error)
 	    return res.status(500).end("Unable to delete post association");
-    });
+    });*/
     
     //Delete comments
     Comment.remove({postId: req.params.id}, function(error) {
