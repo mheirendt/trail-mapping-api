@@ -87,8 +87,10 @@ module.exports.getPosts = function (req, res) {
 			    return res.status(200).end('no more posts');
 			}
 		    }
-		    else
+		    else {
+			console.log(JSON.stringify(err));
 			return res.status(400).end('Could not fetch posts');
+		    }
 		});
 	}
     });
