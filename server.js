@@ -10,7 +10,7 @@ var express = require('express'),
     morgan = require('morgan'),
     bodyParser = require('body-parser'),
     session = require('express-session'),
-    cookieParser = require('cookie-parser'),
+    //cookieParser = require('cookie-parser'),
     redisStore = require('connect-redis')(session),
     url = require('url'),
     redisUrl = url.parse(process.env.REDIS_URL),
@@ -27,7 +27,7 @@ db.once('open', function(){
 });
 
 app.use(morgan('dev'));
-app.use(cookieParser());
+//app.use(cookieParser());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
