@@ -60,7 +60,9 @@ module.exports.login = function(req, res, next) {
                 else{
 		    //req.session.key = req.body.username;
 		    req.session.key = user._id;
-		    console.log(lastSeen);
+		    console.log(req.session.key);
+		    console.log(user._id);
+		    console.log(JSON.stringify(req.user));
                     res.end(JSON.stringify(user));
 		}
             });
