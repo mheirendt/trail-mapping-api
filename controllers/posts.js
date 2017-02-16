@@ -34,6 +34,7 @@ module.exports.getPosts = function (req, res) {
     if (!req.user)
 	return res.status(401).end("User not authenticated");
     //User.findOne({ username : req.user.username}, function(error, user) {
+    console.log(lastSeen);
     User.findOne({ _id : req.user._id}, function(error, user) {
 	if (error)
 	    return res.status(401).end("User not signed in.");
