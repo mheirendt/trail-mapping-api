@@ -120,8 +120,9 @@ module.exports = function(app, passport) {
 // Make a call to redis to ensure an active session [x]
 function isLoggedIn(req, res, next) {
     //if(req.session.key)
-    console.log(JSON.stringify(req.user));
-     if(req.user)
+    //console.log(JSON.stringify(req.user));
+    //if(req.user)
+    if(req.session.key)
         return next();
     return res.status(401).end('Not logged in');
 }
