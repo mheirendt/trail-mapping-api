@@ -21,6 +21,7 @@
       "ejs": "~0.8.5",
       "express": "*",
       "express-session": "*",
+      "cookie-parser": "*",
       "fs": "0.0.2",
       "multer": "*",
       "md5": "^2.0.0",
