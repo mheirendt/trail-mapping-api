@@ -121,5 +121,5 @@ module.exports = function(app, passport) {
 function isLoggedIn(req, res, next) {
     if(req.session.key)
         return next();
-    res.status(400).end('Not logged in');
+    return res.status(401).end('Not logged in');
 }

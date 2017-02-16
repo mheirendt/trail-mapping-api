@@ -37,6 +37,7 @@ module.exports.create = function(req, res) {
                     else {
 			//req.session.key = newUser.username;
 			req.session.key = newUser._id;
+			console.log(req.session.key);
 			newUser = newUser.toObject();
 			delete newUser.local.password;
 			return res.end(JSON.stringify(newUser));
