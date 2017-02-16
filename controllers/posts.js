@@ -48,6 +48,7 @@ module.exports.getPosts = function (req, res) {
 		    if (!posts)
 			return res.status(201).end("No data");
 		    if (!err) {
+			console.log("We are in.......");
 			if (posts.slice(-1)[0]) {
 			    lastSeen = posts.slice(-1)[0].created;
 			    var message = {
@@ -60,7 +61,7 @@ module.exports.getPosts = function (req, res) {
 			}
 		    }
 		    else
-			return res.status(400).end('Could not fetch posts');
+			return res.status(400).end('Could not fetch posts' + JSON.stringify(err));
 		});
 	} else {
 	    //Pick up the query where it was left off
