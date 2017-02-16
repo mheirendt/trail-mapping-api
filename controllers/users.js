@@ -59,10 +59,10 @@ module.exports.login = function(req, res, next) {
                     return next(err);
                 else{
 		    //req.session.key = req.body.username;
-		    req.session.key = user._id;
 		    console.log(req.session.key);
 		    console.log(user._id);
 		    console.log(JSON.stringify(req.user));
+		    req.session.key = user._id;
                     res.end(JSON.stringify(user));
 		}
             });
