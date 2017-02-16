@@ -30,8 +30,10 @@ module.exports.create = function(req, res) {
 		if (error)
 		    return res.status(400).end('an internal error occurred: ' + JSON.stringify(error));
 		req.login(newUser, function(err) {
-                    if (err) 
+                    if (err) {
+			console.log("Err: " + JSON.stringify(err))
 			return res.status(400).end('Failed to login: ' + JSON.stringify(err));
+		    }
                     else {
 			//req.session.key = newUser.username;
 			req.session.key = newUser._id;
