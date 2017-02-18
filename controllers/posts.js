@@ -33,14 +33,13 @@ module.exports.getPosts = function (req, res) {
     var lastSeen = req.params.lastSeen;
     if (!req.user)
 	return res.status(401).end("User not authenticated");
-    //User.findOne({ username : req.user.username}, function(error, user) {
-    console.log(lastSeen);
     User.findOne({ _id : req.user._id}, function(error, user) {
 	if (error)
 	    return res.status(401).end("User not signed in.");
 	if (lastSeen == '0' || lastSeen == 0) {
 	    Post.find({$or: [{ submittedUser : {$in: user.following }}, {submittedUser : user._id}]})
     		.populate('reference')
+		.populate('reference.submittedUser')
 		.populate('submittedUser')
 		.populate('likes')
 		.sort({ "created": -1 })
@@ -49,7 +48,6 @@ module.exports.getPosts = function (req, res) {
 		    if (!posts)
 			return res.status(201).end("No data");
 		    if (!err) {
-			console.log("We are in.......");
 			if (posts.slice(-1)[0]) {
 			    lastSeen = posts.slice(-1)[0].created;
 			    var message = {
@@ -61,10 +59,8 @@ module.exports.getPosts = function (req, res) {
 			    return res.status(200).end(JSON.stringify(posts));
 			}
 		    }
-		    else {
-			console.log(JSON.stringify(err));
+		    else
 			return res.status(400).end('Could not fetch posts' + JSON.stringify(err));
-		    }
 		});
 	} else {
 	    //Pick up the query where it was left off
