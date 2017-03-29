@@ -39,7 +39,6 @@ module.exports.getPosts = function (req, res) {
 	if (lastSeen == '0' || lastSeen == 0) {
 	    Post.find({$or: [{ submittedUser : {$in: user.following }}, {submittedUser : user._id}]})
     		.populate('reference')
-		.populate('reference.submittedUser')
 		.populate('submittedUser')
 		.populate('likes')
 		.sort({ "created": -1 })

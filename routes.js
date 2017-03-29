@@ -26,7 +26,7 @@ module.exports = function(app, passport) {
     // Search For User by Username [x]
     app.get('/user/search/username/:username', isLoggedIn, users.readByUsername);
 
-    // Search For Users by Useranme [x]
+    // Search For Users by Username [x]
     app.get('/user/search/usernames/:usernames', isLoggedIn, users.findUsers);
 
     // Follow User by Username [x]
@@ -112,7 +112,7 @@ module.exports = function(app, passport) {
 	     passport.authenticate('facebook-token'),
 	     function (req, res) {
 		 if (req.user){
-		     return res.status(200).end('User successfully authenticated with facebook');
+		     return res.status(200).end(JSON.stringify(req.user));
 		 } else
 		     return res.status(401).end('Facebook user not found');
 	     });
