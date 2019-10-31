@@ -30,7 +30,7 @@
       "redis": "*",
       "connect-redis": "*",
       "url": "*",
-      "morgan": "~1.0.0",
+      "morgan": "~1.9.1",
       "multer": "^1.1.0",
       "passport": "*",
       "passport-local": "*",
